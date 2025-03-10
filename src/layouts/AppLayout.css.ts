@@ -2,12 +2,14 @@ import { style } from '@vanilla-extract/css';
 
 export const container = style({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  width: '100vw',
   height: '100vh',
 });
 
 export const view = style({
-  flex: 1,
-  overflowY: 'auto',
-  padding: '16px',
+  width: '430px',
+  height: '100dh',
+  border: '1px solid black',
 });
