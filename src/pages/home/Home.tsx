@@ -4,7 +4,7 @@ const Home = () => (
   <div>
     <h1>Home</h1>
     <Link to="/login">
-      <button className="login-button">이메일로 로그인</button>
+      <button>이메일로 로그인</button>
     </Link>
   </div>
 );
