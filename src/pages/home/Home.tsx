@@ -12,7 +12,7 @@ const Home = () => (
     <Link to="/clubs/create">
       <button>모임 만들기</button>
     </Link>
-    <Link to="/clubs/3">
+    <Link to="/clubs/1">
       <button>모임 상세 페이지</button>
     </Link>
   </div>
