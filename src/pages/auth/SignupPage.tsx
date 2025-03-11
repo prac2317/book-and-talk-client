@@ -9,16 +9,10 @@ const SignupPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email);
-    console.log(nickname);
-    console.log(password);
-    console.log('회원가입 전');
     await signUp();
-    console.log('회원가입 후');
   };
 
   const signUp = async () => {
-    console.log('signUp 시작');
     const response = await axios.post('http://localhost:8080/api/v1/auth/signup', {
       email,
       nickname,
