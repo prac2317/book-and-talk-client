@@ -41,6 +41,15 @@ const ClubDetailPage = () => {
     console.log(clubDetail);
   };
 
+  const deleteClub = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/clubs/${clubId}`);
+      console.log('삭제 성공');
+    } catch (error) {
+      console.log('삭제 실패', error);
+    }
+  };
+
   return (
     <>
       <h2>모임 상세 페이지</h2>
@@ -52,6 +61,7 @@ const ClubDetailPage = () => {
       <div>{clubDetail.startDate}</div>
       <div>{clubDetail.groupDescription}</div>
       <button onClick={onClickDetail}>테스트용버튼</button>
+      <button onClick={deleteClub}>모임 삭제</button>
     </>
   );
 };
