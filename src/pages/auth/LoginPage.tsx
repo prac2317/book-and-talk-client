@@ -76,6 +76,9 @@ const LoginPage = () => {
           </Link>
         </>
       )}
+      <Link to="/">
+        <button>홈으로</button>
+      </Link>
     </div>
   );
 };
