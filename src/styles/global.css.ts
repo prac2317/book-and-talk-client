@@ -35,6 +35,12 @@ globalStyle('*', {
 globalStyle('body', {
   fontFamily: vars.font.family,
   fontSize: vars.font.size.sm,
+  letterSpacing: '-1px',
   color: vars.colors.text.main,
   backgroundColor: vars.colors.background,
+});
+
+globalStyle('a', {
+  textDecoration: 'none',
+  color: 'inherit',
 });
