@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import * as styles from './ClubDetailPage.css';
 
 interface getClubDetailResponse {
   clubId: string;
   name: string;
+  bookTitle: string;
   currentParticipants: number;
   maxParticipants: number;
   startDate: string;
@@ -19,6 +21,7 @@ const ClubDetailPage = () => {
   const [clubDetail, setClubDetail] = useState<getClubDetailResponse>({
     clubId: '',
     name: '',
+    bookTitle: '',
     currentParticipants: 0,
     maxParticipants: 0,
     startDate: '',
@@ -52,16 +55,61 @@ const ClubDetailPage = () => {
 
   return (
     <>
-      <h2>모임 상세 페이지</h2>
-      <div>{clubDetail.name}</div>
-      <div>
-        {clubDetail.maxParticipants} / {clubDetail.currentParticipants}
+      <div className={styles.header}>
+        <div>
+          <Link to={`/`}>
+            <button>뒤로가기</button>
+          </Link>
+        </div>
+        <div className={styles.actionButtons}>
+          <button onClick={onClickDetail}>테스트용버튼</button>
+          <button onClick={deleteClub}>모임 삭제</button>
+        </div>
       </div>
-      <div>{clubDetail.duration}</div>
-      <div>{clubDetail.startDate}</div>
-      <div>{clubDetail.groupDescription}</div>
-      <button onClick={onClickDetail}>테스트용버튼</button>
-      <button onClick={deleteClub}>모임 삭제</button>
+
+      <div className={styles.container}>
+        <div className={styles.pictureBox}>사진 영역</div>
+
+        <div className={styles.titleSection}>
+          <h2>{clubDetail.name}</h2>
+        </div>
+
+        <div className={styles.overviewSection}>
+          <h3>모임 개요</h3>
+          <div className={styles.overviewBox}>
+            <div className={styles.bookTitle}>{clubDetail.bookTitle}</div>
+            <div className={styles.startDate}>{clubDetail.startDate}</div>
+            <div className={styles.member}>
+              {clubDetail.currentParticipants}/{clubDetail.maxParticipants}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.descriptionSection}>
+          <h3>소개글</h3>
+          <div className={styles.descriptionBox}>
+            <div>{clubDetail.groupDescription}</div>
+          </div>
+        </div>
+
+        <div className={styles.membersSection}>
+          <h3>참여 멤버</h3>
+          <div className={styles.membersBox}>
+            <div>오소리</div>
+            <div>담비</div>
+            <div>다람쥐</div>
+          </div>
+        </div>
+
+        <div className={styles.locationSection}>
+          <h3>지역</h3>
+          <div className={styles.locationBox}></div>
+        </div>
+
+        <div className={styles.buttonSection}>
+          <button>신청자 목록</button>
+        </div>
+      </div>
     </>
   );
 };

@@ -1,4 +1,5 @@
 import { style } from '@vanilla-extract/css';
+import { vars } from '../styles/global.css.ts';
 
 export const container = style({
   display: 'flex',
@@ -9,7 +10,7 @@ export const container = style({
 });
 
 export const view = style({
-  width: '430px',
+  width: vars.layout.width,
   height: '100dh',
   border: '1px solid black',
 });

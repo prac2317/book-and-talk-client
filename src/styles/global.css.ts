@@ -21,6 +21,9 @@ export const vars = createGlobalTheme(':root', {
       title: '25px',
     },
   },
+  layout: {
+    width: '430px',
+  },
 });
 
 globalStyle('*', {
@@ -31,7 +34,7 @@ globalStyle('*', {
 
 globalStyle('body', {
   fontFamily: vars.font.family,
-  fontSize: vars.font.size.title,
+  fontSize: vars.font.size.sm,
   color: vars.colors.text.main,
   backgroundColor: vars.colors.background,
 });
