@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import * as styles from './LoginPage.css';
+import logo from '../../../public/icon/Book-and-talk-text.png';
+import { signupForm } from './LoginPage.css';
 
 const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -59,23 +62,43 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <div>Logo</div>
+    <div className={styles.container}>
+      <div>
+        <img className={styles.logoImage} src={logo} alt="logo" />
+      </div>
 
       {isAuthenticated ? (
         <button onClick={logout}>로그아웃</button>
       ) : (
         <>
-          <form onSubmit={handleSubmit}>
-            <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" />
-            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" />
-            <button type="submit">로그인</button>
+          <form className={styles.loginForm} onSubmit={handleSubmit}>
+            <input
+              className={styles.input}
+              placeholder="이메일을 입력해주세요."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+            />
+            <input
+              className={styles.input}
+              placeholder="비밀번호를 입력해주세요."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+            />
+            <button className={styles.loginButton} type="submit">
+              로그인
+            </button>
           </form>
-          <Link to="/signup">
-            <button>회원가입</button>
-          </Link>
+          <div className={styles.authButtons}>
+            <Link to="/signup">아이디 찾기</Link> | <Link to="/signup">비밀번호 찾기</Link> |
+            <Link to="/signup">회원가입</Link>
+          </div>
         </>
       )}
+      <Link to="/">
+        <button>홈으로</button>
+      </Link>
     </div>
   );
 };

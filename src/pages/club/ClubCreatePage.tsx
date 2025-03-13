@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface CreateClubRequest {
   name: string;
@@ -13,6 +13,7 @@ interface CreateClubRequest {
 }
 
 const ClubCreatePage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { bookTitle, isbn13 } = location.state || { bookTitle: '', isbn13: '' };
   const [formData, setFormData] = useState<CreateClubRequest>({
@@ -44,9 +45,10 @@ const ClubCreatePage = () => {
     e.preventDefault();
     try {
       const result = await createGroup(formData);
-      console.log('모임 생성 성공:', result);
+      console.log('모임 생성 성공', result);
+      navigate('/');
     } catch (error) {
-      console.error('모임 생성 실패:', error);
+      console.error('모임 생성 실패', error);
     }
   };
 
