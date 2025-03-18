@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 
 const Home = () => (
-  <div>
     <div
       style={{
         display: 'flex',
@@ -23,7 +22,6 @@ const Home = () => (
         <button>모임 상세 페이지</button>
       </Link>
     </div>
-  </div>
 );
 
 export default Home;
