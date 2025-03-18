@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import * as styles from './LoginPage.css';
-import logo from '../../../public/icon/Book-and-talk-text.png';
-import { signupForm } from './LoginPage.css';
+import logo from '@assets/icons/Book-and-talk-text.png';
+import { login, logout } from '../../api/auth.ts';
 
 const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isValidEmail, setIsValidEmail] = useState(false);
 
   const getCookie = (name: string) => {
     const value = `; ${document.cookie}`;
@@ -22,32 +23,23 @@ const LoginPage = () => {
 
   useEffect(() => {
     const cookie = getCookie('memberId');
-    cookie ? setIsAuthenticated(true) : setIsAuthenticated(false);
+    setIsAuthenticated(!!cookie);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await Login();
+    await handleLogin();
   };
 
-  const Login = async () => {
+  const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        'http://localhost:8080/api/v1/auth/login',
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-      console.log('로그인 성공', response);
+      await login(email, password);
       setIsAuthenticated(true);
-    } catch (error) {
-      console.log('로그인 실패', error);
+    } catch (err) {
+      console.log(err);
     }
-  };
+  }
+
 
   const logout = async () => {
     try {
