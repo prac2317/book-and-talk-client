@@ -6,42 +6,117 @@ export const header = style({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: '50px',
+  padding: '0 20px',
+  paddingTop: '15px',
+  height: '120px',
   width: vars.layout.width,
-  backgroundColor: 'yellow',
+  // backgroundColor: 'yellow',
+});
+
+export const logoImage = style({
+  width: '80px',
+});
+
+export const logoText = style({
+  width: '150px',
+});
+
+export const notification = style({
+  width: '70px',
 });
 
 export const searchSection = style({
-  height: '50px',
-  width: vars.layout.width,
-  backgroundColor: 'aqua',
-});
-
-export const categoryContainer = style({
   display: 'flex',
-  flexDirection: 'column',
-  backgroundColor: 'beige',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100px',
+  width: vars.layout.width,
 });
 
 export const categorySection = style({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  border: '1px solid black',
-  width: 'inherit',
-  height: '170px',
+  paddingTop: '30px',
+  gap: '50px',
+  width: vars.layout.width,
 });
 
-export const categoryTitle = style({});
+export const categoryWrapper = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  height: '270px',
+  width: vars.layout.width,
+  paddingLeft: '20px',
+});
+
+export const categoryDecoration = style({
+  height: '250px',
+  width: '14px',
+  backgroundColor: vars.colors.primary,
+  borderRadius: '5px 0 0 5px',
+});
+
+export const categoryContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  paddingTop: '25px',
+  paddingLeft: '30px',
+
+  backgroundColor: vars.colors.surface,
+  border: `1px ${vars.colors.border} solid`,
+  borderRadius: '8px',
+
+  overflow: 'scroll',
+});
+
+export const categoryTitle = style({
+  fontSize: '20px',
+  fontWeight: vars.font.weight.normal,
+});
 
 export const bookContainer = style({
   display: 'flex',
   flexDirection: 'row',
-  gap: '10px',
+  marginTop: '10px',
+  paddingTop: '5px',
+  paddingBottom: '20px',
+  gap: '30px',
+  width: vars.layout.width,
+  height: 'inherit',
 });
 
 export const book = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '1px',
+
+  selectors: {
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      transition: 'transform 0.3s',
+      cursor: 'pointer',
+    },
+    '&:active': {
+      transform: 'scale(0.95)',
+      transition: 'transform 0.3s',
+    },
+  },
+});
+
+export const bookImage = style({
+  width: '110px',
+  height: 'auto',
+});
+
+export const bookTitle = style({
   width: '100px',
-  height: '130px',
-  backgroundColor: 'brown',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  fontSize: vars.font.size.sm,
 });

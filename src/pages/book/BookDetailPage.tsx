@@ -24,8 +24,7 @@ interface clubOverview {
 const BookDetailPage = () => {
   const navigate = useNavigate();
   const bookTitle = '책 제목입니다';
-  // const { isbn13 } = useParams();
-  const isbn13 = '9791162540640';
+  const { isbn13 } = useParams();
   const [clubCount, setClubCount] = useState(0);
   const [clubList, setClubList] = useState<clubOverview[]>([]);
 

@@ -1,7 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as styles from './Home.css';
 import { useEffect, useState } from 'react';
 import { getBookList } from '@api/book.ts';
+import logoImage from '@assets/icons/small3.png';
+import logoText from '@assets/icons/Logo-text.jpg';
+import notification from '@assets/icons/Logo-Notification.jpg';
+import searchBar from '@assets/icons/Logo-search-bar.jpg';
 
 // Bestseller, BlogBest, ItemNewAll
 
@@ -13,6 +17,11 @@ interface book {
 
 const Home = () => {
   const [bookList, setBookList] = useState<book[]>([]);
+  const [bestseller, setBestseller] = useState<book[]>([]);
+  const [blogBest, setBlogBest] = useState<book[]>([]);
+  const [itemNewAll, setItemNewAll] = useState<book[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadBookList = async () => {
@@ -22,44 +31,113 @@ const Home = () => {
     };
 
     loadBookList();
+
+    const loadBestseller = async () => {
+      const response = await getBookList('Bestseller');
+      setBestseller(response.data);
+    };
+    loadBestseller();
+
+    const loadBlogBest = async () => {
+      const response = await getBookList('BlogBest');
+      setBlogBest(response.data);
+    };
+    loadBlogBest();
+
+    const loadItemNewAll = async () => {
+      const response = await getBookList('ItemNewAll');
+      setItemNewAll(response.data);
+    };
+    loadItemNewAll();
   }, []);
+
+  const goToBookDetail = (isbn13: string) => {
+    navigate(`/books/${isbn13}`);
+  };
 
   return (
     <div>
       <div className={styles.header}>
-        <div>로고 & 이름</div>
-        <div>알림</div>
+        <div>
+          <img className={styles.logoImage} src={logoImage} alt="logo" />
+          <img className={styles.logoText} src={logoText} alt="book-and-talk" />
+        </div>
+        <div>
+          <img className={styles.notification} src={notification} alt="notification" />
+        </div>
       </div>
-      <div className={styles.searchSection}>searchSection</div>
-      <div className={styles.categoryContainer}>
-        <div className={styles.categorySection}>
-          <div className={styles.categoryTitle}>bestsellerSection</div>
-          <div className={styles.bookContainer}>
-            {bookList.map((book, index) => (
-              <div key={index} className={styles.book}>
-                <div>{book.title}</div>
-                <img src={book.cover} alt="cover" />
-              </div>
-            ))}
-            <div className={styles.book}>book</div>
-            <div className={styles.book}>book</div>
-            <div className={styles.book}>book</div>
+      <div className={styles.searchSection}>
+        <img src={searchBar} alt="searchBar" />
+      </div>
+      <div className={styles.categorySection}>
+        <div className={styles.categoryWrapper}>
+          <div className={styles.categoryDecoration}></div>
+          <div className={styles.categoryContainer}>
+            <h3 className={styles.categoryTitle}>베스트셀러</h3>
+            <div className={styles.bookContainer}>
+              {bookList.map((book) => (
+                <div
+                  key={book.isbn13}
+                  onClick={() => {
+                    goToBookDetail(book.isbn13);
+                  }}
+                  className={styles.book}
+                >
+                  <img className={styles.bookImage} src={book.cover} alt="cover" />
+                  <text className={styles.bookTitle}>{book.title}</text>
+                </div>
+              ))}
+              <div className={styles.book}>book</div>
+              <div className={styles.book}>book</div>
+              <div className={styles.book}>book</div>
+            </div>
           </div>
         </div>
-        <div className={styles.categorySection}>
-          <div className={styles.categoryTitle}>blogBestSection</div>
-          <div className={styles.bookContainer}>
-            <div className={styles.book}>book</div>
-            <div className={styles.book}>book</div>
-            <div className={styles.book}>book</div>
+
+        <div className={styles.categoryWrapper}>
+          <div className={styles.categoryDecoration} />
+          <div className={styles.categoryContainer}>
+            <h3 className={styles.categoryTitle}>블로거 추천 베스트</h3>
+            <div className={styles.bookContainer}>
+              {blogBest.map((book) => (
+                <div
+                  key={book.isbn13}
+                  onClick={() => {
+                    goToBookDetail(book.isbn13);
+                  }}
+                  className={styles.book}
+                >
+                  <img className={styles.bookImage} src={book.cover} alt="cover" />
+                  <text className={styles.bookTitle}>{book.title}</text>
+                </div>
+              ))}
+              <div className={styles.book}>book</div>
+              <div className={styles.book}>book</div>
+              <div className={styles.book}>book</div>
+            </div>
           </div>
         </div>
-        <div className={styles.categorySection}>
-          <div className={styles.categoryTitle}>itemNewAllSection</div>
-          <div className={styles.bookContainer}>
-            <div className={styles.book}>book</div>
-            <div className={styles.book}>book</div>
-            <div className={styles.book}>book</div>
+        <div className={styles.categoryWrapper}>
+          <div className={styles.categoryDecoration} />
+          <div className={styles.categoryContainer}>
+            <h3 className={styles.categoryTitle}>신간베스트</h3>
+            <div className={styles.bookContainer}>
+              {itemNewAll.map((book) => (
+                <div
+                  key={book.isbn13}
+                  onClick={() => {
+                    goToBookDetail(book.isbn13);
+                  }}
+                  className={styles.book}
+                >
+                  <img className={styles.bookImage} src={book.cover} alt="cover" />
+                  <text className={styles.bookTitle}>{book.title}</text>
+                </div>
+              ))}
+              <div className={styles.book}>book</div>
+              <div className={styles.book}>book</div>
+              <div className={styles.book}>book</div>
+            </div>
           </div>
         </div>
       </div>
