@@ -8,11 +8,11 @@ interface getClubDetailResponse {
   clubId: number;
   name: string;
   bookTitle: string;
-  currentParticipants: number;
+  currentParticipant: number;
   maxParticipants: number;
   startDate: string;
   duration: number;
-  groupDescription: string;
+  clubDescription: string;
   isbn13: string;
   createdAt: string;
 }
@@ -34,11 +34,11 @@ const ClubDetailPage = () => {
     clubId: 0,
     name: '',
     bookTitle: '',
-    currentParticipants: 0,
+    currentParticipant: 0,
     maxParticipants: 0,
     startDate: '',
     duration: 0,
-    groupDescription: '',
+    clubDescription: '',
     isbn13: '',
     createdAt: '',
   });
@@ -53,11 +53,11 @@ const ClubDetailPage = () => {
     clubId: 3,
     name: '북토피아 북클럽',
     bookTitle: '아주 작은 습관의 힘',
-    currentParticipants: 3,
+    currentParticipant: 3,
     maxParticipants: 10,
     startDate: dateString,
     duration: 3,
-    groupDescription:
+    clubDescription:
       '북토피아 북클럽 멤버를 모집합니다.\n\n' +
       "이번 모임에선 '아주 작은 습관의 힘'을 읽습니다\n\n" +
       '읽고 독후감 (분량 상관없음) 작성과 느낀 점을 다같이 짧게 나눌 예정입니다.\n\n' +
@@ -112,6 +112,7 @@ const ClubDetailPage = () => {
         .get<getClubDetailResponse>(`http://localhost:8080/api/v1/clubs/${clubId}`)
         .then((response) => {
           setClubDetail(response.data);
+          console.log(response.data);
         });
       console.log('클럽 상세 정보 연동 완료');
     } catch (error) {
@@ -178,7 +179,7 @@ const ClubDetailPage = () => {
             <div className={styles.memberCount}>
               <img src={images.clubMemberImage} alt="member" />
               <span>
-                {clubDetail.currentParticipants}/{clubDetail.maxParticipants}
+                {clubDetail.currentParticipant}/{clubDetail.maxParticipants}
               </span>
             </div>
           </div>
@@ -187,7 +188,7 @@ const ClubDetailPage = () => {
         <div className={styles.descriptionSection}>
           <h3>소개글</h3>
           <div className={styles.descriptionBox}>
-            <div>{clubDetail.groupDescription}</div>
+            <div>{clubDetail.clubDescription}</div>
           </div>
         </div>
 

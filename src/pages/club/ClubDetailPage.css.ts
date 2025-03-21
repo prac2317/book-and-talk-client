@@ -135,6 +135,10 @@ export const descriptionBox = style({
   borderWidth: '0.5px',
   boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
   whiteSpace: 'pre-wrap',
+  fontSize: '15px',
+  fontWeight: 200,
+  letterSpacing: '0.5px',
+  lineHeight: '17px',
 });
 
 export const membersSection = style({

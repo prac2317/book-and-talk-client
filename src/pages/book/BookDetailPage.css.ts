@@ -12,7 +12,7 @@ export const bookSection = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '25px',
-  height: '500px',
+  // height: '500px',
   padding: '25px 25px',
   borderBottom: '2px #EEEEEE solid ',
 });
@@ -54,7 +54,7 @@ export const bookDescriptionCard = style({
 
 export const bookDescription = style({
   maxHeight: '200px',
-  padding: '20px',
+  padding: '20px 10px 0px 10px',
   backgroundColor: vars.colors.surface,
   borderRadius: '10px',
   border: `1px ${vars.colors.border} solid`,

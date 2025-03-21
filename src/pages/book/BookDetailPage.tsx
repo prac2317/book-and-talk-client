@@ -42,7 +42,7 @@ const BookDetailPage = () => {
     publisher: '',
     publishedDate: '',
     isbn13: '',
-    description: '',
+    description: '책 소개입니다.',
   });
 
   const mockData = [
@@ -95,7 +95,7 @@ const BookDetailPage = () => {
         publisher: bookResponse.publisher,
         publishedDate: bookResponse.datetime,
         isbn13: isbn13,
-        description: bookResponse.contents,
+        description: bookResponse.contents ? bookResponse.contents : '책 소개입니다.',
       });
 
       console.log('카카오 검색 완료', response.data.documents[0]);
