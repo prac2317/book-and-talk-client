@@ -6,11 +6,12 @@ export const container = style({
   flexDirection: 'row',
   justifyContent: 'center',
   width: '100vw',
-  height: '100vh',
+  minHeight: '100vh',
 });
 
 export const view = style({
   width: vars.layout.width,
   height: '100dh',
-  border: '1px solid black',
+  border: `1px solid ${vars.colors.border}`,
+  backgroundColor: vars.colors.background,
 });

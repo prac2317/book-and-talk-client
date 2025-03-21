@@ -37,7 +37,9 @@ globalStyle('body', {
   fontSize: vars.font.size.sm,
   letterSpacing: '-1px',
   color: vars.colors.text.main,
-  backgroundColor: vars.colors.background,
+  // backgroundColor: vars.colors.background,
+  backgroundColor: '#F5F5F5',
+  overscrollBehaviorY: 'none',
 });
 
 globalStyle('a', {

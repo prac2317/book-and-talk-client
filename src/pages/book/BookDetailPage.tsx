@@ -1,9 +1,8 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import * as styles from './BookDetailPage.css';
 import groupImageExampple from '@assets/icons/img.png';
-import { clubThumbnail } from './BookDetailPage.css';
 
 interface bookDetail {
   thumbnail: string;
@@ -29,10 +28,6 @@ interface clubOverview {
   status: string;
   startDate: string;
 }
-
-// interface getClubListRequest {
-//   isbn13: string;
-// }
 
 const BookDetailPage = () => {
   const navigate = useNavigate();
@@ -79,16 +74,8 @@ const BookDetailPage = () => {
   const navigateToClubDetail = (clubId: number) => {
     navigate(`/clubs/${clubId}`);
   };
-  //
-  // const getBookDetail = async (isbn13: string) => {
-  //   const baseUrl = import.meta.env.VITE_ALADIN_API_URL;
-  //   const apiKey = import.meta.env.VITE_ALADIN_API_KEY;
-  //   console.log(baseUrl);
-  //   console.log(apiKey);
-  //   const response = await axios.get(`${baseUrl}?ttbkey=${apiKey}&Query=${isbn13}&output=js`);
-  //   console.log(response.data.data);
-  // };
 
+  // Todo: 알라딘 검색으로 바꾸기
   const fetchBookDetail = async () => {
     if (!isbn13) return;
 
@@ -99,8 +86,6 @@ const BookDetailPage = () => {
           headers: { Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_REST_API_KEY}` },
         },
       );
-
-      console.log(response.data.documents[0]);
       const bookResponse = response.data.documents[0];
 
       setBookDetail({
@@ -112,19 +97,24 @@ const BookDetailPage = () => {
         isbn13: isbn13,
         description: bookResponse.contents,
       });
+
+      console.log('카카오 검색 완료', response.data.documents[0]);
     } catch (error) {
       console.error('카카오 검색 실패', error);
     }
   };
 
   const getClubList = async () => {
-    const response = await axios.get<getClubListResponse>(`http://localhost:8080/api/v1/clubs`, {
-      params: { isbn13 },
-    });
-    console.log('getClubList 발동');
-    console.log(response);
-    setClubList(response.data.data);
-    setClubCount(response.data.totalCount);
+    try {
+      const response = await axios.get<getClubListResponse>(`http://localhost:8080/api/v1/clubs`, {
+        params: { isbn13 },
+      });
+      console.log('클럽 리스트 불러오기 완료', response.data);
+      setClubCount(response.data.totalCount);
+      setClubList(response.data.data);
+    } catch (error) {
+      console.error('클럽 리스트 불러오기 실패', error);
+    }
   };
 
   return (
