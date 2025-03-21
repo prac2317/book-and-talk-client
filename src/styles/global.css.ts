@@ -1,4 +1,4 @@
-import { createGlobalTheme, globalStyle } from '@vanilla-extract/css';
+import { createGlobalTheme, globalFontFace, globalStyle } from '@vanilla-extract/css';
 
 export const vars = createGlobalTheme(':root', {
   colors: {
@@ -37,10 +37,57 @@ globalStyle('body', {
   fontSize: vars.font.size.sm,
   letterSpacing: '-1px',
   color: vars.colors.text.main,
-  backgroundColor: vars.colors.background,
+  // backgroundColor: vars.colors.background,
+  backgroundColor: '#F5F5F5',
+  overscrollBehaviorY: 'none',
 });
 
 globalStyle('a', {
   textDecoration: 'none',
   color: 'inherit',
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-ExtraLight.woff') format('woff')",
+  fontWeight: 100,
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  fontWeight: 200,
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  fontWeight: 300,
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  fontWeight: 400,
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  fontWeight: 500,
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  fontWeight: 600,
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  fontWeight: 700,
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  fontWeight: 800,
+});
+
+globalFontFace('Pretendard', {
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  fontWeight: 900,
 });
