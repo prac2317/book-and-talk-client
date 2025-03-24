@@ -194,7 +194,7 @@ const ClubDetailPage = () => {
 
         <div className={styles.membersSection}>
           <h3>
-            참여 멤버 ({clubDetail.currentParticipants} / {clubDetail.maxParticipants})
+            참여 멤버 ({clubDetail.currentParticipant} / {clubDetail.maxParticipants})
           </h3>
           <div className={styles.membersBox}>
             {clubMember.map((member) => (

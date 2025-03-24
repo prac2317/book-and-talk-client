@@ -67,7 +67,7 @@ const BookDetailPage = () => {
 
   const createClub = () => {
     navigate('/clubs/create', {
-      state: { bookTitle, isbn13 },
+      state: { bookDetail },
     });
   };
 
