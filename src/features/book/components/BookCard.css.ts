@@ -1,23 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../../styles/global.css.ts';
 
-export const container = style({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '25px 0',
-});
-
-export const bookSection = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '25px',
-  // height: '500px',
-  padding: '25px 25px',
-  borderBottom: '2px #EEEEEE solid ',
-});
-
 export const bookCard = style({
   display: 'flex',
   flexDirection: 'row',

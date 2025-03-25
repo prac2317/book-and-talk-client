@@ -22,6 +22,7 @@ export const bookCard = style({
   flexDirection: 'row',
   gap: '20px',
   height: '200px',
+  width: vars.layout.bookCardWith,
   padding: '30px',
   backgroundColor: vars.colors.surface,
   borderRadius: '10px',

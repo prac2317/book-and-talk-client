@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@api': path.resolve(__dirname, 'src/api'),
+      '@features': path.resolve(__dirname, 'src/features'),
     },
   },
 });

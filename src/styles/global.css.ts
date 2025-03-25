@@ -23,6 +23,7 @@ export const vars = createGlobalTheme(':root', {
   },
   layout: {
     width: '430px',
+    bookCardWith: '380px',
   },
 });
 
