@@ -4,46 +4,10 @@ import { vars } from '../../../styles/global.css.ts';
 export const container = style({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '25px 0',
+  paddingTop: '30px',
+  gap: '10px',
 });
 
-export const bookSection = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '25px',
-  // height: '500px',
-  padding: '25px 25px',
-  borderBottom: '2px #EEEEEE solid ',
-});
-
-export const bookCard = style({
-  display: 'flex',
-  flexDirection: 'row',
-  gap: '20px',
-  height: '200px',
-  width: vars.layout.bookCardWith,
-  padding: '30px',
-  backgroundColor: vars.colors.surface,
-  borderRadius: '10px',
-  border: `1px ${vars.colors.border} solid`,
-  boxShadow: '0 4px 4px rgba(0, 0, 0, 0.1)',
-});
-
-export const bookThumbnail = style({
-  width: '100px',
-  // height: 'auto',
-});
-
-export const bookOverview = style({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  width: '150px',
-});
-
-export const bookTitle = style({
+export const title = style({
   fontSize: vars.font.size.title,
-  fontWeight: vars.font.weight.normal,
 });

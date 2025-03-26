@@ -131,8 +131,8 @@ const BookDetailPage = () => {
       </div>
       <div className={styles.bookSection}>
         <BookCard bookDetail={bookDetail} />
-        <div className={styles.bookDescriptionCard}>
-          <div>책 소개</div>
+        <div className={styles.bookDescriptionBox}>
+          <div className={styles.bookDescriptionTitle}>책 소개</div>
           <text className={styles.bookDescription}>{bookDetail.description}</text>
         </div>
       </div>

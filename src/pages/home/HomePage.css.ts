@@ -6,7 +6,7 @@ export const header = style({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0 20px',
+  padding: `0 ${vars.space.sectionPadding}`,
   paddingTop: '15px',
   height: '120px',
   width: vars.layout.width,
@@ -42,17 +42,17 @@ export const categorySection = style({
   width: vars.layout.width,
 });
 
-export const categoryWrapper = style({
+export const categoryBox = style({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  height: '270px',
+  height: '230px',
   width: vars.layout.width,
   paddingLeft: '20px',
 });
 
-export const categoryDecoration = style({
-  height: '250px',
+export const categorySideDecoration = style({
+  height: '210px',
   width: '14px',
   backgroundColor: vars.colors.primary,
   borderRadius: '5px 0 0 5px',
@@ -62,6 +62,7 @@ export const categoryContainer = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
+  height: 'inherit',
   paddingTop: '25px',
   paddingLeft: '30px',
 
@@ -73,11 +74,11 @@ export const categoryContainer = style({
 });
 
 export const categoryTitle = style({
-  fontSize: '20px',
-  fontWeight: vars.font.weight.normal,
+  fontSize: vars.font.size.subTitle,
+  fontWeight: vars.font.weight.medium,
 });
 
-export const bookContainer = style({
+export const bookBoxContainer = style({
   display: 'flex',
   flexDirection: 'row',
   marginTop: '10px',
@@ -88,12 +89,14 @@ export const bookContainer = style({
   height: 'inherit',
 });
 
-export const book = style({
+export const bookBox = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: '1px',
+
+  height: '150px',
 
   selectors: {
     '&:hover': {
@@ -109,14 +112,17 @@ export const book = style({
 });
 
 export const bookImage = style({
-  width: '110px',
+  width: '85px',
   height: 'auto',
 });
 
 export const bookTitle = style({
-  width: '100px',
+  width: '85px',
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
-  fontSize: vars.font.size.sm,
+  textAlign: 'center',
+
+  fontSize: vars.font.size.bodyMedium,
+  fontWeight: vars.font.weight.extraLight,
 });

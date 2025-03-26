@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import * as styles from './Home.css';
+import * as styles from './HomePage.css.ts';
 import { useEffect, useState } from 'react';
 import { getBookList } from '@api/book.ts';
 import logoImage from '@assets/icons/small3.png';
@@ -15,7 +15,7 @@ interface book {
   cover: string;
 }
 
-const Home = () => {
+const HomePage = () => {
   const [bookList, setBookList] = useState<book[]>([]);
   const [bestseller, setBestseller] = useState<book[]>([]);
   const [blogBest, setBlogBest] = useState<book[]>([]);
@@ -70,73 +70,64 @@ const Home = () => {
         <img src={searchBar} alt="searchBar" />
       </div>
       <div className={styles.categorySection}>
-        <div className={styles.categoryWrapper}>
-          <div className={styles.categoryDecoration}></div>
+        <div className={styles.categoryBox}>
+          <div className={styles.categorySideDecoration}></div>
           <div className={styles.categoryContainer}>
             <h3 className={styles.categoryTitle}>베스트셀러</h3>
-            <div className={styles.bookContainer}>
+            <div className={styles.bookBoxContainer}>
               {bookList.map((book) => (
                 <div
                   key={book.isbn13}
                   onClick={() => {
                     goToBookDetail(book.isbn13);
                   }}
-                  className={styles.book}
+                  className={styles.bookBox}
                 >
                   <img className={styles.bookImage} src={book.cover} alt="cover" />
                   <text className={styles.bookTitle}>{book.title}</text>
                 </div>
               ))}
-              <div className={styles.book}>book</div>
-              <div className={styles.book}>book</div>
-              <div className={styles.book}>book</div>
             </div>
           </div>
         </div>
 
-        <div className={styles.categoryWrapper}>
-          <div className={styles.categoryDecoration} />
+        <div className={styles.categoryBox}>
+          <div className={styles.categorySideDecoration} />
           <div className={styles.categoryContainer}>
             <h3 className={styles.categoryTitle}>블로거 추천 베스트</h3>
-            <div className={styles.bookContainer}>
+            <div className={styles.bookBoxContainer}>
               {blogBest.map((book) => (
                 <div
                   key={book.isbn13}
                   onClick={() => {
                     goToBookDetail(book.isbn13);
                   }}
-                  className={styles.book}
+                  className={styles.bookBox}
                 >
                   <img className={styles.bookImage} src={book.cover} alt="cover" />
                   <text className={styles.bookTitle}>{book.title}</text>
                 </div>
               ))}
-              <div className={styles.book}>book</div>
-              <div className={styles.book}>book</div>
-              <div className={styles.book}>book</div>
             </div>
           </div>
         </div>
-        <div className={styles.categoryWrapper}>
-          <div className={styles.categoryDecoration} />
+        <div className={styles.categoryBox}>
+          <div className={styles.categorySideDecoration} />
           <div className={styles.categoryContainer}>
             <h3 className={styles.categoryTitle}>신간베스트</h3>
-            <div className={styles.bookContainer}>
+            <div className={styles.bookBoxContainer}>
               {itemNewAll.map((book) => (
                 <div
                   key={book.isbn13}
                   onClick={() => {
                     goToBookDetail(book.isbn13);
                   }}
-                  className={styles.book}
+                  className={styles.bookBox}
                 >
                   <img className={styles.bookImage} src={book.cover} alt="cover" />
                   <text className={styles.bookTitle}>{book.title}</text>
                 </div>
               ))}
-              <div className={styles.book}>book</div>
-              <div className={styles.book}>book</div>
-              <div className={styles.book}>book</div>
             </div>
           </div>
         </div>
@@ -166,4 +157,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

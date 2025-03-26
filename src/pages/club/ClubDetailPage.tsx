@@ -162,11 +162,11 @@ const ClubDetailPage = () => {
       <img className={styles.pictureBox} src={images.clubBackgroundImage} alt="background" />
 
       <div className={styles.titleSection}>
-        <h2>{clubDetail.name}</h2>
+        <div>{clubDetail.name}</div>
       </div>
       <div className={styles.contentsContainer}>
         <div className={styles.overviewSection}>
-          <h3>모임 개요</h3>
+          <div className={styles.overviewTitle}>모임 개요</div>
           <div className={styles.overviewBox}>
             <div className={styles.bookTitle}>
               <img src={images.clubBookImage} alt="bookTitle" />
@@ -186,16 +186,16 @@ const ClubDetailPage = () => {
         </div>
 
         <div className={styles.descriptionSection}>
-          <h3>소개글</h3>
+          <div className={styles.descriptionTitle}>소개글</div>
           <div className={styles.descriptionBox}>
             <div>{clubDetail.clubDescription}</div>
           </div>
         </div>
 
         <div className={styles.membersSection}>
-          <h3>
+          <div className={styles.memberTitle}>
             참여 멤버 ({clubDetail.currentParticipant} / {clubDetail.maxParticipants})
-          </h3>
+          </div>
           <div className={styles.membersBox}>
             {clubMember.map((member) => (
               <div className={styles.member}>
@@ -218,7 +218,7 @@ const ClubDetailPage = () => {
         </div>
 
         <div className={styles.locationSection}>
-          <h3>지역</h3>
+          <div className={styles.locationTitle}>지역</div>
           <img className={styles.locationImage} src={images.mapExampleImage} alt="map"></img>
         </div>
 

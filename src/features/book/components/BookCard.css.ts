@@ -8,6 +8,7 @@ export const bookCard = style({
   height: '200px',
   width: vars.layout.bookCardWith,
   padding: '30px',
+
   backgroundColor: vars.colors.surface,
   borderRadius: '10px',
   border: `1px ${vars.colors.border} solid`,
@@ -23,10 +24,21 @@ export const bookOverview = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  gap: '5px',
   width: '150px',
 });
 
 export const bookTitle = style({
-  fontSize: vars.font.size.title,
-  fontWeight: vars.font.weight.normal,
+  fontSize: vars.font.size.headlineMedium,
+  fontWeight: vars.font.weight.medium,
+});
+
+export const author = style({
+  fontSize: vars.font.size.bodyMedium,
+  fontWeight: vars.font.weight.medium,
+});
+
+export const publisher = style({
+  fontSize: vars.font.size.bodyMedium,
+  fontWeight: vars.font.weight.light,
 });

@@ -18,7 +18,7 @@ const Step1 = ({ bookDetail, goToNextStep }) => {
   }, []);
   return (
     <div className={styles.container}>
-      <h3>이 책의 모임을 만들까요?</h3>
+      <h3 className={styles.title}>이 책의 모임을 만들까요?</h3>
       <BookCard bookDetail={bookDetail} />
       <div>
         {/*<button onClick={props.goToPrevStep}>이전으로</button>*/}

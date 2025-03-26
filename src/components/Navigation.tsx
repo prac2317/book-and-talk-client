@@ -6,7 +6,7 @@ const navigations = [
     to: '/',
     label: '홈',
     activeIcon: 'public/icons/Bottom-bar-Address-off.jpg',
-    inactiveIcon: '/icons/Home-off.png',
+    inactiveIcon: '/icons/HomePage-off.png',
   },
   {
     to: '/like',
@@ -31,11 +31,18 @@ const navigations = [
 const Navigation = () => {
   return (
     <nav className={nav}>
-      {navigations.map((navigation) =>  (
-        <NavLink key={navigation.to} to={navigation.to} className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
+      {navigations.map((navigation) => (
+        <NavLink
+          key={navigation.to}
+          to={navigation.to}
+          className={({ isActive }) => (isActive ? 'active' : 'inactive')}
+        >
           {({ isActive }) => (
             <div className={navItem}>
-              <img src={isActive ? navigation.activeIcon : navigation.inactiveIcon} alt={navigation.label} />
+              <img
+                src={isActive ? navigation.activeIcon : navigation.inactiveIcon}
+                alt={navigation.label}
+              />
               <span>{navigation.label}</span>
             </div>
           )}
