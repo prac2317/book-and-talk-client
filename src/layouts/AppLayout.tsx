@@ -1,15 +1,23 @@
-import { Outlet, ScrollRestoration } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { container, view } from './AppLayout.css.ts';
 import Navigation from '../components/Navigation';
 
-const AppLayout = () => (
-  <div className={container}>
-    <main className={view}>
-      <Outlet />
-    </main>
-    <Navigation />
-    <ScrollRestoration />
-  </div>
-);
+const AppLayout = () => {
+  const location = useLocation();
+
+  const noNavRoutes = ['/clubs/applications'];
+
+  const showNavigation = !noNavRoutes.includes(location.pathname);
+
+  return (
+    <div className={container}>
+      <main className={view}>
+        <Outlet />
+      </main>
+      {showNavigation && <Navigation />}
+      <ScrollRestoration />
+    </div>
+  );
+};
 
 export default AppLayout;

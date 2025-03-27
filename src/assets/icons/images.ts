@@ -10,6 +10,11 @@ import mapExampleImage from '@assets/icons/Map-example.png';
 import memberImage from '@assets/icons/small3.png';
 import memberHostImage from '@assets/icons/Club-Host.png';
 
+import applicationWarning from '@assets/icons/Application_warning.jpg';
+import blurredLogoImage from '@assets/icons/Logo-blurred.png';
+
+import xButtonImage from '@assets/icons/X-button.png';
+
 const images = {
   backImage,
   clubDeleteImage,
@@ -21,6 +26,9 @@ const images = {
   mapExampleImage,
   memberImage,
   memberHostImage,
+  applicationWarning,
+  blurredLogoImage,
+  xButtonImage,
 };
 
 export default images;
