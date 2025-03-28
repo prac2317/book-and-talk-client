@@ -1,20 +1,18 @@
 import * as styles from './ApplicantList.css';
-import { useState } from 'react';
 
 interface applicantOverview {
+  applicationId: number;
+  questionAnswer: string;
+  createAt: string;
   memberId: number;
-  thumbnail: string;
+  profileImage: string;
   nickname: string;
 }
 
 const ApplicantList = ({ applicantOverviews, selectApplicant }) => {
-  // const [applicantOverviews, setApplicantOverviews] = useState<applicantOverview[]>([
-  //   { memberId: 1, thumbnail: '', nickname: '닉네임 1' },
-  // ]);
-
   return (
     <div className={styles.applicantSection}>
-      {applicantOverviews.map((applicant) => (
+      {applicantOverviews.map((applicant: applicantOverview) => (
         <div
           className={styles.applicantBox}
           key={applicant.memberId}
@@ -22,7 +20,7 @@ const ApplicantList = ({ applicantOverviews, selectApplicant }) => {
             selectApplicant(applicant);
           }}
         >
-          <div>thumbnail</div>
+          <img src={applicant.profileImage} alt="profileImage" />
           <div className={styles.nickname}>{applicant.nickname}</div>
         </div>
       ))}

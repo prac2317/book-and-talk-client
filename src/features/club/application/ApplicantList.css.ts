@@ -3,6 +3,7 @@ import { vars } from '../../../styles/global.css.ts';
 
 export const applicantSection = style({
   display: 'flex',
+  flexDirection: 'column',
   width: 'inherit',
 });
 

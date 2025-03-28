@@ -8,7 +8,6 @@ const ClubApplicationQuestion = ({ clubId, clubName, setQuestionAnswer }) => {
 
   const handleChange = (value: string) => {
     setQuestionAnswer(value);
-    console.log(value);
   };
 
   return (

@@ -282,7 +282,11 @@ const ClubDetailPage = () => {
         </div>
       </div>
       {isModalOpen && <div className={styles.overlay} />}
-      <ClubApplicantModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <ClubApplicantModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        clubId={clubId}
+      />
     </div>
   );
 };

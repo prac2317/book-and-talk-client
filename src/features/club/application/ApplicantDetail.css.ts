@@ -7,8 +7,6 @@ export const detailSection = style({
   flexDirection: 'column',
   justifyContent: 'space-between',
   width: vars.layout.width,
-  // height: '100%',
-  // backgroundColor: 'black',
   padding: vars.space.sectionPadding,
   paddingBottom: '100px',
 });
@@ -16,6 +14,13 @@ export const detailSection = style({
 export const answerSection = style({
   display: 'flex',
   flexDirection: 'column',
+  gap: '10px',
+});
+
+export const profileWrapper = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
   gap: '10px',
 });
 
