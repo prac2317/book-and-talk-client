@@ -17,7 +17,7 @@ interface getClubDetailResponse {
   createdAt: string;
 }
 
-interface getClubMemberResponse {
+interface getClubVisitorResponse {
   data: memberInformation[];
 }
 
@@ -26,6 +26,8 @@ interface memberInformation {
   memberId: number;
   nickname: string;
 }
+
+type VisitorStatus = 'HOST' | 'MEMBER' | 'APPLICANT' | 'NONE';
 
 const ClubDetailPage = () => {
   const navigate = useNavigate();
@@ -45,6 +47,8 @@ const ClubDetailPage = () => {
   const [clubMember, setClubMember] = useState<memberInformation[]>([]);
   const titleLocation = 160;
   const [showHeaderBackgroundColor, setShowHeaderBackgroundColor] = useState(false);
+  const [visitorStatus, setVisitorStatus] = useState('NONE');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const date = new Date();
   const dateString = date.toLocaleDateString();
@@ -93,9 +97,11 @@ const ClubDetailPage = () => {
   }, []);
 
   useEffect(() => {
-    setClubMember(clubMemberMockData);
     setClubDetail(clubDetailMockData);
+    setClubMember(clubMemberMockData);
     getClubDetail();
+    getClubMember();
+    getClubVisitorRelation();
   }, []);
 
   const handleScrollY = () => {
@@ -118,6 +124,32 @@ const ClubDetailPage = () => {
     } catch (error) {
       console.error('클럽 상세 정보 연동 실패', error);
     }
+  };
+
+  const getClubMember = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/members`);
+      console.log(response.data);
+      setClubMember(response.data.members);
+    } catch (error) {
+      console.error('클럽 멤버 불러오기 실패', error);
+    }
+  };
+
+  const getClubVisitorRelation = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/relation`, {
+        withCredentials: true,
+      });
+      console.log(response.data.relation);
+      setVisitorStatus(response.data.relation);
+    } catch (error) {
+      console.error('클럽-방문자 관계 불러오기 실패', error);
+    }
+  };
+
+  const openApplicantModal = () => {
+    setIsModalOpen(true);
   };
 
   const deleteClub = async () => {
@@ -223,7 +255,14 @@ const ClubDetailPage = () => {
         </div>
 
         <div className={styles.buttonSection}>
-          <button className={styles.button}>신청자 목록</button>
+          {visitorStatus === 'HOST' && (
+            <button className={styles.button} onClick={openApplicantModal}>
+              신청자 목록
+            </button>
+          )}
+          {visitorStatus === 'MEMBER' && <button className={styles.button}>채팅하러 가기</button>}
+          {visitorStatus === 'APPLICANT' && <button className={styles.button}>신청 취소</button>}
+          {visitorStatus === 'NONE' && <button className={styles.button}>가입 신청</button>}
         </div>
       </div>
     </div>
