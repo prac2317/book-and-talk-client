@@ -46,7 +46,6 @@ export const pictureBox = style({
   height: '200px',
   backgroundColor: vars.colors.surface,
   objectFit: 'cover',
-  // objectPosition: 'top',
 });
 
 export const titleSection = style({
@@ -236,7 +235,7 @@ export const button = style({
   border: `1px ${vars.colors.border} solid`,
   boxShadow: '0 5px 5px rgba(0, 0, 0, 0.3)',
   fontSize: '17px',
-  fontWeight: vars.font.weight.normal,
+  fontWeight: vars.font.weight.semibold,
   cursor: 'pointer',
 
   selectors: {
@@ -249,4 +248,16 @@ export const button = style({
       transition: '0.3s',
     },
   },
+});
+
+export const overlay = style({
+  position: 'absolute',
+  width: vars.layout.width,
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  top: 0,
+  left: 0,
+  right: 0,
+  // transform: 'translateX(-50%)',
+  transition: 'transform 0.3s ease-out',
+  bottom: 0,
 });

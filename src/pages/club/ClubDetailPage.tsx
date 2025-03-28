@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ClubDetailPage.css';
 import images from '@assets/icons/images';
+import ClubApplicantModal from '../../features/club/application/ClubApplicantModal.tsx';
 
 interface getClubDetailResponse {
   clubId: number;
@@ -265,6 +266,8 @@ const ClubDetailPage = () => {
           {visitorStatus === 'NONE' && <button className={styles.button}>가입 신청</button>}
         </div>
       </div>
+      {isModalOpen && <div className={styles.overlay} />}
+      <ClubApplicantModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import backImage from '@assets/icons/Club-Back.png';
+import backBlackImage from '@assets/icons/Back-Black.png';
 import clubDeleteImage from '@assets/icons/Club-Delete.png';
 import clubUpdateImage from '@assets/icons/Club-Update.png';
 import clubBackgroundImage from '@assets/icons/Club-Background.jpg';
@@ -17,6 +18,7 @@ import xButtonImage from '@assets/icons/X-button.png';
 
 const images = {
   backImage,
+  backBlackImage,
   clubDeleteImage,
   clubUpdateImage,
   clubBackgroundImage,
