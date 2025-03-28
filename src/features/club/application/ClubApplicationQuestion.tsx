@@ -1,9 +1,15 @@
 import * as styles from './ClubApplicationQuestion.css';
 import images from '@assets/icons/images';
+import axios from 'axios';
 
-const ClubApplicationQuestion = () => {
+const ClubApplicationQuestion = ({ clubId, clubName, setQuestionAnswer }) => {
   const question =
     '저희 모임은 책을 읽고 독후감을 작성하는 모임입니다.\n기간동안 잘 참여하실 수 있는 분이시면 좋겠습니다."';
+
+  const handleChange = (value: string) => {
+    setQuestionAnswer(value);
+    console.log(value);
+  };
 
   return (
     <div>
@@ -14,12 +20,15 @@ const ClubApplicationQuestion = () => {
         </div>
         <div className={styles.clubNameBox}>
           <div className={styles.clubNameHeadline}>가입 신청한 북클럽명</div>
-          <div className={styles.clubName}>북토피아 북클럽</div>
+          <div className={styles.clubName}>{clubName}</div>
         </div>
         <div className={styles.questionBox}>
           <div className={styles.question}>{question}</div>
           <input
             className={styles.answerInput}
+            onChange={(e) => {
+              handleChange(e.target.value as string);
+            }}
             placeholder="호스트의 질문에 대한 답변을 작성해주세요."
           />
           <div className={styles.textCount}>0/200</div>

@@ -149,8 +149,19 @@ const ClubDetailPage = () => {
     }
   };
 
+  // 버튼
   const openApplicantModal = () => {
     setIsModalOpen(true);
+  };
+
+  // NONE
+  const goToApplicationForm = () => {
+    navigate(`/clubs/applications`, {
+      state: {
+        clubId: clubId,
+        clubName: clubDetail.name,
+      },
+    });
   };
 
   const deleteClub = async () => {
@@ -263,7 +274,11 @@ const ClubDetailPage = () => {
           )}
           {visitorStatus === 'MEMBER' && <button className={styles.button}>채팅하러 가기</button>}
           {visitorStatus === 'APPLICANT' && <button className={styles.button}>신청 취소</button>}
-          {visitorStatus === 'NONE' && <button className={styles.button}>가입 신청</button>}
+          {visitorStatus === 'NONE' && (
+            <button className={styles.button} onClick={goToApplicationForm}>
+              가입 신청
+            </button>
+          )}
         </div>
       </div>
       {isModalOpen && <div className={styles.overlay} />}
