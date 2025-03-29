@@ -1,19 +1,28 @@
 import * as styles from './ApplicantDetail.css.ts';
 
 interface applicantOverview {
-  applicationId: number;
+  clubApplicationId: number;
   questionAnswer: string;
-  createAt: string;
+  createdAt: string;
+  status: ApplicationStatus;
   memberId: number;
   profileImage: string;
   nickname: string;
 }
 
-const ApplicantDetail = ({
-  selectedApplicantDetail,
-}: {
-  selectedApplicantDetail: applicantOverview;
-}) => {
+enum ApplicationStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  CANCELLED = 'CANCELLED',
+}
+
+enum ProcessType {
+  APPROVE = 'APPROVE',
+  REJECT = 'REJECT',
+}
+
+const ApplicantDetail = ({ selectedApplicantDetail, processApplication }) => {
   return (
     <div className={styles.detailSection}>
       <div className={styles.answerSection}>
@@ -25,8 +34,12 @@ const ApplicantDetail = ({
         <div className={styles.answer}>{selectedApplicantDetail.questionAnswer} </div>
       </div>
       <div className={styles.buttonGroup}>
-        <button className={styles.approveButton}>수락</button>
-        <button className={styles.rejectButton}>거절</button>
+        <button className={styles.approveButton} onClick={() => processApplication('APPROVE')}>
+          수락
+        </button>
+        <button className={styles.rejectButton} onClick={() => processApplication('REJECT')}>
+          거절
+        </button>
       </div>
     </div>
   );

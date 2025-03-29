@@ -105,6 +105,11 @@ const ClubDetailPage = () => {
     getClubVisitorRelation();
   }, []);
 
+  useEffect(() => {
+    // 참가 신청 승인/거절 이후에 참가자 바뀌게 하기
+    getClubMember();
+  }, [isModalOpen]);
+
   const handleScrollY = () => {
     if (window.scrollY > titleLocation) {
       setShowHeaderBackgroundColor(true);

@@ -1,14 +1,21 @@
 import * as styles from './ApplicantList.css';
 
 interface applicantOverview {
-  applicationId: number;
+  clubApplicationId: number;
   questionAnswer: string;
-  createAt: string;
+  createdAt: string;
+  status: ApplicationStatus;
   memberId: number;
   profileImage: string;
   nickname: string;
 }
 
+enum ApplicationStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  CANCELLED = 'CANCELLED',
+}
 const ApplicantList = ({ applicantOverviews, selectApplicant }) => {
   return (
     <div className={styles.applicantSection}>
