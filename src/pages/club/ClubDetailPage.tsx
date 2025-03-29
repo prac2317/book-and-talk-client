@@ -103,7 +103,7 @@ const ClubDetailPage = () => {
     getClubDetail();
     getClubMember();
     getClubVisitorRelation();
-  }, []);
+  }, [isModalOpen]);
 
   useEffect(() => {
     // 참가 신청 승인/거절 이후에 참가자 바뀌게 하기
@@ -157,6 +157,22 @@ const ClubDetailPage = () => {
   // 버튼
   const openApplicantModal = () => {
     setIsModalOpen(true);
+  };
+
+  const cancelApplication = async () => {
+    try {
+      await axios.post(
+        `http://localhost:8080/api/v1/clubs/${clubId}/applications/cancel`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      setVisitorStatus('NONE');
+      console.log('참가 신청 취소 완료');
+    } catch (error) {
+      console.log('참가 신청 취소 실패', error);
+    }
   };
 
   // NONE
@@ -278,7 +294,11 @@ const ClubDetailPage = () => {
             </button>
           )}
           {visitorStatus === 'MEMBER' && <button className={styles.button}>채팅하러 가기</button>}
-          {visitorStatus === 'APPLICANT' && <button className={styles.button}>신청 취소</button>}
+          {visitorStatus === 'APPLICANT' && (
+            <button className={styles.button} onClick={cancelApplication}>
+              신청 취소
+            </button>
+          )}
           {visitorStatus === 'NONE' && (
             <button className={styles.button} onClick={goToApplicationForm}>
               가입 신청
