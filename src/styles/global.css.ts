@@ -11,18 +11,32 @@ export const vars = createGlobalTheme(':root', {
     },
   },
   font: {
-    family: 'Pretender, sans-serif',
+    family: 'Pretendard, sans-serif',
     weight: {
-      thin: '200',
-      normal: '500',
+      extraLight: '200',
+      light: '300',
+      regular: '400',
+      medium: '500',
+      semibold: '600',
+      title: '700',
     },
     size: {
+      headlineMedium: '24px',
+      subTitle: '16px',
+      bodyLarge: '16px',
+      bodyMedium: '14px',
+      bodySmall: '13px',
+
       sm: '15px',
       title: '25px',
     },
   },
   layout: {
     width: '430px',
+    bookCardWith: '380px',
+  },
+  space: {
+    sectionPadding: '25px',
   },
 });
 
@@ -48,46 +62,46 @@ globalStyle('a', {
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-ExtraLight.woff') format('woff')",
+  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
   fontWeight: 100,
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  src: "url('fonts/Pretendard-ExtraLight.woff') format('woff')",
   fontWeight: 200,
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  src: "url('fonts/Pretendard-Light.woff') format('woff')",
   fontWeight: 300,
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  src: "url('fonts/Pretendard-Regular.woff') format('woff')",
   fontWeight: 400,
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  src: "url('fonts/Pretendard-Medium.woff') format('woff')",
   fontWeight: 500,
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  src: "url('fonts/Pretendard-ExtraBold.woff') format('woff')",
   fontWeight: 600,
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  src: "url('fonts/Pretendard-Bold.woff') format('woff')",
   fontWeight: 700,
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  src: "url('fonts/Pretendard-ExtraBold.woff') format('woff')",
   fontWeight: 800,
 });
 
 globalFontFace('Pretendard', {
-  src: "url('fonts/Pretendard-Thin.woff') format('woff')",
+  src: "url('fonts/Pretendard-Black.woff') format('woff')",
   fontWeight: 900,
 });

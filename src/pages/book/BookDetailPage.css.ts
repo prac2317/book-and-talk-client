@@ -13,43 +13,19 @@ export const bookSection = style({
   flexDirection: 'column',
   gap: '25px',
   // height: '500px',
-  padding: '25px 25px',
+  padding: `25px ${vars.space.sectionPadding}`,
   borderBottom: '2px #EEEEEE solid ',
 });
 
-export const bookCard = style({
-  display: 'flex',
-  flexDirection: 'row',
-  gap: '20px',
-  height: '200px',
-  padding: '30px',
-  backgroundColor: vars.colors.surface,
-  borderRadius: '10px',
-  border: `1px ${vars.colors.border} solid`,
-  boxShadow: '0 4px 4px rgba(0, 0, 0, 0.1)',
-});
-
-export const bookThumbnail = style({
-  width: '100px',
-  // height: 'auto',
-});
-
-export const bookOverview = style({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  width: '150px',
-});
-
-export const bookTitle = style({
-  fontSize: vars.font.size.title,
-  fontWeight: vars.font.weight.normal,
-});
-
-export const bookDescriptionCard = style({
+export const bookDescriptionBox = style({
   display: 'flex',
   flexDirection: 'column',
   // height: '150px',
+});
+
+export const bookDescriptionTitle = style({
+  fontSize: vars.font.size.subTitle,
+  fontWeight: vars.font.weight.medium,
 });
 
 export const bookDescription = style({
@@ -59,10 +35,11 @@ export const bookDescription = style({
   borderRadius: '10px',
   border: `1px ${vars.colors.border} solid`,
   boxShadow: '0 4px 4px rgba(0, 0, 0, 0.1)',
-  letterSpacing: '0',
-  lineHeight: '25px',
-  fontSize: '17px',
-  fontWeight: vars.font.weight.thin,
+
+  letterSpacing: '1px',
+  lineHeight: '20px',
+  fontSize: vars.font.size.bodyMedium,
+  fontWeight: vars.font.weight.light,
 
   display: '-webkit-box',
   WebkitLineClamp: '7',

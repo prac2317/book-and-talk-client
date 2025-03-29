@@ -1,11 +1,12 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import AppLayout from './layouts/AppLayout';
-import Home from './pages/home/Home';
+import HomePage from './pages/home/HomePage.tsx';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import ClubDetailPage from './pages/club/ClubDetailPage.tsx';
 import ClubCreatePage from './pages/club/ClubCreatePage.tsx';
 import BookDetailPage from './pages/book/BookDetailPage.tsx';
+import ClubApplicationPage from './pages/club/ClubApplicationPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <HomePage />,
       },
       {
         path: 'login',
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: 'clubs/:clubId',
         element: <ClubDetailPage />,
+      },
+      {
+        path: 'clubs/applications',
+        element: <ClubApplicationPage />,
       },
       {
         path: '*',

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ClubDetailPage.css';
 import images from '@assets/icons/images';
+import ClubApplicantModal from '../../features/club/application/ClubApplicantModal.tsx';
 
 interface getClubDetailResponse {
   clubId: number;
@@ -17,7 +18,7 @@ interface getClubDetailResponse {
   createdAt: string;
 }
 
-interface getClubMemberResponse {
+interface getClubVisitorResponse {
   data: memberInformation[];
 }
 
@@ -26,6 +27,8 @@ interface memberInformation {
   memberId: number;
   nickname: string;
 }
+
+type VisitorStatus = 'HOST' | 'MEMBER' | 'APPLICANT' | 'NONE';
 
 const ClubDetailPage = () => {
   const navigate = useNavigate();
@@ -45,6 +48,8 @@ const ClubDetailPage = () => {
   const [clubMember, setClubMember] = useState<memberInformation[]>([]);
   const titleLocation = 160;
   const [showHeaderBackgroundColor, setShowHeaderBackgroundColor] = useState(false);
+  const [visitorStatus, setVisitorStatus] = useState('NONE');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const date = new Date();
   const dateString = date.toLocaleDateString();
@@ -93,10 +98,17 @@ const ClubDetailPage = () => {
   }, []);
 
   useEffect(() => {
-    setClubMember(clubMemberMockData);
     setClubDetail(clubDetailMockData);
+    setClubMember(clubMemberMockData);
     getClubDetail();
-  }, []);
+    getClubMember();
+    getClubVisitorRelation();
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    // 참가 신청 승인/거절 이후에 참가자 바뀌게 하기
+    getClubMember();
+  }, [isModalOpen]);
 
   const handleScrollY = () => {
     if (window.scrollY > titleLocation) {
@@ -118,6 +130,59 @@ const ClubDetailPage = () => {
     } catch (error) {
       console.error('클럽 상세 정보 연동 실패', error);
     }
+  };
+
+  const getClubMember = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/members`);
+      console.log(response.data);
+      setClubMember(response.data.members);
+    } catch (error) {
+      console.error('클럽 멤버 불러오기 실패', error);
+    }
+  };
+
+  const getClubVisitorRelation = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/relation`, {
+        withCredentials: true,
+      });
+      console.log(response.data.relation);
+      setVisitorStatus(response.data.relation);
+    } catch (error) {
+      console.error('클럽-방문자 관계 불러오기 실패', error);
+    }
+  };
+
+  // 버튼
+  const openApplicantModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const cancelApplication = async () => {
+    try {
+      await axios.post(
+        `http://localhost:8080/api/v1/clubs/${clubId}/applications/cancel`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      setVisitorStatus('NONE');
+      console.log('참가 신청 취소 완료');
+    } catch (error) {
+      console.log('참가 신청 취소 실패', error);
+    }
+  };
+
+  // NONE
+  const goToApplicationForm = () => {
+    navigate(`/clubs/applications`, {
+      state: {
+        clubId: clubId,
+        clubName: clubDetail.name,
+      },
+    });
   };
 
   const deleteClub = async () => {
@@ -162,11 +227,11 @@ const ClubDetailPage = () => {
       <img className={styles.pictureBox} src={images.clubBackgroundImage} alt="background" />
 
       <div className={styles.titleSection}>
-        <h2>{clubDetail.name}</h2>
+        <div>{clubDetail.name}</div>
       </div>
       <div className={styles.contentsContainer}>
         <div className={styles.overviewSection}>
-          <h3>모임 개요</h3>
+          <div className={styles.overviewTitle}>모임 개요</div>
           <div className={styles.overviewBox}>
             <div className={styles.bookTitle}>
               <img src={images.clubBookImage} alt="bookTitle" />
@@ -186,16 +251,16 @@ const ClubDetailPage = () => {
         </div>
 
         <div className={styles.descriptionSection}>
-          <h3>소개글</h3>
+          <div className={styles.descriptionTitle}>소개글</div>
           <div className={styles.descriptionBox}>
             <div>{clubDetail.clubDescription}</div>
           </div>
         </div>
 
         <div className={styles.membersSection}>
-          <h3>
-            참여 멤버 ({clubDetail.currentParticipants} / {clubDetail.maxParticipants})
-          </h3>
+          <div className={styles.memberTitle}>
+            참여 멤버 ({clubDetail.currentParticipant} / {clubDetail.maxParticipants})
+          </div>
           <div className={styles.membersBox}>
             {clubMember.map((member) => (
               <div className={styles.member}>
@@ -218,14 +283,35 @@ const ClubDetailPage = () => {
         </div>
 
         <div className={styles.locationSection}>
-          <h3>지역</h3>
+          <div className={styles.locationTitle}>지역</div>
           <img className={styles.locationImage} src={images.mapExampleImage} alt="map"></img>
         </div>
 
         <div className={styles.buttonSection}>
-          <button className={styles.button}>신청자 목록</button>
+          {visitorStatus === 'HOST' && (
+            <button className={styles.button} onClick={openApplicantModal}>
+              신청자 목록
+            </button>
+          )}
+          {visitorStatus === 'MEMBER' && <button className={styles.button}>채팅하러 가기</button>}
+          {visitorStatus === 'APPLICANT' && (
+            <button className={styles.button} onClick={cancelApplication}>
+              신청 취소
+            </button>
+          )}
+          {visitorStatus === 'NONE' && (
+            <button className={styles.button} onClick={goToApplicationForm}>
+              가입 신청
+            </button>
+          )}
         </div>
       </div>
+      {isModalOpen && <div className={styles.overlay} />}
+      <ClubApplicantModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        clubId={clubId}
+      />
     </div>
   );
 };

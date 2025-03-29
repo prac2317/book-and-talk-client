@@ -46,7 +46,6 @@ export const pictureBox = style({
   height: '200px',
   backgroundColor: vars.colors.surface,
   objectFit: 'cover',
-  // objectPosition: 'top',
 });
 
 export const titleSection = style({
@@ -62,6 +61,10 @@ export const titleSection = style({
   height: '80px',
   width: `calc(${vars.layout.width} - 40px)`,
   backgroundColor: '#474747',
+
+  fontSize: vars.font.size.headlineMedium,
+  fontWeight: vars.font.weight.medium,
+  letterSpacing: '0',
   color: 'white',
 
   borderRadius: '10px',
@@ -75,8 +78,13 @@ export const contentsContainer = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  padding: '45px 20px 0 20px',
+  padding: `45px ${vars.space.sectionPadding} 0 ${vars.space.sectionPadding}`,
   gap: '12px',
+});
+
+export const overviewTitle = style({
+  fontSize: vars.font.size.subTitle,
+  fontWeight: vars.font.weight.medium,
 });
 
 export const overviewSection = style({
@@ -125,25 +133,37 @@ export const descriptionSection = style({
   width: '100%',
 });
 
+export const descriptionTitle = style({
+  fontSize: vars.font.size.subTitle,
+  fontWeight: vars.font.weight.medium,
+});
+
 export const descriptionBox = style({
   backgroundColor: vars.colors.surface,
   marginTop: '10px',
   padding: '20px 20px',
+
+  fontSize: vars.font.size.bodyMedium,
+  fontWeight: vars.font.weight.light,
+  letterSpacing: '0.5px',
+  lineHeight: '17px',
+
   borderRadius: '10px',
   borderStyle: 'solid',
   borderColor: 'rgba(230, 231, 231, 0.7)',
   borderWidth: '0.5px',
   boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
   whiteSpace: 'pre-wrap',
-  fontSize: '15px',
-  fontWeight: 200,
-  letterSpacing: '0.5px',
-  lineHeight: '17px',
 });
 
 export const membersSection = style({
   marginTop: '20px',
   width: '100%',
+});
+
+export const memberTitle = style({
+  fontSize: vars.font.size.subTitle,
+  fontWeight: vars.font.weight.medium,
 });
 
 export const membersBox = style({
@@ -153,6 +173,10 @@ export const membersBox = style({
   marginTop: '10px',
   padding: '20px 20px',
   gap: '5px',
+
+  fontSize: vars.font.size.bodyLarge,
+  fontWeight: vars.font.weight.light,
+
   borderRadius: '10px',
   borderStyle: 'solid',
   borderColor: 'rgba(230, 231, 231, 0.7)',
@@ -181,9 +205,14 @@ export const locationSection = style({
   // width: 'inherit',
 });
 
+export const locationTitle = style({
+  fontSize: vars.font.size.subTitle,
+  fontWeight: vars.font.weight.medium,
+});
+
 export const locationImage = style({
   // height: '200px',
-  width: `calc(${vars.layout.width} - 40px)`,
+  width: `calc(${vars.layout.width} - ${vars.space.sectionPadding} - ${vars.space.sectionPadding})`,
   marginTop: '10px',
   backgroundColor: 'antiquewhite',
   borderRadius: '10px',
@@ -206,7 +235,7 @@ export const button = style({
   border: `1px ${vars.colors.border} solid`,
   boxShadow: '0 5px 5px rgba(0, 0, 0, 0.3)',
   fontSize: '17px',
-  fontWeight: vars.font.weight.normal,
+  fontWeight: vars.font.weight.semibold,
   cursor: 'pointer',
 
   selectors: {
@@ -219,4 +248,16 @@ export const button = style({
       transition: '0.3s',
     },
   },
+});
+
+export const overlay = style({
+  position: 'absolute',
+  width: vars.layout.width,
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  top: 0,
+  left: 0,
+  right: 0,
+  // transform: 'translateX(-50%)',
+  transition: 'transform 0.3s ease-out',
+  bottom: 0,
 });

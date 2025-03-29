@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import * as styles from './BookDetailPage.css';
 import groupImageExampple from '@assets/icons/img.png';
+import BookCard from '@features/book/components/BookCard.tsx';
 
 interface bookDetail {
   thumbnail: string;
@@ -67,7 +68,7 @@ const BookDetailPage = () => {
 
   const createClub = () => {
     navigate('/clubs/create', {
-      state: { bookTitle, isbn13 },
+      state: { bookDetail },
     });
   };
 
@@ -129,17 +130,9 @@ const BookDetailPage = () => {
         </button>
       </div>
       <div className={styles.bookSection}>
-        <div className={styles.bookCard}>
-          <img className={styles.bookThumbnail} src={bookDetail.thumbnail} alt="thumbnail" />
-          <div className={styles.bookOverview}>
-            <div className={styles.bookTitle}>{bookDetail.title}</div>
-            <div>{bookDetail.author}</div>
-            <div>{bookDetail.publishedDate}</div>
-            <div>{bookDetail.publisher}</div>
-          </div>
-        </div>
-        <div className={styles.bookDescriptionCard}>
-          <div>책 소개</div>
+        <BookCard bookDetail={bookDetail} />
+        <div className={styles.bookDescriptionBox}>
+          <div className={styles.bookDescriptionTitle}>책 소개</div>
           <text className={styles.bookDescription}>{bookDetail.description}</text>
         </div>
       </div>

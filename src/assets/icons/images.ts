@@ -1,4 +1,5 @@
 import backImage from '@assets/icons/Club-Back.png';
+import backBlackImage from '@assets/icons/Back-Black.png';
 import clubDeleteImage from '@assets/icons/Club-Delete.png';
 import clubUpdateImage from '@assets/icons/Club-Update.png';
 import clubBackgroundImage from '@assets/icons/Club-Background.jpg';
@@ -10,8 +11,14 @@ import mapExampleImage from '@assets/icons/Map-example.png';
 import memberImage from '@assets/icons/small3.png';
 import memberHostImage from '@assets/icons/Club-Host.png';
 
+import applicationWarning from '@assets/icons/Application_warning.jpg';
+import blurredLogoImage from '@assets/icons/Logo-blurred.png';
+
+import xButtonImage from '@assets/icons/X-button.png';
+
 const images = {
   backImage,
+  backBlackImage,
   clubDeleteImage,
   clubUpdateImage,
   clubBackgroundImage,
@@ -21,6 +28,9 @@ const images = {
   mapExampleImage,
   memberImage,
   memberHostImage,
+  applicationWarning,
+  blurredLogoImage,
+  xButtonImage,
 };
 
 export default images;
