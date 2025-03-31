@@ -1,10 +1,11 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '../styles/global.css.ts';
+import { vars } from '../../styles/global.css';
 
 export const container = style({
   display: 'flex',
   flexDirection: 'column',
-  padding: '25px 25px',
+  height: 'inherit',
+  padding: `25px ${vars.space.sectionPadding} 40px ${vars.space.sectionPadding} `,
 });
 
 export const header = style({
@@ -12,10 +13,18 @@ export const header = style({
   flexDirection: 'row',
   alignItems: 'center',
   height: '50px',
-  border: '1px solid black',
+});
+
+export const xButton = style({
+  width: '35px',
+  background: 'none',
+  border: 'none',
+  padding: 0,
+  cursor: 'pointer',
 });
 
 export const stepSection = style({
+  flex: 1,
   display: 'flex',
   flexDirection: 'column',
 });
