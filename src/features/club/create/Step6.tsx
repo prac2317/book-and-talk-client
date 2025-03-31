@@ -1,10 +1,15 @@
+import * as styles from './Step6.css';
+import images from '../../../assets/icons/images.ts';
+
 const Step6 = ({ goToPrevStep, navigate }) => {
   return (
-    <form>
-      <h3>모임 생성이 완료되었습니다?</h3>
+    <div className={styles.container}>
+      <div className={styles.completeMessage}>모임 생성이 완료되었습니다</div>
+      <img className={styles.logo} src={images.blurredLogoImage} alt="logo" />
       <div>
-        <button onClick={goToPrevStep}>이전으로</button>
+        {/*<button onClick={goToPrevStep}>이전으로</button>*/}
         <button
+          className={styles.primaryButton}
           onClick={() => {
             navigate('/');
           }}
@@ -12,7 +17,7 @@ const Step6 = ({ goToPrevStep, navigate }) => {
           완료
         </button>
       </div>
-    </form>
+    </div>
   );
 };
 

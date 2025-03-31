@@ -5,7 +5,7 @@ import Navigation from '../components/Navigation';
 const AppLayout = () => {
   const location = useLocation();
 
-  const noNavRoutes = ['/clubs/applications'];
+  const noNavRoutes = ['/clubs/applications', '/clubs/create'];
 
   const showNavigation = !noNavRoutes.includes(location.pathname);
 

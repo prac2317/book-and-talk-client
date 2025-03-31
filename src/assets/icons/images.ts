@@ -15,6 +15,7 @@ import applicationWarning from '@assets/icons/Application_warning.jpg';
 import blurredLogoImage from '@assets/icons/Logo-blurred.png';
 
 import xButtonImage from '@assets/icons/X-button.png';
+import lightBulb from '@assets/icons/light-bulb.png';
 
 const images = {
   backImage,
@@ -31,6 +32,7 @@ const images = {
   applicationWarning,
   blurredLogoImage,
   xButtonImage,
+  lightBulb,
 };
 
 export default images;

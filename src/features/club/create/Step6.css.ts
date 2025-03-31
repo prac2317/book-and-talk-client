@@ -5,20 +5,21 @@ export const container = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  alignItems: 'center',
   height: '100%',
   paddingTop: '30px',
-  gap: '40px',
 });
 
-export const cardWrapper = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '15px',
-});
-
-export const title = style({
+export const completeMessage = style({
   fontSize: vars.font.size.headlineMedium,
   fontWeight: vars.font.weight.semibold,
+  width: vars.layout.width,
+  paddingLeft: vars.space.sectionPadding,
+});
+
+export const logo = style({
+  width: '420px',
+  marginTop: '180px',
 });
 
 export const primaryButton = style({

@@ -188,7 +188,7 @@ const ClubDetailPage = () => {
   const deleteClub = async () => {
     try {
       await axios.delete(`http://localhost:8080/api/v1/clubs/${clubId}`);
-      navigate('-1');
+      navigate(-1);
       console.log('삭제 성공');
     } catch (error) {
       console.log('삭제 실패', error);
@@ -208,7 +208,7 @@ const ClubDetailPage = () => {
           <button
             className={styles.iconButton}
             onClick={() => {
-              navigate('-1');
+              navigate(-1);
             }}
           >
             <img src={images.backImage} alt="back" />

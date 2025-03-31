@@ -7,18 +7,26 @@ export const container = style({
   justifyContent: 'space-between',
   height: '100%',
   paddingTop: '30px',
-  gap: '40px',
 });
 
-export const cardWrapper = style({
+export const locationWrapper = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '15px',
+  gap: '40px',
 });
 
 export const title = style({
   fontSize: vars.font.size.headlineMedium,
   fontWeight: vars.font.weight.semibold,
+});
+
+export const locationSearchBar = style({
+  height: '45px',
+  width: 'inherit',
+  padding: '5px 15px',
+  backgroundColor: vars.colors.surface,
+  border: `1px solid ${vars.colors.border}`,
+  borderRadius: '10px',
 });
 
 export const primaryButton = style({
