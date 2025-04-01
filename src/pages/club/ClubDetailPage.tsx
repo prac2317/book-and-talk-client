@@ -28,6 +28,10 @@ interface memberInformation {
   nickname: string;
 }
 
+interface getClubFavoriteResponse {
+  isFavorite: boolean;
+}
+
 type VisitorStatus = 'HOST' | 'MEMBER' | 'APPLICANT' | 'NONE';
 
 const ClubDetailPage = () => {
@@ -50,7 +54,9 @@ const ClubDetailPage = () => {
   const [showHeaderBackgroundColor, setShowHeaderBackgroundColor] = useState(false);
   const [visitorStatus, setVisitorStatus] = useState('NONE');
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isFavorite, setIsFavorite] = useState<getClubFavoriteResponse>({
+    isFavorite: false,
+  });
   const date = new Date();
   const dateString = date.toLocaleDateString();
 
@@ -154,6 +160,17 @@ const ClubDetailPage = () => {
     }
   };
 
+  const getClubFavorite = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/favorites/clubs/${clubId}`, {
+        withCredentials: true,
+      });
+      setIsFavorite(response.data.isFavorite);
+    } catch (error) {
+      console.error('클럽 즐겨찾기 불러오기 실패', error);
+    }
+  };
+
   // 버튼
   const openApplicantModal = () => {
     setIsModalOpen(true);
@@ -215,12 +232,26 @@ const ClubDetailPage = () => {
           </button>
         </div>
         <div className={styles.actionButtons}>
-          <button onClick={deleteClub} className={styles.iconButton}>
-            <img src={images.clubDeleteImage} alt="delete" />
-          </button>
-          <button onClick={onClickDetail} className={styles.iconButton}>
-            <img src={images.clubUpdateImage} alt="update" />
-          </button>
+          {visitorStatus === 'HOST' && (
+            <button onClick={deleteClub} className={styles.iconButton}>
+              <img src={images.clubDeleteImage} alt="delete" />
+            </button>
+          )}
+          {visitorStatus === 'HOST' && (
+            <button onClick={onClickDetail} className={styles.iconButton}>
+              <img src={images.clubUpdateImage} alt="update" />
+            </button>
+          )}
+          {visitorStatus !== 'HOST' && isFavorite.isFavorite && (
+            <button onClick={onClickDetail} className={styles.iconButton}>
+              <img src={images.clubFavoriteFull} alt="favorite" />
+            </button>
+          )}
+          {visitorStatus !== 'HOST' && !isFavorite.isFavorite && (
+            <button onClick={onClickDetail} className={styles.iconButton}>
+              <img src={images.clubFavoriteEmpty} alt="favorite" />
+            </button>
+          )}
         </div>
       </div>
 

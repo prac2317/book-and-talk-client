@@ -7,6 +7,9 @@ import ClubDetailPage from './pages/club/ClubDetailPage.tsx';
 import ClubCreatePage from './pages/club/ClubCreatePage.tsx';
 import BookDetailPage from './pages/book/BookDetailPage.tsx';
 import ClubApplicationPage from './pages/club/ClubApplicationPage.tsx';
+import FavoriteListPage from './pages/favorites/FavoriteListPage.tsx';
+import ChatListPage from './pages/chat/ChatListPage.tsx';
+import ProfilePage from './pages/member/Profile.tsx';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +43,18 @@ const router = createBrowserRouter([
       {
         path: 'clubs/applications',
         element: <ClubApplicationPage />,
+      },
+      {
+        path: 'favorites',
+        element: <FavoriteListPage />,
+      },
+      {
+        path: 'chat',
+        element: <ChatListPage />,
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage />,
       },
       {
         path: '*',
