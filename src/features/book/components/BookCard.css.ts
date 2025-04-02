@@ -13,11 +13,11 @@ export const bookCard = style({
   borderRadius: '10px',
   border: `1px ${vars.colors.border} solid`,
   boxShadow: '0 4px 4px rgba(0, 0, 0, 0.1)',
+
 });
 
 export const bookThumbnail = style({
   width: '100px',
-  // height: 'auto',
 });
 
 export const bookOverview = style({
@@ -41,4 +41,16 @@ export const author = style({
 export const publisher = style({
   fontSize: vars.font.size.bodyMedium,
   fontWeight: vars.font.weight.light,
+});
+
+export const clickable = style({
+  cursor: 'pointer',
+  transition: 'background-color 0.2s ease-in-out',
+
+  selectors: {
+    '&:hover': {
+      backgroundColor: '#F0F0F0',
+      boxShadow: '0 6px 10px rgba(0, 0, 0, 0.15)',
+    },
+  },
 });

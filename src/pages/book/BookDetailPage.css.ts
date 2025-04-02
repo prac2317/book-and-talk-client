@@ -70,7 +70,7 @@ export const clubCreateButton = style({
   border: `1px ${vars.colors.border} solid`,
   boxShadow: '0 5px 5px rgba(0, 0, 0, 0.3)',
   fontSize: '17px',
-  fontWeight: vars.font.weight.normal,
+  fontWeight: vars.font.weight.semibold,
   cursor: 'pointer',
 
   selectors: {
@@ -88,6 +88,7 @@ export const clubCreateButton = style({
 export const clubContainer = style({
   display: 'flex',
   flexDirection: 'column',
+  gap: "20px",  
   paddingTop: '25px',
 });
 

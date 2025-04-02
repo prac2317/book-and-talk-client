@@ -109,6 +109,7 @@ const ClubDetailPage = () => {
     getClubDetail();
     getClubMember();
     getClubVisitorRelation();
+    getClubFavorite();
   }, [isModalOpen]);
 
   useEffect(() => {
@@ -242,16 +243,20 @@ const ClubDetailPage = () => {
               <img src={images.clubUpdateImage} alt="update" />
             </button>
           )}
-          {visitorStatus !== 'HOST' && isFavorite.isFavorite && (
-            <button onClick={onClickDetail} className={styles.iconButton}>
+          {
+            visitorStatus !== 'HOST' && isFavorite.isFavorite && (
+              <button onClick={onClickDetail} className={styles.iconButton}>
               <img src={images.clubFavoriteFull} alt="favorite" />
             </button>
-          )}
-          {visitorStatus !== 'HOST' && !isFavorite.isFavorite && (
-            <button onClick={onClickDetail} className={styles.iconButton}>
+            )
+          }
+          {
+            visitorStatus != 'HOST' && !isFavorite.isFavorite && (
+              <button onClick={onClickDetail} className={styles.iconButton}>
               <img src={images.clubFavoriteEmpty} alt="favorite" />
             </button>
-          )}
+            )
+          }
         </div>
       </div>
 

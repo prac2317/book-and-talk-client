@@ -1,5 +1,4 @@
 import * as styles from './Step1.css';
-import { useEffect } from 'react';
 import BookCard from '@features/book/components/BookCard.tsx';
 
 interface bookDetail {
@@ -17,7 +16,7 @@ const Step1 = ({ bookDetail, goToNextStep }) => {
     <div className={styles.container}>
       <div className={styles.cardWrapper}>
         <h1 className={styles.title}>이 책의 모임을 만들까요?</h1>
-        <BookCard bookDetail={bookDetail} />
+        <BookCard isbn13={bookDetail.isbn13} />
       </div>
       <div>
         <button className={styles.primaryButton} onClick={goToNextStep}>
