@@ -20,7 +20,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": ["src/assets/*"],
+      "@api/*": ["src/api/*"],
+      "@features/*": ["src/features/*"]
+    }
   },
   "include": ["src"]
 }
