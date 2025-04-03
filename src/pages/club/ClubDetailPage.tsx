@@ -167,8 +167,9 @@ const ClubDetailPage = () => {
         withCredentials: true,
       });
       setIsFavorite(response.data.isFavorite);
+      console.log("클럽 즐겨찾기 여부 불러오기 성공", response.data.isFavorite);
     } catch (error) {
-      console.error('클럽 즐겨찾기 불러오기 실패', error);
+      console.error('클럽 즐겨찾기 여부 불러오기 실패', error);
     }
   };
 
@@ -217,6 +218,28 @@ const ClubDetailPage = () => {
     console.log(clubDetail);
   };
 
+  const postFavorite = async () => {
+    try {
+      await axios.post(`http://localhost:8080/api/v1/favorites/clubs`,{
+        clubId,
+      },{
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.error('클럽 즐겨찾기 추가 실패', error);
+    }
+  };
+
+  const deleteFavorite = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/favorites/clubs/${clubId}`, {
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.error('클럽 즐겨찾기 삭제 실패', error);
+    }
+  };  
+
   return (
     <div className={styles.container}>
       <div
@@ -244,15 +267,15 @@ const ClubDetailPage = () => {
             </button>
           )}
           {
-            visitorStatus !== 'HOST' && isFavorite.isFavorite && (
-              <button onClick={onClickDetail} className={styles.iconButton}>
+            visitorStatus !== 'HOST' && (
+              <button onClick={deleteFavorite} className={styles.iconButton}>
               <img src={images.clubFavoriteFull} alt="favorite" />
             </button>
             )
           }
           {
-            visitorStatus != 'HOST' && !isFavorite.isFavorite && (
-              <button onClick={onClickDetail} className={styles.iconButton}>
+            visitorStatus != 'HOST' && (
+              <button onClick={postFavorite} className={styles.iconButton}>
               <img src={images.clubFavoriteEmpty} alt="favorite" />
             </button>
             )

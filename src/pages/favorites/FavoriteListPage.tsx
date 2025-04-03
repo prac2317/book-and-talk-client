@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as styles from './FavoriteListPage.css';
 import ClubCard from '@features/club/components/ClubCard';
 import BookCard from '@features/book/components/BookCard';
-
-type TabType = 'books' | 'clubs';
+import axios from 'axios';
+type TabType = 'book' | 'club';
 
 interface Club {
   clubId: number;
@@ -21,13 +21,7 @@ interface ClubResponse {
 }
 
 interface Book {
-  thumbnail: string;
-  title: string;
-  author: string;
-  publishedDate: string;
-  publisher: string;
   isbn13: string;
-  description: string;
 }
 
 interface BookResponse {
@@ -72,37 +66,38 @@ const mockBooks: BookResponse = {
   totalCount: 3,
   data: [
     {
-      thumbnail: "https://example.com/book1.jpg",
-      title: "아주 작은 습관의 힘",
-      author: "제임스 클리어",
-      publishedDate: "2020-01-01",
-      publisher: "비즈니스북스",
       isbn13: "9791162540640",
-      description: "작은 습관의 놀라운 힘을 다룬 책"
     },
     {
-      thumbnail: "https://example.com/book2.jpg",
-      title: "미움받을 용기",
-      author: "기시미 이치로",
-      publishedDate: "2019-03-15",
-      publisher: "인플루엔셜",
       isbn13: "9788996991342",
-      description: "아들러 심리학을 통한 행복한 삶의 방법"
     },
     {
-      thumbnail: "https://example.com/book3.jpg",
-      title: "부자 아빠 가난한 아빠",
-      author: "로버트 기요사키",
-      publishedDate: "2018-06-20",
-      publisher: "민음인",
       isbn13: "9788982732362",
-      description: "부자들의 돈 관리 철학"
     }
   ]
 };
 
 const FavoriteListPage = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('books');
+
+  const [activeTab, setActiveTab] = useState<TabType>('book');
+  const [bookList, setBookList] = useState<Book[]>([]);
+  const [clubList, setClubList] = useState<Club[]>([]);
+
+  useEffect(() => {
+    getClubFavoriteList();
+  }, [activeTab]);
+
+  const getClubFavoriteList = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/api/v1/favorites/clubs', {
+            withCredentials: true,
+          });
+          console.log('클럽 즐겨찾기 불러오기 성공', response.data);
+          setClubList(response.data.data);
+    } catch (error) {
+        console.error('클럽 즐겨찾기 불러오기 실패', error);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -110,21 +105,21 @@ const FavoriteListPage = () => {
       
       <div className={styles.tabSection}>
         <button 
-          className={`${styles.tab} ${activeTab === 'books' ? styles.activeTab : ''}`}
-          onClick={() => setActiveTab('books')}
+          className={`${styles.tab} ${activeTab === 'book' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('book')}
         >
           책
         </button>
         <button 
-          className={`${styles.tab} ${activeTab === 'clubs' ? styles.activeTab : ''}`}
-          onClick={() => setActiveTab('clubs')}
+          className={`${styles.tab} ${activeTab === 'club' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('club')}
         >
           모임
         </button>
       </div>
 
       <div className={styles.contentSection}>
-        {activeTab === 'books' ? (
+        {activeTab === 'book' ? (
           <div className={styles.bookContainer}>
             {mockBooks.data.map((book) => (
               <BookCard
@@ -135,7 +130,7 @@ const FavoriteListPage = () => {
           </div>
         ) : (
           <div className={styles.clubContainer}>
-            {mockClubs.data.map((club) => (
+            {clubList.map((club) => (
               <ClubCard
                 key={club.clubId}
                 clubId={club.clubId}

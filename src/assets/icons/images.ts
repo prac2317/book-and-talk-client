@@ -9,6 +9,9 @@ import clubMemberImage from '@assets/icons/Club-Member.jpg';
 import clubFavoriteFull from '@assets/icons/Club-Heart-Full.png';
 import clubFavoriteEmpty from '@assets/icons/Club-Heart-Empty.png';
 import mapExampleImage from '@assets/icons/Map-example.png';
+
+import bookFavoriteFull from '@assets/icons/Book-Favorite-Full.jpg';
+
 // 프로필 사진 추가하면 삭제
 import memberImage from '@assets/icons/small3.png';
 import memberHostImage from '@assets/icons/Club-Host.png';
@@ -42,6 +45,7 @@ const images = {
   clubFavoriteFull,
   clubFavoriteEmpty,
   mapExampleImage,
+  bookFavoriteFull,
   memberImage,
   memberHostImage,
   applicationWarning,

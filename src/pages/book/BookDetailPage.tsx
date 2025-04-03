@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import * as styles from './BookDetailPage.css';
 import BookCard from '@features/book/components/BookCard.tsx';
 import ClubCard from '@features/club/components/ClubCard';
+import images from '@assets/icons/images';
 
 interface bookDetail {
   thumbnail: string;
@@ -35,6 +36,7 @@ const BookDetailPage = () => {
   const { isbn13 } = useParams();
   const [clubCount, setClubCount] = useState(0);
   const [clubList, setClubList] = useState<clubOverview[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [bookDetail, setBookDetail] = useState<bookDetail>({
     thumbnail: '',
     title: '',
@@ -48,6 +50,7 @@ const BookDetailPage = () => {
   useEffect(() => {
     fetchBookDetail();
     getClubList();
+    getBookFavorite();
   }, [isbn13]);
 
   const createClub = () => {
@@ -98,6 +101,44 @@ const BookDetailPage = () => {
     }
   };
 
+  const getBookFavorite = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/favorites/books/${isbn13}`, {
+        withCredentials: true,
+      });
+      setIsFavorite(response.data.isFavorite);
+    } catch (error) {
+      console.error('책 즐겨찾기 여부 불러오기 실패', error);
+    }
+  };
+
+  const postFavorite = async () => {
+    try {
+      await axios.post(`http://localhost:8080/api/v1/favorites/books`, {
+        isbn13,
+      },{
+        withCredentials: true,
+      });
+      setIsFavorite(true);
+      console.log('책 즐겨찾기 추가 성공');
+    } catch (error) {
+      console.error('책 즐겨찾기 추가 실패', error);
+    }
+  };
+
+  const deleteFavorite = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/favorites/books/${isbn13}`, {
+        withCredentials: true,
+      });
+      setIsFavorite(false);
+      console.log('책 즐겨찾기 삭제 성공');
+    } catch (error) {
+      console.error('책 즐겨찾기 삭제 실패', error);
+    }
+  };
+
+
   return (
     <>
       <div className={styles.header}>
@@ -108,6 +149,7 @@ const BookDetailPage = () => {
         >
           back
         </button>
+          <img onClick={isFavorite ? deleteFavorite : postFavorite} src={images.bookFavoriteFull} alt="책 즐겨찾기" />
       </div>
       <div className={styles.bookSection}>
         <BookCard isbn13={isbn13} isDetailPage={true} />
