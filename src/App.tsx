@@ -10,7 +10,7 @@ import ClubApplicationPage from './pages/club/ClubApplicationPage.tsx';
 import FavoriteListPage from './pages/favorites/FavoriteListPage.tsx';
 import ChatListPage from './pages/chat/ChatListPage.tsx';
 import ProfilePage from './pages/member/Profile.tsx';
-
+import ChatRoomPage from './pages/chat/ChatRoomPage.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -51,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: 'chat',
         element: <ChatListPage />,
+      },
+      {
+        path: 'chat/:roomId',
+        element: <ChatRoomPage />,
       },
       {
         path: 'profile',
