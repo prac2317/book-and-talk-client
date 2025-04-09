@@ -21,6 +21,10 @@ interface getClubListResponse {
   data: clubOverview[];
 }
 
+interface getBookFavoriteResponse {
+  isFavorite: boolean;
+}
+
 interface clubOverview {
   clubId: number;
   bookTitle: string;
@@ -50,13 +54,54 @@ const BookDetailPage = () => {
   useEffect(() => {
     fetchBookDetail();
     getClubList();
-    getBookFavorite();
   }, [isbn13]);
+
+  useEffect(() => {
+    getBookFavorite();
+  }, [isFavorite]);
 
   const createClub = () => {
     navigate('/clubs/create', {
       state: { bookDetail },
     });
+  };
+  const getBookFavorite = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/favorites/books/relation`,  {
+        params: { isbn13 },
+        withCredentials: true,
+      });
+      setIsFavorite(response.data.isFavorite);
+      console.log('책 즐겨찾기 여부 불러오기 성공', response.data);
+    } catch (error) {
+      console.error('책 즐겨찾기 여부 불러오기 실패', error);
+    }
+  };
+
+  const postFavorite = async () => {
+    try {
+      await axios.post(`http://localhost:8080/api/v1/favorites/books`, {
+        isbn13,
+      },{
+        withCredentials: true,
+      });
+      setIsFavorite(true);
+      console.log('책 즐겨찾기 추가 성공');
+    } catch (error) {
+      console.error('책 즐겨찾기 추가 실패', error);
+    }
+  };
+
+  const deleteFavorite = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/favorites/books/${isbn13}`, {
+        withCredentials: true,
+      });
+      setIsFavorite(false);
+      console.log('책 즐겨찾기 삭제 성공');
+    } catch (error) {
+      console.error('책 즐겨찾기 삭제 실패', error);
+    }
   };
 
   // Todo: 알라딘 검색으로 바꾸기
@@ -101,44 +146,6 @@ const BookDetailPage = () => {
     }
   };
 
-  const getBookFavorite = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/v1/favorites/books/${isbn13}`, {
-        withCredentials: true,
-      });
-      setIsFavorite(response.data.isFavorite);
-    } catch (error) {
-      console.error('책 즐겨찾기 여부 불러오기 실패', error);
-    }
-  };
-
-  const postFavorite = async () => {
-    try {
-      await axios.post(`http://localhost:8080/api/v1/favorites/books`, {
-        isbn13,
-      },{
-        withCredentials: true,
-      });
-      setIsFavorite(true);
-      console.log('책 즐겨찾기 추가 성공');
-    } catch (error) {
-      console.error('책 즐겨찾기 추가 실패', error);
-    }
-  };
-
-  const deleteFavorite = async () => {
-    try {
-      await axios.delete(`http://localhost:8080/api/v1/favorites/books/${isbn13}`, {
-        withCredentials: true,
-      });
-      setIsFavorite(false);
-      console.log('책 즐겨찾기 삭제 성공');
-    } catch (error) {
-      console.error('책 즐겨찾기 삭제 실패', error);
-    }
-  };
-
-
   return (
     <>
       <div className={styles.header}>
@@ -149,7 +156,15 @@ const BookDetailPage = () => {
         >
           back
         </button>
-          <img onClick={isFavorite ? deleteFavorite : postFavorite} src={images.bookFavoriteFull} alt="책 즐겨찾기" />
+        {isFavorite ? (
+          <div  onClick={deleteFavorite}>
+            <images.BookFavoriteFull className={styles.bookFavoriteIcon}/>
+          </div>
+        ) : (
+          <div  onClick={postFavorite}>
+            <images.BookFavoriteEmpty className={styles.bookFavoriteIcon} />
+          </div>
+        )}
       </div>
       <div className={styles.bookSection}>
         <BookCard isbn13={isbn13} isDetailPage={true} />

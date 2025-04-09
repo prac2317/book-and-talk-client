@@ -25,6 +25,7 @@ const BookCard = ({ isbn13, isDetailPage = false }: BookCardProps) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    console.log('책 카드 렌더링', isbn13);
     const loadBookDetail = async () => {
       try {
         await fetchBookDetail();

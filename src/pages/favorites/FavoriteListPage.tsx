@@ -80,11 +80,12 @@ const mockBooks: BookResponse = {
 const FavoriteListPage = () => {
 
   const [activeTab, setActiveTab] = useState<TabType>('book');
-  const [bookList, setBookList] = useState<Book[]>([]);
+  const [bookList, setBookList] = useState<string[]>([]);
   const [clubList, setClubList] = useState<Club[]>([]);
 
   useEffect(() => {
     getClubFavoriteList();
+    getBookFavoriteList();
   }, [activeTab]);
 
   const getClubFavoriteList = async () => {
@@ -96,6 +97,19 @@ const FavoriteListPage = () => {
           setClubList(response.data.data);
     } catch (error) {
         console.error('클럽 즐겨찾기 불러오기 실패', error);
+    }
+  };
+
+  const getBookFavoriteList = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/v1/favorites/books', {
+        withCredentials: true,
+      });
+      console.log('책 즐겨찾기 불러오기 성공', response.data);
+      setBookList(response.data.data);
+      console.log(response.data.data);
+    } catch (error) {
+      console.error('책 즐겨찾기 불러오기 실패', error);
     }
   };
 
@@ -121,10 +135,11 @@ const FavoriteListPage = () => {
       <div className={styles.contentSection}>
         {activeTab === 'book' ? (
           <div className={styles.bookContainer}>
-            {mockBooks.data.map((book) => (
+            {bookList.map((book) => (
               <BookCard
-                key={book.isbn13}
-                isbn13={book.isbn13}
+                key = {book}
+                isbn13={book}
+                isDetailPage={true}
               />
             ))}
           </div>

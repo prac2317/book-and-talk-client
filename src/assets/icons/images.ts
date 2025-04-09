@@ -10,7 +10,9 @@ import clubFavoriteFull from '@assets/icons/Club-Heart-Full.png';
 import clubFavoriteEmpty from '@assets/icons/Club-Heart-Empty.png';
 import mapExampleImage from '@assets/icons/Map-example.png';
 
-import bookFavoriteFull from '@assets/icons/Book-Favorite-Full.jpg';
+// import bookFavoriteFull from '@assets/icons/Book-Favorite-Full.jpg';
+import BookFavoriteFull from '@assets/icons/Book-Favorite-Full.tsx';
+import BookFavoriteEmpty from '@assets/icons/Book-Favorite-Empty.tsx';
 
 // 프로필 사진 추가하면 삭제
 import memberImage from '@assets/icons/small3.png';
@@ -45,7 +47,8 @@ const images = {
   clubFavoriteFull,
   clubFavoriteEmpty,
   mapExampleImage,
-  bookFavoriteFull,
+  BookFavoriteFull,
+  BookFavoriteEmpty,
   memberImage,
   memberHostImage,
   applicationWarning,

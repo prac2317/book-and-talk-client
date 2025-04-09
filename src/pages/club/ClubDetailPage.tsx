@@ -54,9 +54,8 @@ const ClubDetailPage = () => {
   const [showHeaderBackgroundColor, setShowHeaderBackgroundColor] = useState(false);
   const [visitorStatus, setVisitorStatus] = useState('NONE');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFavorite, setIsFavorite] = useState<getClubFavoriteResponse>({
-    isFavorite: false,
-  });
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+
   const date = new Date();
   const dateString = date.toLocaleDateString();
 
@@ -109,8 +108,11 @@ const ClubDetailPage = () => {
     getClubDetail();
     getClubMember();
     getClubVisitorRelation();
-    getClubFavorite();
   }, [isModalOpen]);
+  
+  useEffect(() => {
+    getClubFavorite();
+  }, [isFavorite]);
 
   useEffect(() => {
     // 참가 신청 승인/거절 이후에 참가자 바뀌게 하기
@@ -141,9 +143,9 @@ const ClubDetailPage = () => {
 
   const getClubMember = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/members`);
+      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/member`);
       console.log(response.data);
-      setClubMember(response.data.members);
+      setClubMember(response.data.data);
     } catch (error) {
       console.error('클럽 멤버 불러오기 실패', error);
     }
@@ -158,18 +160,6 @@ const ClubDetailPage = () => {
       setVisitorStatus(response.data.relation);
     } catch (error) {
       console.error('클럽-방문자 관계 불러오기 실패', error);
-    }
-  };
-
-  const getClubFavorite = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/v1/favorites/clubs/${clubId}`, {
-        withCredentials: true,
-      });
-      setIsFavorite(response.data.isFavorite);
-      console.log("클럽 즐겨찾기 여부 불러오기 성공", response.data.isFavorite);
-    } catch (error) {
-      console.error('클럽 즐겨찾기 여부 불러오기 실패', error);
     }
   };
 
@@ -218,6 +208,21 @@ const ClubDetailPage = () => {
     console.log(clubDetail);
   };
 
+
+  const getClubFavorite = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/favorites/clubs/relation`, {
+        params: { clubId },
+        withCredentials: true,
+      });
+      setIsFavorite(response.data.isFavorite);
+      console.log("클럽 즐겨찾기 여부 불러오기 성공", response.data.isFavorite);
+    } catch (error) {
+      console.error('클럽 즐겨찾기 여부 불러오기 실패', error);
+    }
+  };
+
+
   const postFavorite = async () => {
     try {
       await axios.post(`http://localhost:8080/api/v1/favorites/clubs`,{
@@ -225,6 +230,8 @@ const ClubDetailPage = () => {
       },{
         withCredentials: true,
       });
+      setIsFavorite(true);
+      console.log('클럽 즐겨찾기 추가 성공');
     } catch (error) {
       console.error('클럽 즐겨찾기 추가 실패', error);
     }
@@ -235,6 +242,8 @@ const ClubDetailPage = () => {
       await axios.delete(`http://localhost:8080/api/v1/favorites/clubs/${clubId}`, {
         withCredentials: true,
       });
+      setIsFavorite(false);
+      console.log('클럽 즐겨찾기 삭제 성공');
     } catch (error) {
       console.error('클럽 즐겨찾기 삭제 실패', error);
     }
@@ -267,14 +276,14 @@ const ClubDetailPage = () => {
             </button>
           )}
           {
-            visitorStatus !== 'HOST' && (
+            visitorStatus !== 'HOST' && isFavorite && (
               <button onClick={deleteFavorite} className={styles.iconButton}>
               <img src={images.clubFavoriteFull} alt="favorite" />
             </button>
             )
           }
           {
-            visitorStatus != 'HOST' && (
+            visitorStatus != 'HOST' && !isFavorite && (
               <button onClick={postFavorite} className={styles.iconButton}>
               <img src={images.clubFavoriteEmpty} alt="favorite" />
             </button>

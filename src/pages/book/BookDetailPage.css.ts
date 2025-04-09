@@ -4,8 +4,17 @@ import { vars } from '../../styles/global.css.ts';
 export const header = style({
   display: 'flex',
   flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   height: '50px',
-  paddingLeft: '25px',
+  padding: `10px ${vars.space.sectionPadding} 0 ${vars.space.sectionPadding}`,
+});
+
+export const bookFavoriteIcon = style({
+  width: '35px',
+  height: '35px',
+  cursor: 'pointer',
+  color: vars.colors.primary,
 });
 
 export const bookSection = style({
@@ -13,7 +22,7 @@ export const bookSection = style({
   flexDirection: 'column',
   gap: '25px',
   // height: '500px',
-  padding: `25px ${vars.space.sectionPadding}`,
+  padding: `10px ${vars.space.sectionPadding}`,
   borderBottom: '2px #EEEEEE solid ',
 });
 
