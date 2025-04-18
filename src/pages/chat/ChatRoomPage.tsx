@@ -1,71 +1,57 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import * as styles from './ChatRoomPage.css';
-import { format } from 'date-fns';  
-import { ko } from 'date-fns/locale';
 import { Client } from '@stomp/stompjs';
 
-const CURRENT_USER_ID = '1'; // 현재 로그인한 사용자 ID
-
 interface ChatMessage {
-  id: string;
-  roomId: string;
+  id?: string;
+  chatRoomId: string;
   senderId: string;
   content: string;
-  timestamp: string;
+  createdAt: string;
 }
 
-interface ChatUser {
-  id: string;
-  name: string;
-  profileImage?: string;
-} 
-
+const CURRENT_USER_ID = '1';
 
 const ChatRoomPage = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [connected, setConnected] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const stomp = new Client({
+  const stomp = useRef(new Client({
     brokerURL: 'ws://localhost:8080/portfolio',
-
     reconnectDelay: 5000,
-
     onConnect: () => {
         console.log('WebSocket connected');
-        setConnected(true);
         subscribe(`/topic/chat`, (message: ChatMessage) => {
-          console.log(message);
           setMessages((prev) => [...prev, message]);
         });
-    }
-  });
-
-
+    },
+  }));
+  
+  useEffect(() => {
+    console.log("messages", messages);
+  }, [messages]);
 
   useEffect(() => {
     if (!roomId) return;
 
-    stomp.activate();
+    stomp.current.activate();
 
     return () => {
-      stomp.deactivate();
+      stomp.current.deactivate();
   };
   }, [roomId]);
 
-  const subscribe = (destination: string, callback: (message: ChatMessage) => void) => {
-    stomp.subscribe(destination, (message: any) => {
-      console.log("subscribe");
-      callback(message);
+  const subscribe = ((destination: string, callback: (message: ChatMessage) => void) => {
+    stomp.current.subscribe(destination, (message: any) => {
+      callback(JSON.parse(message.body));
     });
-  };
+  });
 
   const publish = (destination: string, message: string) => {
-    console.log(message);
-    stomp.publish({
+    stomp.current.publish({
       destination,
       body: message,
     });
@@ -80,20 +66,18 @@ const ChatRoomPage = () => {
   }, [messages]);
 
   const handleSendMessage = () => {
-    if (!newMessage.trim() || !roomId || !connected || !stomp.connected) {
+    if (!newMessage.trim() || !roomId || !stomp.current.connected) {
       console.log("메세지를 보낼 수 없습니다.");
       return;
     }
 
     const newMsg: ChatMessage = {
-      id: Date.now().toString(),
-      roomId,
+      chatRoomId: roomId,
       senderId: CURRENT_USER_ID,
       content: newMessage,
-      timestamp: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
     };
 
-    console.log(newMsg);
     // WebSocket으로 메시지 전송
     publish('/app/chat', JSON.stringify(newMsg));
     
@@ -105,7 +89,6 @@ const ChatRoomPage = () => {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      console.log('Enter key pressed');
       handleSendMessage();
     }
   };
@@ -117,34 +100,34 @@ const ChatRoomPage = () => {
       </div>
 
       <div className={styles.messageList}>
-        {/* {messages.map((message) => {
+        {messages.map((message) => {
           const isMyMessage = message.senderId === CURRENT_USER_ID;
-          const sender = mockUsers.find((user) => user.id === message.senderId);
+          // const sender = mockUsers.find((user) => user.id === message.senderId);
 
           return (
             <div
-              key={message.id}
+              key={message.createdAt}
               className={isMyMessage ? styles.myMessage : styles.messageItem}
             >
               <img
-                src={sender?.profileImage}
-                alt={sender?.name}
+                src={message.senderId}
+                alt={message.senderId}
                 className={styles.profileImage}
               />
               <div className={styles.messageContent}>
                 {!isMyMessage && (
-                  <span className={styles.messageSender}>{sender?.name}</span>
+                  <span className={styles.messageSender}>{message.senderId}</span>
                 )}
                 <div className={isMyMessage ? styles.myMessageText : styles.messageText}>
                   {message.content}
                 </div>
-                <span className={styles.messageTime}>
+                {/* <span className={styles.messageTime}>
                   {format(new Date(message.timestamp), 'HH:mm', { locale: ko })}
-                </span>
+                </span> */}
               </div>
             </div>
           );
-        })} */}
+        })}
         <div ref={messagesEndRef} />
       </div>
 
@@ -152,7 +135,12 @@ const ChatRoomPage = () => {
         <textarea
           className={styles.input}
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={
+            (e) => 
+              {
+              setNewMessage(e.target.value)
+              }
+            }
           onKeyPress={handleKeyPress}
           placeholder="메시지를 입력하세요..."
           rows={1}
