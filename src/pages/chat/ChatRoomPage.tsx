@@ -2,13 +2,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import * as styles from './ChatRoomPage.css';
 import { Client } from '@stomp/stompjs';
+import axios from 'axios';
+import images from '@assets/icons/images.ts';
+import { format } from 'date-fns';
 
 interface ChatMessage {
-  id?: string;
-  chatRoomId: string;
+  id: string;
   senderId: string;
   content: string;
+  chatRoomId: string;
   createdAt: string;
+}
+
+interface FetchMessagesResponse {
+  data: ChatMessage[];
+}
+
+interface ParticipantInfo {
+  memberId: string;
+  nickname: string;
+  imageUrl: string;
+  isRoomHost: boolean;
+}
+
+interface FetchParticipantsResponse {
+  data: ParticipantInfo[];
 }
 
 const CURRENT_USER_ID = '1';
@@ -18,37 +36,43 @@ const ChatRoomPage = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [participants, setParticipants] = useState<ParticipantInfo[]>([]);
 
-  const stomp = useRef(new Client({
-    brokerURL: 'ws://localhost:8080/portfolio',
-    reconnectDelay: 5000,
-    onConnect: () => {
+  const stomp = useRef(
+    new Client({
+      brokerURL: 'ws://localhost:8080/portfolio',
+      reconnectDelay: 5000,
+      onConnect: () => {
         console.log('WebSocket connected');
         subscribe(`/topic/chat`, (message: ChatMessage) => {
           setMessages((prev) => [...prev, message]);
         });
-    },
-  }));
-  
+      },
+    }),
+  );
+
   useEffect(() => {
-    console.log("messages", messages);
-  }, [messages]);
+    console.log('messages', messages);
+  }, [roomId]);
 
   useEffect(() => {
     if (!roomId) return;
 
+    // Todo 순서 정리하기
+    fetchParticipants();
+    fetchMessages();
     stomp.current.activate();
 
     return () => {
       stomp.current.deactivate();
-  };
+    };
   }, [roomId]);
 
-  const subscribe = ((destination: string, callback: (message: ChatMessage) => void) => {
+  const subscribe = (destination: string, callback: (message: ChatMessage) => void) => {
     stomp.current.subscribe(destination, (message: any) => {
       callback(JSON.parse(message.body));
     });
-  });
+  };
 
   const publish = (destination: string, message: string) => {
     stomp.current.publish({
@@ -65,9 +89,33 @@ const ChatRoomPage = () => {
     scrollToBottom();
   }, [messages]);
 
+  const fetchParticipants = async () => {
+    try {
+      const response = await axios.get<FetchParticipantsResponse>(
+        `http://localhost:8080/api/v1/chat/chatrooms/${roomId}/participants`,
+      );
+      console.log(response.data.data);
+      setParticipants(response.data.data);
+    } catch (e) {
+      console.error('참가자를 부르는 데 실패했습니다.', e);
+    }
+  };
+
+  const fetchMessages = async () => {
+    try {
+      const response = await axios.get<FetchMessagesResponse>(
+        `http://localhost:8080/api/v1/chat/chatrooms/${roomId}/messages`,
+      );
+      console.log(response.data.data);
+      setMessages(response.data.data);
+    } catch (e) {
+      console.error('참가자를 부르는 데 실패했습니다.', e);
+    }
+  };
+
   const handleSendMessage = () => {
     if (!newMessage.trim() || !roomId || !stomp.current.connected) {
-      console.log("메세지를 보낼 수 없습니다.");
+      console.log('메세지를 보낼 수 없습니다.');
       return;
     }
 
@@ -80,7 +128,7 @@ const ChatRoomPage = () => {
 
     // WebSocket으로 메시지 전송
     publish('/app/chat', JSON.stringify(newMsg));
-    
+
     // 백엔드 연동 전까지는 직접 메시지 추가
     // setMessages((prev) => [...prev, newMsg]);
     setNewMessage('');
@@ -102,7 +150,9 @@ const ChatRoomPage = () => {
       <div className={styles.messageList}>
         {messages.map((message) => {
           const isMyMessage = message.senderId === CURRENT_USER_ID;
-          // const sender = mockUsers.find((user) => user.id === message.senderId);
+          const sender = participants.find(
+            (participant) => participant.memberId === message.senderId,
+          );
 
           return (
             <div
@@ -110,20 +160,18 @@ const ChatRoomPage = () => {
               className={isMyMessage ? styles.myMessage : styles.messageItem}
             >
               <img
-                src={message.senderId}
+                src={sender?.imageUrl ? sender?.imageUrl : images.memberImage}
                 alt={message.senderId}
                 className={styles.profileImage}
               />
               <div className={styles.messageContent}>
-                {!isMyMessage && (
-                  <span className={styles.messageSender}>{message.senderId}</span>
-                )}
+                {!isMyMessage && <span className={styles.messageSender}>{sender?.nickname}</span>}
                 <div className={isMyMessage ? styles.myMessageText : styles.messageText}>
                   {message.content}
                 </div>
-                {/* <span className={styles.messageTime}>
-                  {format(new Date(message.timestamp), 'HH:mm', { locale: ko })}
-                </span> */}
+                <span className={styles.messageTime}>
+                  {format(new Date(message.createdAt), 'MM/dd HH:mm')}
+                </span>
               </div>
             </div>
           );
@@ -135,12 +183,9 @@ const ChatRoomPage = () => {
         <textarea
           className={styles.input}
           value={newMessage}
-          onChange={
-            (e) => 
-              {
-              setNewMessage(e.target.value)
-              }
-            }
+          onChange={(e) => {
+            setNewMessage(e.target.value);
+          }}
           onKeyPress={handleKeyPress}
           placeholder="메시지를 입력하세요..."
           rows={1}
@@ -157,4 +202,4 @@ const ChatRoomPage = () => {
   );
 };
 
-export default ChatRoomPage; 
+export default ChatRoomPage;
