@@ -9,22 +9,31 @@ const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [memberId, setMemberId] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
 
-  const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts[1];
-    } else {
-      return null;
+  const getMemberId = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/v1/auth/member', {
+        withCredentials: true,
+      });
+      console.log(response);
+      setMemberId(response.data);
+    } catch (e) {
+      console.error(e);
     }
   };
 
   useEffect(() => {
-    const cookie = getCookie('memberId');
-    setIsAuthenticated(!!cookie);
+    getMemberId();
   }, []);
+
+  useEffect(() => {
+    if (!memberId) {
+      return;
+    }
+    setIsAuthenticated(true);
+  }, [memberId]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,8 +47,7 @@ const LoginPage = () => {
     } catch (err) {
       console.log(err);
     }
-  }
-
+  };
 
   const logout = async () => {
     try {

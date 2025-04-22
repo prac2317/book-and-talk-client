@@ -35,7 +35,7 @@ export const messageList = style({
 export const messageItem = style({
   display: 'flex',
   gap: '12px',
-  maxWidth: '70%',
+  border: '1px solid',
 });
 
 export const myMessage = style([
@@ -43,6 +43,7 @@ export const myMessage = style([
   {
     flexDirection: 'row-reverse',
     alignSelf: 'flex-end',
+    border: '2px solid yellow',
   },
 ]);
 
@@ -123,4 +124,4 @@ export const sendButton = style({
   // ':hover:not(:disabled)': {
   //   backgroundColor: vars.colors.primary,
   // },
-}); 
+});

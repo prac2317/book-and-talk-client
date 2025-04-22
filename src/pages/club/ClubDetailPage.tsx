@@ -109,7 +109,7 @@ const ClubDetailPage = () => {
     getClubMember();
     getClubVisitorRelation();
   }, [isModalOpen]);
-  
+
   useEffect(() => {
     getClubFavorite();
   }, [isFavorite]);
@@ -184,6 +184,10 @@ const ClubDetailPage = () => {
     }
   };
 
+  const goToChatRoom = () => {
+    navigate('/chat'); // TODO: 채팅방으로 직행하도록 바꾸기!
+  };
+
   // NONE
   const goToApplicationForm = () => {
     navigate(`/clubs/applications`, {
@@ -208,7 +212,6 @@ const ClubDetailPage = () => {
     console.log(clubDetail);
   };
 
-
   const getClubFavorite = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/api/v1/favorites/clubs/relation`, {
@@ -216,20 +219,23 @@ const ClubDetailPage = () => {
         withCredentials: true,
       });
       setIsFavorite(response.data.isFavorite);
-      console.log("클럽 즐겨찾기 여부 불러오기 성공", response.data.isFavorite);
+      console.log('클럽 즐겨찾기 여부 불러오기 성공', response.data.isFavorite);
     } catch (error) {
       console.error('클럽 즐겨찾기 여부 불러오기 실패', error);
     }
   };
 
-
   const postFavorite = async () => {
     try {
-      await axios.post(`http://localhost:8080/api/v1/favorites/clubs`,{
-        clubId,
-      },{
-        withCredentials: true,
-      });
+      await axios.post(
+        `http://localhost:8080/api/v1/favorites/clubs`,
+        {
+          clubId,
+        },
+        {
+          withCredentials: true,
+        },
+      );
       setIsFavorite(true);
       console.log('클럽 즐겨찾기 추가 성공');
     } catch (error) {
@@ -247,7 +253,7 @@ const ClubDetailPage = () => {
     } catch (error) {
       console.error('클럽 즐겨찾기 삭제 실패', error);
     }
-  };  
+  };
 
   return (
     <div className={styles.container}>
@@ -275,20 +281,16 @@ const ClubDetailPage = () => {
               <img src={images.clubUpdateImage} alt="update" />
             </button>
           )}
-          {
-            visitorStatus !== 'HOST' && isFavorite && (
-              <button onClick={deleteFavorite} className={styles.iconButton}>
+          {visitorStatus !== 'HOST' && isFavorite && (
+            <button onClick={deleteFavorite} className={styles.iconButton}>
               <img src={images.clubFavoriteFull} alt="favorite" />
             </button>
-            )
-          }
-          {
-            visitorStatus != 'HOST' && !isFavorite && (
-              <button onClick={postFavorite} className={styles.iconButton}>
+          )}
+          {visitorStatus != 'HOST' && !isFavorite && (
+            <button onClick={postFavorite} className={styles.iconButton}>
               <img src={images.clubFavoriteEmpty} alt="favorite" />
             </button>
-            )
-          }
+          )}
         </div>
       </div>
 
@@ -361,7 +363,11 @@ const ClubDetailPage = () => {
               신청자 목록
             </button>
           )}
-          {visitorStatus === 'MEMBER' && <button className={styles.button}>채팅하러 가기</button>}
+          {visitorStatus === 'MEMBER' && (
+            <button className={styles.button} onClick={goToChatRoom}>
+              채팅하러 가기
+            </button>
+          )}
           {visitorStatus === 'APPLICANT' && (
             <button className={styles.button} onClick={cancelApplication}>
               신청 취소

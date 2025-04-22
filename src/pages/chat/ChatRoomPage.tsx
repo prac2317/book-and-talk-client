@@ -29,10 +29,9 @@ interface FetchParticipantsResponse {
   data: ParticipantInfo[];
 }
 
-const CURRENT_USER_ID = '1';
-
 const ChatRoomPage = () => {
   const { roomId } = useParams<{ roomId: string }>();
+  const [memberId, setMemberId] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -51,9 +50,21 @@ const ChatRoomPage = () => {
     }),
   );
 
+  const getMemberId = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/v1/auth/member', {
+        withCredentials: true,
+      });
+      console.log(response);
+      setMemberId(response.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
-    console.log('messages', messages);
-  }, [roomId]);
+    getMemberId();
+  }, []);
 
   useEffect(() => {
     if (!roomId) return;
@@ -121,10 +132,12 @@ const ChatRoomPage = () => {
 
     const newMsg: ChatMessage = {
       chatRoomId: roomId,
-      senderId: CURRENT_USER_ID,
+      senderId: memberId,
       content: newMessage,
       createdAt: new Date().toISOString(),
     };
+
+    console.log(newMsg);
 
     // WebSocket으로 메시지 전송
     publish('/app/chat', JSON.stringify(newMsg));
@@ -149,7 +162,10 @@ const ChatRoomPage = () => {
 
       <div className={styles.messageList}>
         {messages.map((message) => {
-          const isMyMessage = message.senderId === CURRENT_USER_ID;
+          const isMyMessage = message.senderId === memberId;
+          console.log('memberId', memberId, typeof memberId);
+          console.log('senderId', message.senderId, typeof message.senderId);
+          console.log(isMyMessage);
           const sender = participants.find(
             (participant) => participant.memberId === message.senderId,
           );
