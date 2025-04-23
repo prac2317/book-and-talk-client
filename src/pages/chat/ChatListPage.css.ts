@@ -2,9 +2,17 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '../../styles/global.css';
 
 export const container = style({
-  maxWidth: '800px',
-  margin: '0 auto',
-  padding: '25px', 
+  width: 'inherit',
+});
+
+export const header = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  height: '70px',
+  width: 'inherit',
+  padding: '16px 30px',
+  borderBottom: `1px solid ${vars.colors.border}`,
 });
 
 export const title = style({
@@ -17,15 +25,14 @@ export const title = style({
 export const chatList = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px',
+  // gap: '12px',
 });
 
 export const chatItem = style({
   display: 'flex',
   padding: '16px',
-  borderRadius: '10px',
-  backgroundColor: vars.colors.border,
-  border: `1px solid ${vars.colors.border}`,
+  backgroundColor: vars.colors.surface,
+  // border: `0.2px solid ${vars.colors.border}`,
   cursor: 'pointer',
   transition: 'all 0.2s ease',
   ':hover': {
@@ -72,6 +79,7 @@ export const chatMessage = style({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+  maxWidth: '200px',
 });
 
 export const unreadCount = style({
@@ -87,4 +95,4 @@ export const unreadCount = style({
   fontSize: vars.font.size.sm,
   fontWeight: vars.font.weight.medium,
   marginLeft: '8px',
-}); 
+});

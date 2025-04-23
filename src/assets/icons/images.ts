@@ -23,6 +23,7 @@ import blurredLogoImage from '@assets/icons/Logo-blurred.png';
 
 import xButtonImage from '@assets/icons/X-button.png';
 import lightBulb from '@assets/icons/light-bulb.png';
+import SearchGlass from '@assets/icons/Search_Glass.tsx';
 
 import bottomBarAddressOff from '@assets/icons/Bottom-bar-Address-off.jpg';
 import bottomBarAddressOn from '@assets/icons/Bottom-bar-Address-on.jpg';
@@ -55,6 +56,7 @@ const images = {
   blurredLogoImage,
   xButtonImage,
   lightBulb,
+  SearchGlass,
   bottomBarAddressOff,
   bottomBarAddressOn,
   bottomBarChatOff,

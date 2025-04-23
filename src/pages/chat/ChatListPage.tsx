@@ -48,7 +48,9 @@ const ChatListPage = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>채팅방 목록</h1>
+      <div className={styles.header}>
+        <h2 className={styles.title}>채팅</h2>
+      </div>
 
       <div className={styles.chatList}>
         {chatRooms.map((room) => (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ChatRoomPage.css';
 import { Client } from '@stomp/stompjs';
 import axios from 'axios';
@@ -30,6 +30,7 @@ interface FetchParticipantsResponse {
 }
 
 const ChatRoomPage = () => {
+  const navigate = useNavigate();
   const { roomId } = useParams<{ roomId: string }>();
   const [memberId, setMemberId] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -157,7 +158,19 @@ const ChatRoomPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
+        <div className={styles.backIcon}>
+          <img
+            src={images.backBlackImage}
+            alt="back"
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+        </div>
         <h2 className={styles.headerTitle}>채팅방</h2>
+        <div>
+          <images.SearchGlass className={styles.searchGlassIcon} />
+        </div>
       </div>
 
       <div className={styles.messageList}>
@@ -180,15 +193,27 @@ const ChatRoomPage = () => {
                 alt={message.senderId}
                 className={styles.profileImage}
               />
-              <div className={styles.messageContent}>
-                {!isMyMessage && <span className={styles.messageSender}>{sender?.nickname}</span>}
-                <div className={isMyMessage ? styles.myMessageText : styles.messageText}>
-                  {message.content}
+              {!isMyMessage && (
+                <div className={styles.messageContent}>
+                  <div>
+                    <span className={styles.messageSender}>{sender?.nickname}</span>
+                    <div className={styles.messageText}>{message.content}</div>
+                  </div>
+                  <span className={styles.messageTime}>
+                    {format(new Date(message.createdAt), 'HH:mm')}
+                  </span>
                 </div>
-                <span className={styles.messageTime}>
-                  {format(new Date(message.createdAt), 'MM/dd HH:mm')}
-                </span>
-              </div>
+              )}
+              {isMyMessage && (
+                <div className={styles.messageContent}>
+                  <span className={styles.messageTime}>
+                    {format(new Date(message.createdAt), 'HH:mm')}
+                  </span>
+                  <div>
+                    <div className={styles.myMessageText}>{message.content}</div>
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
@@ -203,7 +228,7 @@ const ChatRoomPage = () => {
             setNewMessage(e.target.value);
           }}
           onKeyPress={handleKeyPress}
-          placeholder="메시지를 입력하세요..."
+          placeholder="메시지를 입력해주세요."
           rows={1}
         />
         <button

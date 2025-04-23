@@ -3,24 +3,38 @@ import { vars } from '../../styles/global.css';
 
 export const container = style({
   height: '100vh',
+  width: '430px',
   display: 'flex',
   flexDirection: 'column',
-  paddingBottom: '100px',
+  paddingTop: '70px',
 });
 
 export const header = style({
-  padding: '16px',
-  backgroundColor: vars.colors.border,
-  borderBottom: `1px solid ${vars.colors.border}`,
   display: 'flex',
+  justifyContent: 'space-between',
   alignItems: 'center',
-  gap: '12px',
+  position: 'fixed',
+  top: 0,
+  height: '70px',
+  width: 'inherit',
+  padding: '16px 30px',
+  borderBottom: `1px solid ${vars.colors.border}`,
+});
+
+export const backIcon = style({
+  cursor: 'pointer',
 });
 
 export const headerTitle = style({
   fontSize: vars.font.size.headlineMedium,
   fontWeight: vars.font.weight.semibold,
   color: vars.colors.text.main,
+});
+
+export const searchGlassIcon = style({
+  width: '35px',
+  height: '35px',
+  cursor: 'pointer',
 });
 
 export const messageList = style({
@@ -35,7 +49,7 @@ export const messageList = style({
 export const messageItem = style({
   display: 'flex',
   gap: '12px',
-  border: '1px solid',
+  alignItems: 'center',
 });
 
 export const myMessage = style([
@@ -43,20 +57,19 @@ export const myMessage = style([
   {
     flexDirection: 'row-reverse',
     alignSelf: 'flex-end',
-    border: '2px solid yellow',
   },
 ]);
 
 export const profileImage = style({
-  width: '40px',
-  height: '40px',
+  width: '50px',
+  height: '50px',
   borderRadius: '50%',
   objectFit: 'cover',
 });
 
 export const messageContent = style({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
   gap: '4px',
 });
 
@@ -67,29 +80,30 @@ export const messageSender = style({
 
 export const messageText = style({
   padding: '12px 16px',
-  backgroundColor: vars.colors.background,
-  borderRadius: '10px',
+  backgroundColor: vars.colors.surface,
+  borderRadius: '15px',
   fontSize: vars.font.size.bodyMedium,
   color: vars.colors.text.main,
+  maxWidth: '300px',
+  whiteSpace: 'pre-wrap',
 });
 
 export const myMessageText = style([
   messageText,
   {
     backgroundColor: vars.colors.primary,
-    color: vars.colors.text.main,
+    color: 'white',
   },
 ]);
 
 export const messageTime = style({
-  fontSize: vars.font.size.sm,
-  color: vars.colors.text.main,
+  fontSize: vars.font.size.bodySmall,
+  color: vars.colors.border,
   alignSelf: 'flex-end',
 });
 
 export const inputContainer = style({
   padding: '16px',
-  backgroundColor: vars.colors.border,
   borderTop: `1px solid ${vars.colors.border}`,
   display: 'flex',
   gap: '12px',
@@ -98,8 +112,9 @@ export const inputContainer = style({
 export const input = style({
   flex: 1,
   padding: '12px 16px',
-  borderRadius: '10px',
+  borderRadius: '15px',
   border: `1px solid ${vars.colors.border}`,
+  backgroundColor: vars.colors.border,
   fontSize: vars.font.size.bodyMedium,
   resize: 'none',
   ':focus': {

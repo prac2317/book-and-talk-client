@@ -7,7 +7,8 @@ const AppLayout = () => {
 
   const noNavRoutes = ['/clubs/applications', '/clubs/create'];
 
-  const showNavigation = !noNavRoutes.includes(location.pathname);
+  const showNavigation =
+    !noNavRoutes.includes(location.pathname) && !location.pathname.startsWith('/chat/');
 
   return (
     <div className={container}>
