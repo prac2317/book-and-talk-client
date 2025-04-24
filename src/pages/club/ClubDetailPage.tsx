@@ -5,6 +5,7 @@ import * as styles from './ClubDetailPage.css';
 import images from '@assets/icons/images';
 import ClubApplicantModal from '../../features/club/application/ClubApplicantModal.tsx';
 import { fetchClubDetail, fetchClubMember, fetchVisitorClubRelation } from '@api/club.ts';
+import { fetchClubFavorite, deleteClubFavorite, postClubFavorite } from '@api/favorite.ts';
 
 interface getClubDetailResponse {
   clubId: number;
@@ -112,7 +113,7 @@ const ClubDetailPage = () => {
   }, [isModalOpen, clubId]);
 
   useEffect(() => {
-    getClubFavorite();
+    loadClubFavorite();
   }, [isFavorite]);
 
   const handleScrollY = () => {
@@ -124,16 +125,13 @@ const ClubDetailPage = () => {
   };
 
   const loadClubDetail = async () => {
-    console.log('loadClubDetail 통과 전');
     if (!clubId) return;
-    console.log('loadClubDetail 통과 후');
     try {
       const res = await fetchClubDetail(clubId);
-      console.log(res);
       setClubDetail(res);
       console.log('클럽 상세 정보 연동 완료');
     } catch (error) {
-      console.log('클럽 상세 정보 연동 실패', error);
+      console.error('클럽 상세 정보 연동 실패', error);
     }
   };
 
@@ -160,7 +158,6 @@ const ClubDetailPage = () => {
     }
   };
 
-  // 버튼
   const openApplicantModal = () => {
     setIsModalOpen(true);
   };
@@ -209,46 +206,32 @@ const ClubDetailPage = () => {
     console.log(clubDetail);
   };
 
-  const getClubFavorite = async () => {
+  const loadClubFavorite = async () => {
+    if (!clubId) return;
+
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/favorites/clubs/relation`, {
-        params: { clubId },
-        withCredentials: true,
-      });
-      setIsFavorite(response.data.isFavorite);
-      console.log('클럽 즐겨찾기 여부 불러오기 성공', response.data.isFavorite);
+      const res = await fetchClubFavorite(clubId);
+      setIsFavorite(res.isFavorite);
+      console.log('클럽 즐겨찾기 여부 불러오기 성공', res.isFavorite);
     } catch (error) {
       console.error('클럽 즐겨찾기 여부 불러오기 실패', error);
     }
   };
 
-  const postFavorite = async () => {
+  const toggleClubFavorite = async () => {
+    if (!clubId) return;
+
     try {
-      await axios.post(
-        `http://localhost:8080/api/v1/favorites/clubs`,
-        {
-          clubId,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-      setIsFavorite(true);
-      console.log('클럽 즐겨찾기 추가 성공');
+      if (isFavorite) {
+        await deleteClubFavorite(clubId);
+        console.log('클럽 즐겨찾기 추가 성공');
+      } else {
+        await postClubFavorite(clubId);
+        console.log('클럽 즐겨찾기 삭제 성공');
+      }
+      setIsFavorite(!isFavorite);
     } catch (error) {
       console.error('클럽 즐겨찾기 추가 실패', error);
-    }
-  };
-
-  const deleteFavorite = async () => {
-    try {
-      await axios.delete(`http://localhost:8080/api/v1/favorites/clubs/${clubId}`, {
-        withCredentials: true,
-      });
-      setIsFavorite(false);
-      console.log('클럽 즐겨찾기 삭제 성공');
-    } catch (error) {
-      console.error('클럽 즐겨찾기 삭제 실패', error);
     }
   };
 
@@ -279,12 +262,12 @@ const ClubDetailPage = () => {
             </button>
           )}
           {visitorStatus !== 'HOST' && isFavorite && (
-            <button onClick={deleteFavorite} className={styles.iconButton}>
+            <button onClick={toggleClubFavorite} className={styles.iconButton}>
               <img src={images.clubFavoriteFull} alt="favorite" />
             </button>
           )}
           {visitorStatus != 'HOST' && !isFavorite && (
-            <button onClick={postFavorite} className={styles.iconButton}>
+            <button onClick={toggleClubFavorite} className={styles.iconButton}>
               <img src={images.clubFavoriteEmpty} alt="favorite" />
             </button>
           )}
