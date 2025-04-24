@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ClubDetailPage.css';
 import images from '@assets/icons/images';
 import ClubApplicantModal from '../../features/club/application/ClubApplicantModal.tsx';
+import { fetchClubDetail, fetchClubMember, fetchVisitorClubRelation } from '@api/club.ts';
 
 interface getClubDetailResponse {
   clubId: number;
@@ -105,19 +106,14 @@ const ClubDetailPage = () => {
   useEffect(() => {
     setClubDetail(clubDetailMockData);
     setClubMember(clubMemberMockData);
-    getClubDetail();
-    getClubMember();
-    getClubVisitorRelation();
-  }, [isModalOpen]);
+    loadClubDetail();
+    loadClubMember();
+    loadVisitorClubRelation();
+  }, [isModalOpen, clubId]);
 
   useEffect(() => {
     getClubFavorite();
   }, [isFavorite]);
-
-  useEffect(() => {
-    // 참가 신청 승인/거절 이후에 참가자 바뀌게 하기
-    getClubMember();
-  }, [isModalOpen]);
 
   const handleScrollY = () => {
     if (window.scrollY > titleLocation) {
@@ -127,39 +123,40 @@ const ClubDetailPage = () => {
     }
   };
 
-  const getClubDetail = async () => {
+  const loadClubDetail = async () => {
+    console.log('loadClubDetail 통과 전');
+    if (!clubId) return;
+    console.log('loadClubDetail 통과 후');
     try {
-      await axios
-        .get<getClubDetailResponse>(`http://localhost:8080/api/v1/clubs/${clubId}`)
-        .then((response) => {
-          setClubDetail(response.data);
-          console.log(response.data);
-        });
+      const res = await fetchClubDetail(clubId);
+      console.log(res);
+      setClubDetail(res);
       console.log('클럽 상세 정보 연동 완료');
     } catch (error) {
-      console.error('클럽 상세 정보 연동 실패', error);
+      console.log('클럽 상세 정보 연동 실패', error);
     }
   };
 
-  const getClubMember = async () => {
+  const loadClubMember = async () => {
+    if (!clubId) return;
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/member`);
-      console.log(response.data);
-      setClubMember(response.data.data);
+      const res = await fetchClubMember(clubId);
+      console.log(res);
+      setClubMember(res.data);
+      console.log('클럽 멤버 불러오기', res);
     } catch (error) {
-      console.error('클럽 멤버 불러오기 실패', error);
+      console.log('클럽 멤버 불러오기 실패', error);
     }
   };
 
-  const getClubVisitorRelation = async () => {
+  const loadVisitorClubRelation = async () => {
+    if (!clubId) return;
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/relation`, {
-        withCredentials: true,
-      });
-      console.log(response.data.relation);
-      setVisitorStatus(response.data.relation);
+      const res = await fetchVisitorClubRelation(clubId);
+      console.log(res);
+      setVisitorStatus(res.relation);
     } catch (error) {
-      console.error('클럽-방문자 관계 불러오기 실패', error);
+      console.error('방문자-클럽 관계 불러오기 실패', error);
     }
   };
 
@@ -332,8 +329,8 @@ const ClubDetailPage = () => {
             참여 멤버 ({clubDetail.currentParticipant} / {clubDetail.maxParticipants})
           </div>
           <div className={styles.membersBox}>
-            {clubMember.map((member) => (
-              <div className={styles.member}>
+            {clubMember.map((member, index) => (
+              <div className={styles.member} key={index}>
                 <img className={styles.memberProfileImage} src={images.memberImage} alt="member" />
                 <span>{member.nickname}</span>
                 <span>
