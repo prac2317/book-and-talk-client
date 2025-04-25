@@ -6,7 +6,6 @@ export const container = style({
   flexDirection: 'column',
   alignItems: 'center',
   paddingTop: '30px',
-  gap: '180px',
 });
 
 export const completeMessage = style({
@@ -18,4 +17,5 @@ export const completeMessage = style({
 
 export const logo = style({
   width: '420px',
+  marginTop: '180px',
 });

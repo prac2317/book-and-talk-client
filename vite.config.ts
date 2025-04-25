@@ -11,6 +11,10 @@ export default defineConfig({
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@api': path.resolve(__dirname, 'src/api'),
       '@features': path.resolve(__dirname, 'src/features'),
+      '@': path.resolve(__dirname, './src'),
     },
+  },
+  define: {
+    global: 'window',
   },
 });

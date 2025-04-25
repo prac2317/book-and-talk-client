@@ -1,28 +1,55 @@
+import * as styles from './Step4.css';
+import { vars } from '../../../styles/global.css.ts';
+
 const Step4 = ({ goToPrevStep, goToNextStep, formData, setFormData }) => {
+  const durations = [1, 2, 3, 4, 5, 6, 7];
+
   return (
-    <form>
-      <h3>모임활동 기간을 정해주세요</h3>
-      <h6>시작 날짜</h6>
-      <input
-        type="datetime-local"
-        placeholder="시작일"
-        value={formData.startDate}
-        onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-        required
-      />
-      <h6>모임 기간</h6>
-      <input
-        type="number"
-        placeholder="모임 기간(일)"
-        value={formData.duration}
-        onChange={(e) => setFormData({ ...formData, duration: Number(e.target.value) })}
-        required
-      />
-      <div>
-        <button onClick={goToPrevStep}>이전으로</button>
-        <button onClick={goToNextStep}>다음으로</button>
+    <div className={styles.container}>
+      <div className={styles.dateWrapper}>
+        <h1 className={styles.dateTitle}>모임활동 기간을 정해주세요</h1>
+        <div className={styles.startDateSection}>
+          <h2 className={styles.startDateTitle}>시작 일시</h2>
+          <input
+            type="date"
+            placeholder="시작일"
+            value={formData.startDate}
+            onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+            required
+          />
+        </div>
+        <div className={styles.durationSection}>
+          <h2 className={styles.durationTitle}>기간</h2>
+          <div className={styles.buttonGroup}>
+            {durations.map((duration, index) => (
+              <button
+                className={styles.durationButton}
+                key={index}
+                onClick={() => {
+                  setFormData({ ...formData, duration });
+                }}
+                style={
+                  formData.duration == duration
+                    ? { backgroundColor: vars.colors.border, outline: `1px solid #cccbcb` }
+                    : { backgroundColor: vars.colors.surface }
+                }
+              >
+                {duration}일
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
-    </form>
+
+      <div>
+        {/*<button className={styles.primaryButton} onClick={goToPrevStep}>*/}
+        {/*  이전*/}
+        {/*</button>*/}
+        <button className={styles.primaryButton} onClick={goToNextStep}>
+          다음
+        </button>
+      </div>
+    </div>
   );
 };
 

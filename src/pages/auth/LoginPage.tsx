@@ -3,28 +3,35 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import * as styles from './LoginPage.css';
 import logo from '@assets/icons/Book-and-talk-text.png';
-import { login, logout } from '../../api/auth.ts';
+import { fetchMemberId, login, logout } from '../../api/auth.ts';
 
 const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [memberId, setMemberId] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
 
-  const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts[1];
-    } else {
-      return null;
+  const loadMemberId = async () => {
+    try {
+      const res = await fetchMemberId();
+      console.log(res);
+      setMemberId(res);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    const cookie = getCookie('memberId');
-    setIsAuthenticated(!!cookie);
+    loadMemberId();
   }, []);
+
+  useEffect(() => {
+    if (!memberId) {
+      return;
+    }
+    setIsAuthenticated(true);
+  }, [memberId]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,19 +42,16 @@ const LoginPage = () => {
     try {
       await login(email, password);
       setIsAuthenticated(true);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
-
-  const logout = async () => {
+  const handleLogout = async () => {
     try {
-      const response = axios.get('http://localhost:8080/api/v1/auth/logout', {
-        withCredentials: true,
-      });
-      console.log('로그아웃 성공', response);
+      await logout();
       setIsAuthenticated(false);
+      console.log('로그아웃 성공');
     } catch (error) {
       console.log('로그아웃 실패', error);
     }
@@ -60,7 +64,7 @@ const LoginPage = () => {
       </div>
 
       {isAuthenticated ? (
-        <button onClick={logout}>로그아웃</button>
+        <button onClick={handleLogout}>로그아웃</button>
       ) : (
         <>
           <form className={styles.loginForm} onSubmit={handleSubmit}>

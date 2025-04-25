@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as styles from './ClubCreatePage.css.ts';
+import images from '@assets/icons/images';
 import Step1 from '../../features/club/create/Step1.tsx';
 import Step2 from '../../features/club/create/Step2.tsx';
 import Step3 from '../../features/club/create/Step3.tsx';
@@ -60,7 +61,9 @@ const ClubCreatePage = () => {
   }, [bookDetail]);
 
   const createGroup = async (data: CreateClubRequest) => {
-    const response = await axios.post('http://localhost:8080/api/v1/clubs', data, {
+    //TODO: 임시로 'yyyy-MM-dd'T'HH:mm' 형식 맞춤 -> 백엔드 바꾸고 다시 수정하기
+    const newData = { ...data, startDate: `${data.startDate}T00:00` };
+    const response = await axios.post('http://localhost:8080/api/v1/clubs', newData, {
       withCredentials: true,
     });
     return response.data;
@@ -88,7 +91,16 @@ const ClubCreatePage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>x</div>
+      <div className={styles.header}>
+        <img
+          className={styles.xButton}
+          src={images.xButtonImage}
+          alt="x"
+          onClick={() => {
+            navigate(-1);
+          }}
+        />
+      </div>
       <div className={styles.stepSection}>
         {stepNumber == 1 && <Step1 goToNextStep={goToNextStep} bookDetail={bookDetail} />}
         {stepNumber == 2 && (
@@ -126,67 +138,6 @@ const ClubCreatePage = () => {
           />
         )}
         {stepNumber == 6 && <Step6 goToPrevStep={goToPrevStep} navigate={navigate} />}
-
-        {/*<form onSubmit={handleSubmit}>*/}
-        {/*  <h6>모임 이름</h6>*/}
-        {/*  <input*/}
-        {/*    type="text"*/}
-        {/*    placeholder="모임 이름"*/}
-        {/*    value={formData.name}*/}
-        {/*    onChange={(e) => setFormData({ ...formData, name: e.target.value })}*/}
-        {/*    required*/}
-        {/*  />*/}
-        {/*  <h6>책 제목</h6>*/}
-        {/*  <input*/}
-        {/*    type="text"*/}
-        {/*    placeholder="책 제목"*/}
-        {/*    readOnly={true}*/}
-        {/*    value={formData.bookTitle}*/}
-        {/*    onChange={(e) => setFormData({ ...formData, bookTitle: e.target.value })}*/}
-        {/*    required*/}
-        {/*  />*/}
-        {/*  <h6>책 isbn</h6>*/}
-        {/*  <input*/}
-        {/*    type="number"*/}
-        {/*    placeholder="ISBN13"*/}
-        {/*    readOnly={true}*/}
-        {/*    value={formData.isbn13}*/}
-        {/*    onChange={(e) => setFormData({ ...formData, isbn13: e.target.value })}*/}
-        {/*    required*/}
-        {/*  />*/}
-        {/*  <h6>시작 날짜</h6>*/}
-        {/*  <input*/}
-        {/*    type="datetime-local"*/}
-        {/*    placeholder="시작일"*/}
-        {/*    value={formData.startDate}*/}
-        {/*    onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}*/}
-        {/*    required*/}
-        {/*  />*/}
-        {/*  <h6>모임 기간</h6>*/}
-        {/*  <input*/}
-        {/*    type="number"*/}
-        {/*    placeholder="모임 기간(일)"*/}
-        {/*    value={formData.duration}*/}
-        {/*    onChange={(e) => setFormData({ ...formData, duration: Number(e.target.value) })}*/}
-        {/*    required*/}
-        {/*  />*/}
-        {/*  <h6>최대 참가자 수</h6>*/}
-        {/*  <input*/}
-        {/*    type="number"*/}
-        {/*    placeholder="최대 참가자 수"*/}
-        {/*    value={formData.maxParticipants}*/}
-        {/*    onChange={(e) => setFormData({ ...formData, maxParticipants: Number(e.target.value) })}*/}
-        {/*    required*/}
-        {/*  />*/}
-        {/*  <h6>모임 소개</h6>*/}
-        {/*  <textarea*/}
-        {/*    placeholder="모임 소개"*/}
-        {/*    value={formData.clubDescription}*/}
-        {/*    onChange={(e) => setFormData({ ...formData, clubDescription: e.target.value })}*/}
-        {/*    required*/}
-        {/*  />*/}
-        {/*  <button type="submit">모임 만들기</button>*/}
-        {/*</form>*/}
       </div>
     </div>
   );

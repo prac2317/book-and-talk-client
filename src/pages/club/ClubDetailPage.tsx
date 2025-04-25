@@ -4,6 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ClubDetailPage.css';
 import images from '@assets/icons/images';
 import ClubApplicantModal from '../../features/club/application/ClubApplicantModal.tsx';
+import { fetchClubDetail, fetchClubMember, fetchVisitorClubRelation } from '@api/club.ts';
+import { fetchClubFavorite, deleteClubFavorite, postClubFavorite } from '@api/favorite.ts';
+import { cancelApplication } from '@api/application.ts';
 
 interface getClubDetailResponse {
   clubId: number;
@@ -17,10 +20,10 @@ interface getClubDetailResponse {
   isbn13: string;
   createdAt: string;
 }
-
-interface getClubVisitorResponse {
-  data: memberInformation[];
-}
+//
+// interface getClubVisitorResponse {
+//   data: memberInformation[];
+// }
 
 interface memberInformation {
   isHost: boolean;
@@ -28,7 +31,11 @@ interface memberInformation {
   nickname: string;
 }
 
-type VisitorStatus = 'HOST' | 'MEMBER' | 'APPLICANT' | 'NONE';
+// interface getClubFavoriteResponse {
+//   isFavorite: boolean;
+// }
+
+// type VisitorStatus = 'HOST' | 'MEMBER' | 'APPLICANT' | 'NONE';
 
 const ClubDetailPage = () => {
   const navigate = useNavigate();
@@ -50,6 +57,7 @@ const ClubDetailPage = () => {
   const [showHeaderBackgroundColor, setShowHeaderBackgroundColor] = useState(false);
   const [visitorStatus, setVisitorStatus] = useState('NONE');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
   const date = new Date();
   const dateString = date.toLocaleDateString();
@@ -100,15 +108,14 @@ const ClubDetailPage = () => {
   useEffect(() => {
     setClubDetail(clubDetailMockData);
     setClubMember(clubMemberMockData);
-    getClubDetail();
-    getClubMember();
-    getClubVisitorRelation();
-  }, [isModalOpen]);
+    loadClubDetail();
+    loadClubMember();
+    loadVisitorClubRelation();
+  }, [isModalOpen, clubId]);
 
   useEffect(() => {
-    // 참가 신청 승인/거절 이후에 참가자 바뀌게 하기
-    getClubMember();
-  }, [isModalOpen]);
+    loadClubFavorite();
+  }, [isFavorite]);
 
   const handleScrollY = () => {
     if (window.scrollY > titleLocation) {
@@ -118,61 +125,58 @@ const ClubDetailPage = () => {
     }
   };
 
-  const getClubDetail = async () => {
+  const loadClubDetail = async () => {
+    if (!clubId) return;
     try {
-      await axios
-        .get<getClubDetailResponse>(`http://localhost:8080/api/v1/clubs/${clubId}`)
-        .then((response) => {
-          setClubDetail(response.data);
-          console.log(response.data);
-        });
+      const res = await fetchClubDetail(clubId);
+      setClubDetail(res);
       console.log('클럽 상세 정보 연동 완료');
     } catch (error) {
       console.error('클럽 상세 정보 연동 실패', error);
     }
   };
 
-  const getClubMember = async () => {
+  const loadClubMember = async () => {
+    if (!clubId) return;
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/members`);
-      console.log(response.data);
-      setClubMember(response.data.members);
+      const res = await fetchClubMember(clubId);
+      console.log(res);
+      setClubMember(res.data);
+      console.log('클럽 멤버 불러오기', res);
     } catch (error) {
-      console.error('클럽 멤버 불러오기 실패', error);
+      console.log('클럽 멤버 불러오기 실패', error);
     }
   };
 
-  const getClubVisitorRelation = async () => {
+  const loadVisitorClubRelation = async () => {
+    if (!clubId) return;
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/clubs/${clubId}/relation`, {
-        withCredentials: true,
-      });
-      console.log(response.data.relation);
-      setVisitorStatus(response.data.relation);
+      const res = await fetchVisitorClubRelation(clubId);
+      console.log(res);
+      setVisitorStatus(res.relation);
     } catch (error) {
-      console.error('클럽-방문자 관계 불러오기 실패', error);
+      console.error('방문자-클럽 관계 불러오기 실패', error);
     }
   };
 
-  // 버튼
   const openApplicantModal = () => {
     setIsModalOpen(true);
   };
 
-  const cancelApplication = async () => {
+  const handleCancelApplication = async () => {
+    if (!clubId) return;
+
     try {
-      await axios.post(
-        `http://localhost:8080/api/v1/clubs/${clubId}/applications/cancel`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
+      await cancelApplication(clubId);
       setVisitorStatus('NONE');
       console.log('참가 신청 취소 완료');
     } catch (error) {
       console.log('참가 신청 취소 실패', error);
     }
+  };
+
+  const goToChatRoom = () => {
+    navigate('/chat'); // TODO: 채팅방으로 직행하도록 바꾸기!
   };
 
   // NONE
@@ -188,7 +192,7 @@ const ClubDetailPage = () => {
   const deleteClub = async () => {
     try {
       await axios.delete(`http://localhost:8080/api/v1/clubs/${clubId}`);
-      navigate('-1');
+      navigate(-1);
       console.log('삭제 성공');
     } catch (error) {
       console.log('삭제 실패', error);
@@ -197,6 +201,35 @@ const ClubDetailPage = () => {
 
   const onClickDetail = () => {
     console.log(clubDetail);
+  };
+
+  const loadClubFavorite = async () => {
+    if (!clubId) return;
+
+    try {
+      const res = await fetchClubFavorite(clubId);
+      setIsFavorite(res.isFavorite);
+      console.log('클럽 즐겨찾기 여부 불러오기 성공', res.isFavorite);
+    } catch (error) {
+      console.error('클럽 즐겨찾기 여부 불러오기 실패', error);
+    }
+  };
+
+  const toggleClubFavorite = async () => {
+    if (!clubId) return;
+
+    try {
+      if (isFavorite) {
+        await deleteClubFavorite(clubId);
+        console.log('클럽 즐겨찾기 추가 성공');
+      } else {
+        await postClubFavorite(clubId);
+        console.log('클럽 즐겨찾기 삭제 성공');
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error('클럽 즐겨찾기 추가/삭제 실패', error);
+    }
   };
 
   return (
@@ -208,19 +241,33 @@ const ClubDetailPage = () => {
           <button
             className={styles.iconButton}
             onClick={() => {
-              navigate('-1');
+              navigate(-1);
             }}
           >
             <img src={images.backImage} alt="back" />
           </button>
         </div>
         <div className={styles.actionButtons}>
-          <button onClick={deleteClub} className={styles.iconButton}>
-            <img src={images.clubDeleteImage} alt="delete" />
-          </button>
-          <button onClick={onClickDetail} className={styles.iconButton}>
-            <img src={images.clubUpdateImage} alt="update" />
-          </button>
+          {visitorStatus === 'HOST' && (
+            <button onClick={deleteClub} className={styles.iconButton}>
+              <img src={images.clubDeleteImage} alt="delete" />
+            </button>
+          )}
+          {visitorStatus === 'HOST' && (
+            <button onClick={onClickDetail} className={styles.iconButton}>
+              <img src={images.clubUpdateImage} alt="update" />
+            </button>
+          )}
+          {visitorStatus !== 'HOST' && isFavorite && (
+            <button onClick={toggleClubFavorite} className={styles.iconButton}>
+              <img src={images.clubFavoriteFull} alt="favorite" />
+            </button>
+          )}
+          {visitorStatus != 'HOST' && !isFavorite && (
+            <button onClick={toggleClubFavorite} className={styles.iconButton}>
+              <img src={images.clubFavoriteEmpty} alt="favorite" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -262,8 +309,8 @@ const ClubDetailPage = () => {
             참여 멤버 ({clubDetail.currentParticipant} / {clubDetail.maxParticipants})
           </div>
           <div className={styles.membersBox}>
-            {clubMember.map((member) => (
-              <div className={styles.member}>
+            {clubMember.map((member, index) => (
+              <div className={styles.member} key={index}>
                 <img className={styles.memberProfileImage} src={images.memberImage} alt="member" />
                 <span>{member.nickname}</span>
                 <span>
@@ -293,9 +340,13 @@ const ClubDetailPage = () => {
               신청자 목록
             </button>
           )}
-          {visitorStatus === 'MEMBER' && <button className={styles.button}>채팅하러 가기</button>}
+          {visitorStatus === 'MEMBER' && (
+            <button className={styles.button} onClick={goToChatRoom}>
+              채팅하러 가기
+            </button>
+          )}
           {visitorStatus === 'APPLICANT' && (
-            <button className={styles.button} onClick={cancelApplication}>
+            <button className={styles.button} onClick={handleCancelApplication}>
               신청 취소
             </button>
           )}

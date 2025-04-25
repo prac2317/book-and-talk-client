@@ -1,46 +1,54 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { nav, navItem } from './Navigation.css.ts';
+import images from '@assets/icons/images.ts';
 
 const navigations = [
   {
     to: '/',
     label: '홈',
-    activeIcon: 'public/icons/Bottom-bar-Address-off.jpg',
-    inactiveIcon: '/icons/HomePage-off.png',
+    activeIcon: images.bottomBarHomeOn,
+    inactiveIcon: images.bottomBarHomeOff,
   },
   {
-    to: '/like',
+    to: '/favorites',
     label: '즐겨찾기',
-    activeIcon: '/icons/Star-on.png',
-    inactiveIcon: '/icons/Star-off.png',
+    activeIcon: images.bottomBarFavoriteOn,
+    inactiveIcon: images.bottomBarFavoriteOff,
   },
   {
     to: '/chat',
     label: '채팅',
-    activeIcon: '/icons/Chat-on.png',
-    inactiveIcon: '/icons/Chat-off.png',
+    activeIcon: images.bottomBarChatOn,
+    inactiveIcon: images.bottomBarChatOff,
   },
   {
     to: '/profile',
     label: '마이페이지',
-    activeIcon: '/icons/People-on.png',
-    inactiveIcon: '/icons/People-off.png',
+    activeIcon: images.bottomBarProfileOn,
+    inactiveIcon: images.bottomBarProfileOff,
   },
 ];
 
 const Navigation = () => {
+  const location = useLocation();
+  const pathname = location.pathname;
+
   return (
     <nav className={nav}>
       {navigations.map((navigation) => (
         <NavLink
           key={navigation.to}
           to={navigation.to}
-          className={({ isActive }) => (isActive ? 'active' : 'inactive')}
+          // todo: navbar 활성화 방식 변경하기  
+          className={({ isActive}) =>
+            isActive || (pathname.startsWith('/clubs') || pathname.startsWith('/books')) && navigation.to === '/' ? 'active' : 'inactive'
+          }
         >
           {({ isActive }) => (
             <div className={navItem}>
               <img
-                src={isActive ? navigation.activeIcon : navigation.inactiveIcon}
+                // todo: navbar 활성화 방식 변경하기  
+                src={isActive || (pathname.startsWith('/clubs') || pathname.startsWith('/books')) && navigation.to === '/' ? navigation.activeIcon : navigation.inactiveIcon}
                 alt={navigation.label}
               />
               <span>{navigation.label}</span>

@@ -4,7 +4,7 @@ import ClubApplicationCompleted from '@features/club/application/ClubApplication
 import { useState } from 'react';
 import images from '@assets/icons/images.ts';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { createApplication } from '@api/application.ts';
 
 const ClubApplicationPage = () => {
   const navigate = useNavigate();
@@ -15,12 +15,8 @@ const ClubApplicationPage = () => {
 
   const submitApplication = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:8080/api/v1/clubs/${clubId}/applications`,
-        { questionAnswer: questionAnswer },
-        { withCredentials: true },
-      );
-      console.log(response.data);
+      const res = await createApplication(clubId, questionAnswer);
+      console.log('참가 신청 제출 성공', res);
       setIsSubmitted(true);
     } catch (error) {
       console.error('참가 신청 제출 실패', error);

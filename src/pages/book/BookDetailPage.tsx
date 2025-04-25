@@ -2,8 +2,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import * as styles from './BookDetailPage.css';
-import groupImageExampple from '@assets/icons/img.png';
 import BookCard from '@features/book/components/BookCard.tsx';
+import ClubCard from '@features/club/components/ClubCard';
+import images from '@assets/icons/images';
+import { deleteBookFavorite, fetchBookFavorite, postBookFavorite } from '@api/favorite.ts';
+import { fetchClubList } from '@api/club.ts';
 
 interface bookDetail {
   thumbnail: string;
@@ -20,6 +23,10 @@ interface getClubListResponse {
   data: clubOverview[];
 }
 
+interface getBookFavoriteResponse {
+  isFavorite: boolean;
+}
+
 interface clubOverview {
   clubId: number;
   bookTitle: string;
@@ -32,10 +39,10 @@ interface clubOverview {
 
 const BookDetailPage = () => {
   const navigate = useNavigate();
-  const bookTitle = '책 제목입니다';
   const { isbn13 } = useParams();
   const [clubCount, setClubCount] = useState(0);
   const [clubList, setClubList] = useState<clubOverview[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [bookDetail, setBookDetail] = useState<bookDetail>({
     thumbnail: '',
     title: '',
@@ -43,28 +50,17 @@ const BookDetailPage = () => {
     publisher: '',
     publishedDate: '',
     isbn13: '',
-    description: '책 소개입니다.',
+    description: '',
   });
 
-  const mockData = [
-    {
-      clubId: 1,
-      bookTitle: '아주 작은 습관의 힘',
-      name: '북토피아 북클럽',
-      currentParticipants: 3,
-      maxParticipants: 10,
-      status: '모집중',
-      startDate: '2021-06-01',
-    },
-  ];
+  useEffect(() => {
+    fetchBookDetail();
+    loadClubList();
+  }, [isbn13]);
 
   useEffect(() => {
-    setClubList(mockData);
-
-    fetchBookDetail();
-
-    getClubList();
-  }, [isbn13]);
+    loadBookFavorite();
+  }, [isFavorite]);
 
   const createClub = () => {
     navigate('/clubs/create', {
@@ -72,8 +68,33 @@ const BookDetailPage = () => {
     });
   };
 
-  const navigateToClubDetail = (clubId: number) => {
-    navigate(`/clubs/${clubId}`);
+  const loadBookFavorite = async () => {
+    if (!isbn13) return;
+
+    try {
+      const res = await fetchBookFavorite(isbn13);
+      setIsFavorite(res.isFavorite);
+      console.log('책 즐겨찾기 여부 불러오기 성공', res);
+    } catch (error) {
+      console.error('책 즐겨찾기 여부 불러오기 실패', error);
+    }
+  };
+
+  const toggleBookFavorite = async () => {
+    if (!isbn13) return;
+
+    try {
+      if (isFavorite) {
+        await deleteBookFavorite(isbn13);
+        console.log('즐겨찾기 추가 성공');
+      } else {
+        await postBookFavorite(isbn13);
+        console.log('즐겨찾기 추가 실패');
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error('즐겨찾기 추가/삭제 실패', error);
+    }
   };
 
   // Todo: 알라딘 검색으로 바꾸기
@@ -105,16 +126,16 @@ const BookDetailPage = () => {
     }
   };
 
-  const getClubList = async () => {
+  const loadClubList = async () => {
+    if (!isbn13) return;
+
     try {
-      const response = await axios.get<getClubListResponse>(`http://localhost:8080/api/v1/clubs`, {
-        params: { isbn13 },
-      });
-      console.log('클럽 리스트 불러오기 완료', response.data);
-      setClubCount(response.data.totalCount);
-      setClubList(response.data.data);
+      const res = await fetchClubList(isbn13);
+      console.log('클럽 리스트 불러오기 완료', res);
+      setClubCount(res.totalCount);
+      setClubList(res.data);
     } catch (error) {
-      console.error('클럽 리스트 불러오기 실패', error);
+      console.error(error);
     }
   };
 
@@ -128,9 +149,18 @@ const BookDetailPage = () => {
         >
           back
         </button>
+        {isFavorite ? (
+          <div onClick={toggleBookFavorite}>
+            <images.BookFavoriteFull className={styles.bookFavoriteIcon} />
+          </div>
+        ) : (
+          <div onClick={toggleBookFavorite}>
+            <images.BookFavoriteEmpty className={styles.bookFavoriteIcon} />
+          </div>
+        )}
       </div>
       <div className={styles.bookSection}>
-        <BookCard bookDetail={bookDetail} />
+        <BookCard isbn13={isbn13} isDetailPage={true} />
         <div className={styles.bookDescriptionBox}>
           <div className={styles.bookDescriptionTitle}>책 소개</div>
           <text className={styles.bookDescription}>{bookDetail.description}</text>
@@ -145,27 +175,20 @@ const BookDetailPage = () => {
           </button>
         </div>
 
-        <div className={styles.clubContainer}></div>
-        {clubList.map((club) => (
-          <div
-            className={styles.clubCard}
-            key={club.clubId}
-            onClick={() => navigateToClubDetail(club.clubId)}
-          >
-            <div>
-              <img className={styles.clubThumbnail} src={groupImageExampple} alt="thumbnail" />
-            </div>
-            <div className={styles.clubOverview}>
-              <div>{club.bookTitle}</div>
-              <div>{club.name}</div>
-              <div>
-                {club.currentParticipants} / {club.maxParticipants}
-              </div>
-              <div>{club.startDate} </div>
-            </div>
-          </div>
-        ))}
-        <button onClick={getClubList}>모임 목록 조회 테스트버튼</button>
+        <div className={styles.clubContainer}>
+          {clubList.map((club) => (
+            <ClubCard
+              key={club.clubId}
+              clubId={club.clubId}
+              bookTitle={club.bookTitle}
+              name={club.name}
+              currentParticipants={club.currentParticipants}
+              maxParticipants={club.maxParticipants}
+              status={club.status}
+              startDate={club.startDate}
+            />
+          ))}
+        </div>
       </div>
     </>
   );

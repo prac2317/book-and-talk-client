@@ -11,7 +11,7 @@ export const container = style({
 
 export const view = style({
   width: vars.layout.width,
-  height: '100dh',
+  minHeight: '100vh',
   border: `1px solid ${vars.colors.border}`,
   backgroundColor: vars.colors.background,
 });
