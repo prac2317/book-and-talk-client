@@ -10,7 +10,7 @@ export const cancelApplication = async (clubId: string) => {
 };
 
 export const createApplication = async (clubId: string, questionAnswer: string) => {
-  const res = await api.post(`api/v1/clubs/${clubId}/applications`, {
+  const res = await api.post(`/v1/clubs/${clubId}/applications`, {
     questionAnswer,
   });
   return res.data;

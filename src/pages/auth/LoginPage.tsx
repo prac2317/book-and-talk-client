@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import * as styles from './LoginPage.css';
 import logo from '@assets/icons/Book-and-talk-text.png';
-import { login, logout } from '../../api/auth.ts';
+import { fetchMemberId, login, logout } from '../../api/auth.ts';
 
 const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -12,20 +12,18 @@ const LoginPage = () => {
   const [memberId, setMemberId] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
 
-  const getMemberId = async () => {
+  const loadMemberId = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/auth/member', {
-        withCredentials: true,
-      });
-      console.log(response);
-      setMemberId(response.data);
-    } catch (e) {
-      console.error(e);
+      const res = await fetchMemberId();
+      console.log(res);
+      setMemberId(res);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    getMemberId();
+    loadMemberId();
   }, []);
 
   useEffect(() => {
@@ -44,18 +42,16 @@ const LoginPage = () => {
     try {
       await login(email, password);
       setIsAuthenticated(true);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const logout = async () => {
+  const handleLogout = async () => {
     try {
-      const response = axios.get('http://localhost:8080/api/v1/auth/logout', {
-        withCredentials: true,
-      });
-      console.log('로그아웃 성공', response);
+      await logout();
       setIsAuthenticated(false);
+      console.log('로그아웃 성공');
     } catch (error) {
       console.log('로그아웃 실패', error);
     }
@@ -68,7 +64,7 @@ const LoginPage = () => {
       </div>
 
       {isAuthenticated ? (
-        <button onClick={logout}>로그아웃</button>
+        <button onClick={handleLogout}>로그아웃</button>
       ) : (
         <>
           <form className={styles.loginForm} onSubmit={handleSubmit}>

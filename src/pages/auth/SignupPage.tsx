@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import * as styles from './SignupPage.css';
 import logo from '@assets/icons/Book-and-talk-text.png';
+import { signUp } from '@api/auth.ts';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -12,17 +13,13 @@ const SignupPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await signUp();
+    await submitSignUp();
   };
 
-  const signUp = async () => {
+  const submitSignUp = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/auth/signup', {
-        nickname,
-        email,
-        password,
-      });
-      console.log('회원가입 성공', response);
+      const res = await signUp(nickname, email, password);
+      console.log('회원가입 성공', res);
       navigate('/login');
     } catch (error) {
       console.log('회원가입 실패', error);

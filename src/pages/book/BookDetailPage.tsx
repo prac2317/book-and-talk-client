@@ -6,6 +6,7 @@ import BookCard from '@features/book/components/BookCard.tsx';
 import ClubCard from '@features/club/components/ClubCard';
 import images from '@assets/icons/images';
 import { deleteBookFavorite, fetchBookFavorite, postBookFavorite } from '@api/favorite.ts';
+import { fetchClubList } from '@api/club.ts';
 
 interface bookDetail {
   thumbnail: string;
@@ -54,7 +55,7 @@ const BookDetailPage = () => {
 
   useEffect(() => {
     fetchBookDetail();
-    getClubList();
+    loadClubList();
   }, [isbn13]);
 
   useEffect(() => {
@@ -125,16 +126,16 @@ const BookDetailPage = () => {
     }
   };
 
-  const getClubList = async () => {
+  const loadClubList = async () => {
+    if (!isbn13) return;
+
     try {
-      const response = await axios.get<getClubListResponse>(`http://localhost:8080/api/v1/clubs`, {
-        params: { isbn13 },
-      });
-      console.log('클럽 리스트 불러오기 완료', response.data);
-      setClubCount(response.data.totalCount);
-      setClubList(response.data.data);
+      const res = await fetchClubList(isbn13);
+      console.log('클럽 리스트 불러오기 완료', res);
+      setClubCount(res.totalCount);
+      setClubList(res.data);
     } catch (error) {
-      console.error('클럽 리스트 불러오기 실패', error);
+      console.error(error);
     }
   };
 

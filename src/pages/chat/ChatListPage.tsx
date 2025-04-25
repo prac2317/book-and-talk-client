@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import * as styles from './ChatListPage.css';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import images from '@assets/icons/images.ts';
+import { fetchChatRooms } from '@api/chat.ts';
 
 interface ChatRoom {
   chatRoomId: number;
@@ -27,22 +27,16 @@ const ChatListPage = () => {
   };
 
   useEffect(() => {
-    fetchChatRooms();
+    loadChatRooms();
   }, []);
 
-  const fetchChatRooms = async () => {
+  const loadChatRooms = async () => {
     try {
-      const response = await axios.get<GetChatRoomsApiResponse>(
-        `http://localhost:8080/api/v1/chat/chatrooms`,
-        {
-          withCredentials: true,
-        },
-      );
-
-      console.log(response.data.data);
-      setChatRooms(response.data.data);
-    } catch (e) {
-      console.error('채팅룸 호출 실패', e);
+      const res = await fetchChatRooms();
+      console.log(res.data);
+      setChatRooms(res.data);
+    } catch (error) {
+      console.error('채팅룸 호출 실패', error);
     }
   };
 

@@ -5,9 +5,11 @@ import { Client } from '@stomp/stompjs';
 import axios from 'axios';
 import images from '@assets/icons/images.ts';
 import { format } from 'date-fns';
+import { fetchMemberId } from '@api/auth.ts';
+import { fetchMessages, fetchParticipants } from '@api/chat.ts';
 
 interface ChatMessage {
-  id: string;
+  id?: string;
   senderId: string;
   content: string;
   chatRoomId: string;
@@ -40,7 +42,7 @@ const ChatRoomPage = () => {
 
   const stomp = useRef(
     new Client({
-      brokerURL: 'ws://localhost:8080/portfolio',
+      brokerURL: `ws://localhost:8080/portfolio`,
       reconnectDelay: 5000,
       onConnect: () => {
         console.log('WebSocket connected');
@@ -51,28 +53,26 @@ const ChatRoomPage = () => {
     }),
   );
 
-  const getMemberId = async () => {
+  const loadMemberId = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/auth/member', {
-        withCredentials: true,
-      });
-      console.log(response);
-      setMemberId(response.data);
-    } catch (e) {
-      console.error(e);
+      const res = await fetchMemberId();
+      console.log(res);
+      setMemberId(res);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    getMemberId();
+    loadMemberId();
   }, []);
 
   useEffect(() => {
     if (!roomId) return;
 
     // Todo 순서 정리하기
-    fetchParticipants();
-    fetchMessages();
+    loadParticipants();
+    loadMessages();
     stomp.current.activate();
 
     return () => {
@@ -101,27 +101,27 @@ const ChatRoomPage = () => {
     scrollToBottom();
   }, [messages]);
 
-  const fetchParticipants = async () => {
+  const loadParticipants = async () => {
+    if (!roomId) return;
+
     try {
-      const response = await axios.get<FetchParticipantsResponse>(
-        `http://localhost:8080/api/v1/chat/chatrooms/${roomId}/participants`,
-      );
-      console.log(response.data.data);
-      setParticipants(response.data.data);
-    } catch (e) {
-      console.error('참가자를 부르는 데 실패했습니다.', e);
+      const res = await fetchParticipants(roomId);
+      console.log(res.data);
+      setParticipants(res.data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const fetchMessages = async () => {
+  const loadMessages = async () => {
+    if (!roomId) return;
+
     try {
-      const response = await axios.get<FetchMessagesResponse>(
-        `http://localhost:8080/api/v1/chat/chatrooms/${roomId}/messages`,
-      );
-      console.log(response.data.data);
-      setMessages(response.data.data);
-    } catch (e) {
-      console.error('참가자를 부르는 데 실패했습니다.', e);
+      const res = await fetchMessages(roomId);
+      console.log(res.data);
+      setMessages(res.data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -138,13 +138,8 @@ const ChatRoomPage = () => {
       createdAt: new Date().toISOString(),
     };
 
-    console.log(newMsg);
-
-    // WebSocket으로 메시지 전송
     publish('/app/chat', JSON.stringify(newMsg));
 
-    // 백엔드 연동 전까지는 직접 메시지 추가
-    // setMessages((prev) => [...prev, newMsg]);
     setNewMessage('');
   };
 
