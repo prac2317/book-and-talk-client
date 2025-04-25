@@ -6,6 +6,7 @@ import images from '@assets/icons/images';
 import ClubApplicantModal from '../../features/club/application/ClubApplicantModal.tsx';
 import { fetchClubDetail, fetchClubMember, fetchVisitorClubRelation } from '@api/club.ts';
 import { fetchClubFavorite, deleteClubFavorite, postClubFavorite } from '@api/favorite.ts';
+import { cancelApplication } from '@api/application.ts';
 
 interface getClubDetailResponse {
   clubId: number;
@@ -19,10 +20,10 @@ interface getClubDetailResponse {
   isbn13: string;
   createdAt: string;
 }
-
-interface getClubVisitorResponse {
-  data: memberInformation[];
-}
+//
+// interface getClubVisitorResponse {
+//   data: memberInformation[];
+// }
 
 interface memberInformation {
   isHost: boolean;
@@ -30,11 +31,11 @@ interface memberInformation {
   nickname: string;
 }
 
-interface getClubFavoriteResponse {
-  isFavorite: boolean;
-}
+// interface getClubFavoriteResponse {
+//   isFavorite: boolean;
+// }
 
-type VisitorStatus = 'HOST' | 'MEMBER' | 'APPLICANT' | 'NONE';
+// type VisitorStatus = 'HOST' | 'MEMBER' | 'APPLICANT' | 'NONE';
 
 const ClubDetailPage = () => {
   const navigate = useNavigate();
@@ -162,15 +163,11 @@ const ClubDetailPage = () => {
     setIsModalOpen(true);
   };
 
-  const cancelApplication = async () => {
+  const handleCancelApplication = async () => {
+    if (!clubId) return;
+
     try {
-      await axios.post(
-        `http://localhost:8080/api/v1/clubs/${clubId}/applications/cancel`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
+      await cancelApplication(clubId);
       setVisitorStatus('NONE');
       console.log('참가 신청 취소 완료');
     } catch (error) {
@@ -349,7 +346,7 @@ const ClubDetailPage = () => {
             </button>
           )}
           {visitorStatus === 'APPLICANT' && (
-            <button className={styles.button} onClick={cancelApplication}>
+            <button className={styles.button} onClick={handleCancelApplication}>
               신청 취소
             </button>
           )}

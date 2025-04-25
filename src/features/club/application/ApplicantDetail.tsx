@@ -22,7 +22,7 @@ enum ProcessType {
   REJECT = 'REJECT',
 }
 
-const ApplicantDetail = ({ selectedApplicantDetail, processApplication }) => {
+const ApplicantDetail = ({ selectedApplicantDetail, handleProcessApplication }) => {
   return (
     <div className={styles.detailSection}>
       <div className={styles.answerSection}>
@@ -34,10 +34,13 @@ const ApplicantDetail = ({ selectedApplicantDetail, processApplication }) => {
         <div className={styles.answer}>{selectedApplicantDetail.questionAnswer} </div>
       </div>
       <div className={styles.buttonGroup}>
-        <button className={styles.approveButton} onClick={() => processApplication('APPROVE')}>
+        <button
+          className={styles.approveButton}
+          onClick={() => handleProcessApplication('APPROVE')}
+        >
           수락
         </button>
-        <button className={styles.rejectButton} onClick={() => processApplication('REJECT')}>
+        <button className={styles.rejectButton} onClick={() => handleProcessApplication('REJECT')}>
           거절
         </button>
       </div>
