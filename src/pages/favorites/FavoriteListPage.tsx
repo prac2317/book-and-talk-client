@@ -3,6 +3,7 @@ import * as styles from './FavoriteListPage.css';
 import ClubCard from '@features/club/components/ClubCard';
 import BookCard from '@features/book/components/BookCard';
 import axios from 'axios';
+import { fetchbookFavoriteList, fetchClubFavoriteList } from '@api/favorite.ts';
 type TabType = 'book' | 'club';
 
 interface Club {
@@ -34,97 +35,91 @@ const mockClubs: ClubResponse = {
   data: [
     {
       clubId: 1,
-      bookTitle: "아주 작은 습관의 힘",
-      name: "독서 모임 환영합니다",
+      bookTitle: '아주 작은 습관의 힘',
+      name: '독서 모임 환영합니다',
       currentParticipants: 1,
       maxParticipants: 10,
-      status: "모집중",
-      startDate: "2024-04-01"
+      status: '모집중',
+      startDate: '2024-04-01',
     },
     {
       clubId: 2,
-      bookTitle: "미움받을 용기",
-      name: "아들러 심리학 스터디",
+      bookTitle: '미움받을 용기',
+      name: '아들러 심리학 스터디',
       currentParticipants: 5,
       maxParticipants: 8,
-      status: "모집중",
-      startDate: "2024-04-15"
+      status: '모집중',
+      startDate: '2024-04-15',
     },
     {
       clubId: 3,
-      bookTitle: "부자 아빠 가난한 아빠",
-      name: "재테크 독서 모임",
+      bookTitle: '부자 아빠 가난한 아빠',
+      name: '재테크 독서 모임',
       currentParticipants: 3,
       maxParticipants: 12,
-      status: "모집중",
-      startDate: "2024-04-20"
-    }
-  ]
+      status: '모집중',
+      startDate: '2024-04-20',
+    },
+  ],
 };
 
 const mockBooks: BookResponse = {
   totalCount: 3,
   data: [
     {
-      isbn13: "9791162540640",
+      isbn13: '9791162540640',
     },
     {
-      isbn13: "9788996991342",
+      isbn13: '9788996991342',
     },
     {
-      isbn13: "9788982732362",
-    }
-  ]
+      isbn13: '9788982732362',
+    },
+  ],
 };
 
 const FavoriteListPage = () => {
-
   const [activeTab, setActiveTab] = useState<TabType>('book');
   const [bookList, setBookList] = useState<string[]>([]);
   const [clubList, setClubList] = useState<Club[]>([]);
 
   useEffect(() => {
-    getClubFavoriteList();
-    getBookFavoriteList();
+    loadClubFavoriteList();
+    loadBookFavoriteList();
   }, [activeTab]);
 
-  const getClubFavoriteList = async () => {
+  const loadClubFavoriteList = async () => {
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/favorites/clubs', {
-            withCredentials: true,
-          });
-          console.log('클럽 즐겨찾기 불러오기 성공', response.data);
-          setClubList(response.data.data);
+      const res = await fetchClubFavoriteList();
+      console.log('클럽 즐겨찾기 목록 불러오기 성공', res);
+      setClubList(res.data);
     } catch (error) {
-        console.error('클럽 즐겨찾기 불러오기 실패', error);
+      console.error('클럽 즐겨찾기 불러오기 목록 실패', error);
     }
   };
 
-  const getBookFavoriteList = async () => {
+  const loadBookFavoriteList = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/favorites/books', {
-        withCredentials: true,
-      });
-      console.log('책 즐겨찾기 불러오기 성공', response.data);
-      setBookList(response.data.data);
-      console.log(response.data.data);
+      const res = await fetchbookFavoriteList();
+      console.log('책 즐겨찾기 목록 불러오기 성공', res);
+      setBookList(res.data);
     } catch (error) {
-      console.error('책 즐겨찾기 불러오기 실패', error);
+      console.error('책 즐겨찾기 목록 불러오기 실패', error);
     }
   };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>즐겨찾기</h1>
-      
+
       <div className={styles.tabSection}>
-        <button 
+        <button
           className={`${styles.tab} ${activeTab === 'book' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('book')}
         >
           책
         </button>
-        <button 
+        <button
           className={`${styles.tab} ${activeTab === 'club' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('club')}
         >
@@ -136,11 +131,7 @@ const FavoriteListPage = () => {
         {activeTab === 'book' ? (
           <div className={styles.bookContainer}>
             {bookList.map((book) => (
-              <BookCard
-                key = {book}
-                isbn13={book}
-                isDetailPage={true}
-              />
+              <BookCard key={book} isbn13={book} isDetailPage={true} />
             ))}
           </div>
         ) : (

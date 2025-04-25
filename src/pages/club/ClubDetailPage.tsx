@@ -228,7 +228,7 @@ const ClubDetailPage = () => {
       }
       setIsFavorite(!isFavorite);
     } catch (error) {
-      console.error('클럽 즐겨찾기 추가 실패', error);
+      console.error('클럽 즐겨찾기 추가/삭제 실패', error);
     }
   };
 

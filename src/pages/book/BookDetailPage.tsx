@@ -5,6 +5,7 @@ import * as styles from './BookDetailPage.css';
 import BookCard from '@features/book/components/BookCard.tsx';
 import ClubCard from '@features/club/components/ClubCard';
 import images from '@assets/icons/images';
+import { deleteBookFavorite, fetchBookFavorite, postBookFavorite } from '@api/favorite.ts';
 
 interface bookDetail {
   thumbnail: string;
@@ -57,7 +58,7 @@ const BookDetailPage = () => {
   }, [isbn13]);
 
   useEffect(() => {
-    getBookFavorite();
+    loadBookFavorite();
   }, [isFavorite]);
 
   const createClub = () => {
@@ -65,42 +66,33 @@ const BookDetailPage = () => {
       state: { bookDetail },
     });
   };
-  const getBookFavorite = async () => {
+
+  const loadBookFavorite = async () => {
+    if (!isbn13) return;
+
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/favorites/books/relation`,  {
-        params: { isbn13 },
-        withCredentials: true,
-      });
-      setIsFavorite(response.data.isFavorite);
-      console.log('책 즐겨찾기 여부 불러오기 성공', response.data);
+      const res = await fetchBookFavorite(isbn13);
+      setIsFavorite(res.isFavorite);
+      console.log('책 즐겨찾기 여부 불러오기 성공', res);
     } catch (error) {
       console.error('책 즐겨찾기 여부 불러오기 실패', error);
     }
   };
 
-  const postFavorite = async () => {
-    try {
-      await axios.post(`http://localhost:8080/api/v1/favorites/books`, {
-        isbn13,
-      },{
-        withCredentials: true,
-      });
-      setIsFavorite(true);
-      console.log('책 즐겨찾기 추가 성공');
-    } catch (error) {
-      console.error('책 즐겨찾기 추가 실패', error);
-    }
-  };
+  const toggleBookFavorite = async () => {
+    if (!isbn13) return;
 
-  const deleteFavorite = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/favorites/books/${isbn13}`, {
-        withCredentials: true,
-      });
-      setIsFavorite(false);
-      console.log('책 즐겨찾기 삭제 성공');
+      if (isFavorite) {
+        await deleteBookFavorite(isbn13);
+        console.log('즐겨찾기 추가 성공');
+      } else {
+        await postBookFavorite(isbn13);
+        console.log('즐겨찾기 추가 실패');
+      }
+      setIsFavorite(!isFavorite);
     } catch (error) {
-      console.error('책 즐겨찾기 삭제 실패', error);
+      console.error('즐겨찾기 추가/삭제 실패', error);
     }
   };
 
@@ -157,11 +149,11 @@ const BookDetailPage = () => {
           back
         </button>
         {isFavorite ? (
-          <div  onClick={deleteFavorite}>
-            <images.BookFavoriteFull className={styles.bookFavoriteIcon}/>
+          <div onClick={toggleBookFavorite}>
+            <images.BookFavoriteFull className={styles.bookFavoriteIcon} />
           </div>
         ) : (
-          <div  onClick={postFavorite}>
+          <div onClick={toggleBookFavorite}>
             <images.BookFavoriteEmpty className={styles.bookFavoriteIcon} />
           </div>
         )}
@@ -183,18 +175,18 @@ const BookDetailPage = () => {
         </div>
 
         <div className={styles.clubContainer}>
-        {clubList.map((club) => (
-          <ClubCard
-            key={club.clubId}
-            clubId={club.clubId}
-            bookTitle={club.bookTitle}
-            name={club.name}
-            currentParticipants={club.currentParticipants}
-            maxParticipants={club.maxParticipants}
-            status={club.status}
-            startDate={club.startDate}
-          />
-        ))}
+          {clubList.map((club) => (
+            <ClubCard
+              key={club.clubId}
+              clubId={club.clubId}
+              bookTitle={club.bookTitle}
+              name={club.name}
+              currentParticipants={club.currentParticipants}
+              maxParticipants={club.maxParticipants}
+              status={club.status}
+              startDate={club.startDate}
+            />
+          ))}
         </div>
       </div>
     </>
