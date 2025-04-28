@@ -9,44 +9,35 @@ import searchBar from '@assets/icons/Logo-search-bar.jpg';
 
 // Bestseller, BlogBest, ItemNewAll
 
-interface book {
+interface Book {
   title: string;
   isbn13: string;
   cover: string;
 }
 
 const HomePage = () => {
-  const [bookList, setBookList] = useState<book[]>([]);
-  const [bestseller, setBestseller] = useState<book[]>([]);
-  const [blogBest, setBlogBest] = useState<book[]>([]);
-  const [itemNewAll, setItemNewAll] = useState<book[]>([]);
+  const [bestseller, setBestseller] = useState<Book[]>([]);
+  const [blogBest, setBlogBest] = useState<Book[]>([]);
+  const [itemNewAll, setItemNewAll] = useState<Book[]>([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadBookList = async () => {
-      const response = await getBookList('Bestseller');
-
-      setBookList(response.data);
-    };
-
-    loadBookList();
-
     const loadBestseller = async () => {
-      const response = await getBookList('Bestseller');
-      setBestseller(response.data);
+      const res = await getBookList('Bestseller');
+      setBestseller(res.data);
     };
     loadBestseller();
 
     const loadBlogBest = async () => {
-      const response = await getBookList('BlogBest');
-      setBlogBest(response.data);
+      const res = await getBookList('BlogBest');
+      setBlogBest(res.data);
     };
     loadBlogBest();
 
     const loadItemNewAll = async () => {
-      const response = await getBookList('ItemNewAll');
-      setItemNewAll(response.data);
+      const res = await getBookList('ItemNewAll');
+      setItemNewAll(res.data);
     };
     loadItemNewAll();
   }, []);
@@ -75,7 +66,7 @@ const HomePage = () => {
           <div className={styles.categoryContainer}>
             <h3 className={styles.categoryTitle}>베스트셀러</h3>
             <div className={styles.bookBoxContainer}>
-              {bookList.map((book) => (
+              {bestseller.map((book) => (
                 <div
                   key={book.isbn13}
                   onClick={() => {

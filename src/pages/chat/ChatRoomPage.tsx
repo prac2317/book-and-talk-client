@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ChatRoomPage.css';
 import { Client } from '@stomp/stompjs';
-import axios from 'axios';
 import images from '@assets/icons/images.ts';
 import { format } from 'date-fns';
 import { fetchMemberId } from '@api/auth.ts';
@@ -16,19 +15,11 @@ interface ChatMessage {
   createdAt: string;
 }
 
-interface FetchMessagesResponse {
-  data: ChatMessage[];
-}
-
 interface ParticipantInfo {
   memberId: string;
   nickname: string;
   imageUrl: string;
   isRoomHost: boolean;
-}
-
-interface FetchParticipantsResponse {
-  data: ParticipantInfo[];
 }
 
 const ChatRoomPage = () => {

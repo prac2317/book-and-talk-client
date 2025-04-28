@@ -1,7 +1,8 @@
 import * as styles from './Step4.css';
 import { vars } from '../../../styles/global.css.ts';
+import { StepProps } from '@type/club.ts';
 
-const Step4 = ({ goToPrevStep, goToNextStep, formData, setFormData }) => {
+const Step4 = ({ goToNextStep, formData, setFormData }: StepProps) => {
   const durations = [1, 2, 3, 4, 5, 6, 7];
 
   return (
@@ -42,9 +43,6 @@ const Step4 = ({ goToPrevStep, goToNextStep, formData, setFormData }) => {
       </div>
 
       <div>
-        {/*<button className={styles.primaryButton} onClick={goToPrevStep}>*/}
-        {/*  이전*/}
-        {/*</button>*/}
         <button className={styles.primaryButton} onClick={goToNextStep}>
           다음
         </button>

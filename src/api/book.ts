@@ -11,8 +11,8 @@ interface book {
   cover: string;
 }
 
-export const getBookList = async (category: string) => {
-  const res: bookListResponse = await api.get('/books', {
+export const getBookList = async (category: string): Promise<bookListResponse> => {
+  const res = await api.get('/books', {
     params: { category },
   });
   return res.data;

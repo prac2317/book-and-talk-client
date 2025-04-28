@@ -1,7 +1,8 @@
 import * as styles from './Step2.css';
 import images from '@assets/icons/images';
+import { StepProps } from '@type/club';
 
-const Step2 = ({ goToPrevStep, goToNextStep, formData, setFormData }) => {
+const Step2 = ({ goToNextStep, formData, setFormData }: StepProps) => {
   return (
     <form className={styles.container}>
       <div className={styles.overviewWrapper}>

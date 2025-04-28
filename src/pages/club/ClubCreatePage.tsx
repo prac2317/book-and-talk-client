@@ -85,9 +85,9 @@ const ClubCreatePage = () => {
     setStepNumber(stepNumber + 1);
   };
 
-  const goToPrevStep = () => {
-    setStepNumber(stepNumber - 1);
-  };
+  // const goToPrevStep = () => {
+  //   setStepNumber(stepNumber - 1);
+  // };
 
   return (
     <div className={styles.container}>
@@ -104,40 +104,23 @@ const ClubCreatePage = () => {
       <div className={styles.stepSection}>
         {stepNumber == 1 && <Step1 goToNextStep={goToNextStep} bookDetail={bookDetail} />}
         {stepNumber == 2 && (
-          <Step2
-            goToNextStep={goToNextStep}
-            goToPrevStep={goToPrevStep}
-            formData={formData}
-            setFormData={setFormData}
-          />
+          <Step2 goToNextStep={goToNextStep} formData={formData} setFormData={setFormData} />
         )}
         {stepNumber == 3 && (
-          <Step3
-            goToNextStep={goToNextStep}
-            goToPrevStep={goToPrevStep}
-            formData={formData}
-            setFormData={setFormData}
-            // isbn13={bookDetail.isbn13}
-          />
+          <Step3 goToNextStep={goToNextStep} formData={formData} setFormData={setFormData} />
         )}
         {stepNumber == 4 && (
-          <Step4
-            goToNextStep={goToNextStep}
-            goToPrevStep={goToPrevStep}
-            formData={formData}
-            setFormData={setFormData}
-          />
+          <Step4 goToNextStep={goToNextStep} formData={formData} setFormData={setFormData} />
         )}
         {stepNumber == 5 && (
           <Step5
             goToNextStep={goToNextStep}
-            goToPrevStep={goToPrevStep}
             formData={formData}
             setFormData={setFormData}
             handleSubmit={handleSubmit}
           />
         )}
-        {stepNumber == 6 && <Step6 goToPrevStep={goToPrevStep} navigate={navigate} />}
+        {stepNumber == 6 && <Step6 />}
       </div>
     </div>
   );

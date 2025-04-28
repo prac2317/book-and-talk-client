@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import * as styles from './FavoriteListPage.css';
 import ClubCard from '@features/club/components/ClubCard';
 import BookCard from '@features/book/components/BookCard';
-import axios from 'axios';
 import { fetchbookFavoriteList, fetchClubFavoriteList } from '@api/favorite.ts';
 type TabType = 'book' | 'club';
 
@@ -15,68 +14,20 @@ interface Club {
   status: string;
   startDate: string;
 }
-
-interface ClubResponse {
-  totalCount: number;
-  data: Club[];
-}
-
-interface Book {
-  isbn13: string;
-}
-
-interface BookResponse {
-  totalCount: number;
-  data: Book[];
-}
-
-const mockClubs: ClubResponse = {
-  totalCount: 3,
-  data: [
-    {
-      clubId: 1,
-      bookTitle: '아주 작은 습관의 힘',
-      name: '독서 모임 환영합니다',
-      currentParticipants: 1,
-      maxParticipants: 10,
-      status: '모집중',
-      startDate: '2024-04-01',
-    },
-    {
-      clubId: 2,
-      bookTitle: '미움받을 용기',
-      name: '아들러 심리학 스터디',
-      currentParticipants: 5,
-      maxParticipants: 8,
-      status: '모집중',
-      startDate: '2024-04-15',
-    },
-    {
-      clubId: 3,
-      bookTitle: '부자 아빠 가난한 아빠',
-      name: '재테크 독서 모임',
-      currentParticipants: 3,
-      maxParticipants: 12,
-      status: '모집중',
-      startDate: '2024-04-20',
-    },
-  ],
-};
-
-const mockBooks: BookResponse = {
-  totalCount: 3,
-  data: [
-    {
-      isbn13: '9791162540640',
-    },
-    {
-      isbn13: '9788996991342',
-    },
-    {
-      isbn13: '9788982732362',
-    },
-  ],
-};
+//
+// interface ClubResponse {
+//   totalCount: number;
+//   data: Club[];
+// }
+//
+// interface Book {
+//   isbn13: string;
+// }
+//
+// interface BookResponse {
+//   totalCount: number;
+//   data: Book[];
+// }
 
 const FavoriteListPage = () => {
   const [activeTab, setActiveTab] = useState<TabType>('book');

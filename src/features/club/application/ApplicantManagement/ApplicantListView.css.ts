@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '../../../styles/global.css.ts';
+import { vars } from '../../../../styles/global.css.ts';
 
 export const applicantSection = style({
   display: 'flex',

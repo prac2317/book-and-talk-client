@@ -1,37 +1,19 @@
-import * as styles from './ClubApplicantModal.css';
-import images from '@assets/icons/images';
-import ApplicantList from './ApplicantList.tsx';
-import ApplicantDetail from './ApplicantDetail.tsx';
+import * as styles from './ClubApplicantModal.css.ts';
+import images from '@assets/icons/images.ts';
+import ApplicantListView from './ApplicantListView.tsx';
+import ApplicantDetailView from './ApplicantDetailView.tsx';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { fetchApplication, processApplication } from '@api/application.ts';
+import { ApplicantOverview, ApplicationStatus, ProcessType } from '@type/application';
 
-interface applicantOverview {
-  clubApplicationId: string;
-  questionAnswer: string;
-  createdAt: string;
-  status: ApplicationStatus;
-  memberId: string;
-  profileImage: string;
-  nickname: string;
+interface ClubApplicationModalProps {
+  isModalOpen: boolean;
+  setIsModalOpen: (isModalOpen: boolean) => void;
+  clubId: string | undefined;
 }
 
-enum ApplicationStatus {
-  PENDING = 'PENDING',
-  APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED',
-}
-
-enum ProcessType {
-  APPROVE = 'APPROVE',
-  REJECT = 'REJECT',
-}
-
-const ClubApplicantModal = ({ isModalOpen, setIsModalOpen, clubId }) => {
-  const navigate = useNavigate();
-  const [applicantOverviews, setApplicantOverviews] = useState<applicantOverview[]>([
+const ClubApplicantModal = ({ isModalOpen, setIsModalOpen, clubId }: ClubApplicationModalProps) => {
+  const [applicantOverviews, setApplicantOverviews] = useState<ApplicantOverview[]>([
     {
       clubApplicationId: '0',
       questionAnswer: '독후감 쓰는 것을 좋아해서 썼어요!',
@@ -43,16 +25,16 @@ const ClubApplicantModal = ({ isModalOpen, setIsModalOpen, clubId }) => {
     },
   ]);
   const [showApplicantDetail, setShowApplicantDetail] = useState(false);
-  const [selectedApplicantDetail, setSelectedApplicantDetail] = useState<applicantOverview | null>(
-    null,
-  );
+  const [selectedApplicantOverview, setSelectedApplicantOverview] =
+    useState<ApplicantOverview | null>(null);
 
   useEffect(() => {
     loadApplicants();
-    console.log('발동');
   }, [isModalOpen]);
 
   const loadApplicants = async () => {
+    if (!clubId) return;
+
     try {
       const res = await fetchApplication(clubId);
       console.log('참가 신청자 목록 불러오기 성공', res);
@@ -63,9 +45,9 @@ const ClubApplicantModal = ({ isModalOpen, setIsModalOpen, clubId }) => {
   };
 
   const handleProcessApplication = async (processType: ProcessType) => {
-    const memberId = selectedApplicantDetail?.memberId;
-    const clubApplicationId = selectedApplicantDetail?.clubApplicationId;
-    if (!memberId || !clubApplicationId) return;
+    const memberId = selectedApplicantOverview?.memberId;
+    const clubApplicationId = selectedApplicantOverview?.clubApplicationId;
+    if (!memberId || !clubApplicationId || !clubId) return;
     try {
       await processApplication(clubId, memberId, clubApplicationId, processType);
       setIsModalOpen(false);
@@ -78,14 +60,14 @@ const ClubApplicantModal = ({ isModalOpen, setIsModalOpen, clubId }) => {
   const handleBack = () => {
     if (showApplicantDetail) {
       setShowApplicantDetail(false);
-      setSelectedApplicantDetail(null);
+      setSelectedApplicantOverview(null);
     } else {
       setIsModalOpen(false);
     }
   };
 
-  const selectApplicant = (applicantOverview: applicantOverview) => {
-    setSelectedApplicantDetail(applicantOverview);
+  const selectApplicant = (applicantOverview: ApplicantOverview) => {
+    setSelectedApplicantOverview(applicantOverview);
     console.log(applicantOverview);
     setShowApplicantDetail(true);
   };
@@ -97,11 +79,14 @@ const ClubApplicantModal = ({ isModalOpen, setIsModalOpen, clubId }) => {
         <div className={styles.title}>신청자 명단</div>
       </div>
       {!showApplicantDetail && (
-        <ApplicantList applicantOverviews={applicantOverviews} selectApplicant={selectApplicant} />
+        <ApplicantListView
+          applicantOverviews={applicantOverviews}
+          selectApplicant={selectApplicant}
+        />
       )}
-      {showApplicantDetail && (
-        <ApplicantDetail
-          selectedApplicantDetail={selectedApplicantDetail}
+      {showApplicantDetail && selectedApplicantOverview && (
+        <ApplicantDetailView
+          selectedApplicantOverview={selectedApplicantOverview}
           handleProcessApplication={handleProcessApplication}
         />
       )}

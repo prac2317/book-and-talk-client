@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ClubDetailPage.css';
 import images from '@assets/icons/images';
-import ClubApplicantModal from '../../features/club/application/ClubApplicantModal.tsx';
+import ClubApplicantModal from '@features/club/application/ApplicantManagement/ClubApplicantModal.tsx';
 import { fetchClubDetail, fetchClubMember, fetchVisitorClubRelation } from '@api/club.ts';
 import { fetchClubFavorite, deleteClubFavorite, postClubFavorite } from '@api/favorite.ts';
 import { cancelApplication } from '@api/application.ts';

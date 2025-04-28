@@ -6,7 +6,7 @@ enum ProcessType {
 }
 
 export const cancelApplication = async (clubId: string) => {
-  await api.post(`/clubs/${clubId}/applications/cancel`);
+  await api.post(`/v1/clubs/${clubId}/applications/cancel`);
 };
 
 export const createApplication = async (clubId: string, questionAnswer: string) => {

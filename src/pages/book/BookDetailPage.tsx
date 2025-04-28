@@ -18,15 +18,6 @@ interface bookDetail {
   description: string;
 }
 
-interface getClubListResponse {
-  totalCount: number;
-  data: clubOverview[];
-}
-
-interface getBookFavoriteResponse {
-  isFavorite: boolean;
-}
-
 interface clubOverview {
   clubId: number;
   bookTitle: string;

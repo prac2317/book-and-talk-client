@@ -2,9 +2,10 @@ import * as styles from './Step5.css';
 import { selectButton } from './Step5.css';
 import { vars } from '../../../styles/global.css.ts';
 import { useState } from 'react';
+import { Step5Props } from '@type/club.ts';
 
-const Step5 = ({ goToPrevStep, formData, setFormData, handleSubmit }) => {
-  const count = ['3', '5', '10'];
+const Step5 = ({ formData, setFormData, handleSubmit }: Step5Props) => {
+  const count = [3, 5, 10];
   const [isClicked, setIsClicked] = useState(false);
 
   return (
@@ -69,9 +70,6 @@ const Step5 = ({ goToPrevStep, formData, setFormData, handleSubmit }) => {
       </div>
 
       <div>
-        {/*<button className={styles.primaryButton} onClick={goToPrevStep}>*/}
-        {/*  이전*/}
-        {/*</button>*/}
         <button className={styles.primaryButton} onClick={handleSubmit}>
           다음
         </button>

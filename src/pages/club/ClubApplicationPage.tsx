@@ -1,6 +1,6 @@
 import * as styles from './ClubApplicationPage.css.ts';
-import ClubApplicationQuestion from '@features/club/application/ClubApplicationQuestion.tsx';
-import ClubApplicationCompleted from '@features/club/application/ClubApplicationCompleted.tsx';
+import JoinForm from '@features/club/application/Join/JoinForm.tsx';
+import JoinCompleted from '@features/club/application/Join/JoinCompleted.tsx';
 import { useState } from 'react';
 import images from '@assets/icons/images.ts';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -30,14 +30,9 @@ const ClubApplicationPage = () => {
           <img className={styles.xButton} src={images.xButtonImage} alt="x" />
         </div>
         {isSubmitted ? (
-          <ClubApplicationCompleted />
+          <JoinCompleted />
         ) : (
-          <ClubApplicationQuestion
-            clubId={clubId}
-            clubName={clubName}
-            setIsSubmitted={setIsSubmitted}
-            setQuestionAnswer={setQuestionAnswer}
-          />
+          <JoinForm clubName={clubName} setQuestionAnswer={setQuestionAnswer} />
         )}
       </div>
       {!isSubmitted && (

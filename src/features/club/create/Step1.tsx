@@ -1,17 +1,8 @@
 import * as styles from './Step1.css';
 import BookCard from '@features/book/components/BookCard.tsx';
+import { Step1Props } from '@type/club';
 
-interface bookDetail {
-  thumbnail: string;
-  title: string;
-  author: string;
-  publishedDate: string;
-  publisher: string;
-  isbn13: string;
-  description: string;
-}
-
-const Step1 = ({ bookDetail, goToNextStep }) => {
+const Step1 = ({ bookDetail, goToNextStep }: Step1Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.cardWrapper}>

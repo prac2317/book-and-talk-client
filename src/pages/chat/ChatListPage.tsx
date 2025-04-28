@@ -14,10 +14,6 @@ interface ChatRoom {
   recentMessage: string | null;
 }
 
-interface GetChatRoomsApiResponse {
-  data: ChatRoom[];
-}
-
 const ChatListPage = () => {
   const navigate = useNavigate();
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);

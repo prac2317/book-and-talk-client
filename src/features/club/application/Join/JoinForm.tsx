@@ -1,8 +1,14 @@
-import * as styles from './ClubApplicationQuestion.css';
-import images from '@assets/icons/images';
-import axios from 'axios';
+import React from 'react';
+import * as styles from './JoinForm.css.ts';
+import images from '@assets/icons/images.ts';
 
-const ClubApplicationQuestion = ({ clubId, clubName, setQuestionAnswer }) => {
+const JoinForm = ({
+  clubName,
+  setQuestionAnswer,
+}: {
+  clubName: string;
+  setQuestionAnswer: React.Dispatch<React.SetStateAction<string>>;
+}) => {
   const question =
     '저희 모임은 책을 읽고 독후감을 작성하는 모임입니다.\n기간동안 잘 참여하실 수 있는 분이시면 좋겠습니다."';
 
@@ -47,4 +53,4 @@ const ClubApplicationQuestion = ({ clubId, clubName, setQuestionAnswer }) => {
   );
 };
 
-export default ClubApplicationQuestion;
+export default JoinForm;

@@ -1,6 +1,7 @@
 import * as styles from './Step3.css';
+import { StepProps } from '@type/club.ts';
 
-const Step3 = ({ goToPrevStep, goToNextStep, formData, setFormData }) => {
+const Step3 = ({ goToNextStep }: StepProps) => {
   return (
     <form className={styles.container}>
       <div className={styles.locationWrapper}>
@@ -12,9 +13,6 @@ const Step3 = ({ goToPrevStep, goToNextStep, formData, setFormData }) => {
         />
       </div>
       <div>
-        {/*<button className={styles.primaryButton} onClick={goToPrevStep}>*/}
-        {/*  이전*/}
-        {/*</button>*/}
         <button className={styles.primaryButton} onClick={goToNextStep}>
           다음
         </button>

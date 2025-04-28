@@ -45,7 +45,7 @@ const BookCard = ({ isbn13, isDetailPage = false }: BookCardProps) => {
 
   const fetchBookDetail = async () => {
     if (!isbn13) return;
-  
+
     try {
       console.log('카카오 검색 시작', isbn13);
       const response = await axios.get(
@@ -55,7 +55,7 @@ const BookCard = ({ isbn13, isDetailPage = false }: BookCardProps) => {
         },
       );
       const bookResponse = response.data.documents[0];
-  
+
       setBookDetail({
         thumbnail: bookResponse.thumbnail,
         title: bookResponse.title,
@@ -65,7 +65,7 @@ const BookCard = ({ isbn13, isDetailPage = false }: BookCardProps) => {
         isbn13: isbn13,
         description: bookResponse.contents ? bookResponse.contents : '책 소개입니다.',
       });
-  
+
       console.log('카카오 검색 완료', response.data.documents[0]);
     } catch (error) {
       console.error('카카오 검색 실패', error);
@@ -85,9 +85,9 @@ const BookCard = ({ isbn13, isDetailPage = false }: BookCardProps) => {
   }
 
   return (
-    <div 
+    <div
       className={`${styles.bookCard} ${!isDetailPage ? styles.clickable : ''}`}
-      onClick={() => !isDetailPage && navigateToBookDetail(isbn13)}
+      onClick={() => !isDetailPage && isbn13 && navigateToBookDetail(isbn13)}
     >
       <img className={styles.bookThumbnail} src={bookDetail.thumbnail} alt="thumbnail" />
       <div className={styles.bookOverview}>

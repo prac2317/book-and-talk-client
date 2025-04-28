@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import * as styles from './LoginPage.css';
 import logo from '@assets/icons/Book-and-talk-text.png';
@@ -10,7 +9,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [memberId, setMemberId] = useState('');
-  const [isValidEmail, setIsValidEmail] = useState(false);
+  // const [isValidEmail, setIsValidEmail] = useState(false);
 
   const loadMemberId = async () => {
     try {

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import * as styles from './SignupPage.css';
 import logo from '@assets/icons/Book-and-talk-text.png';
