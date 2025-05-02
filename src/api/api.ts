@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://book-and-talk.shop/api',
+  baseURL: 'https://bookandtalk.shop/api',
   withCredentials: true, // 쿠키 전달 허용
 });
 
