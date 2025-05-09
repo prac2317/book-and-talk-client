@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as styles from './ClubCreatePage.css.ts';
 import images from '@assets/icons/images';
@@ -9,6 +8,7 @@ import Step3 from '../../features/club/create/Step3.tsx';
 import Step4 from '../../features/club/create/Step4.tsx';
 import Step5 from '../../features/club/create/Step5.tsx';
 import Step6 from '../../features/club/create/Step6.tsx';
+import { createClub } from '@api/club.ts';
 
 interface CreateClubRequest {
   name: string;
@@ -60,19 +60,10 @@ const ClubCreatePage = () => {
     }
   }, [bookDetail]);
 
-  const createGroup = async (data: CreateClubRequest) => {
-    //TODO: 임시로 'yyyy-MM-dd'T'HH:mm' 형식 맞춤 -> 백엔드 바꾸고 다시 수정하기
-    const newData = { ...data, startDate: `${data.startDate}T00:00` };
-    const response = await axios.post('http://localhost:8080/api/v1/clubs', newData, {
-      withCredentials: true,
-    });
-    return response.data;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await createGroup(formData);
+      const result = await createClub(formData);
       console.log('모임 생성 성공', result);
       goToNextStep();
     } catch (error) {

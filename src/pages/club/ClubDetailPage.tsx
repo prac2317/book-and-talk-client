@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ClubDetailPage.css';
 import images from '@assets/icons/images';
 import ClubApplicantModal from '@features/club/application/ApplicantManagement/ClubApplicantModal.tsx';
-import { fetchClubDetail, fetchClubMember, fetchVisitorClubRelation } from '@api/club.ts';
+import {
+  deleteClub,
+  fetchClubDetail,
+  fetchClubMember,
+  fetchVisitorClubRelation,
+} from '@api/club.ts';
 import { fetchClubFavorite, deleteClubFavorite, postClubFavorite } from '@api/favorite.ts';
 import { cancelApplication } from '@api/application.ts';
 
@@ -189,9 +193,11 @@ const ClubDetailPage = () => {
     });
   };
 
-  const deleteClub = async () => {
+  const handleDeleteClub = async () => {
+    if (!clubId) return;
+
     try {
-      await axios.delete(`http://localhost:8080/api/v1/clubs/${clubId}`);
+      await deleteClub(clubId);
       navigate(-1);
       console.log('삭제 성공');
     } catch (error) {
@@ -249,7 +255,7 @@ const ClubDetailPage = () => {
         </div>
         <div className={styles.actionButtons}>
           {visitorStatus === 'HOST' && (
-            <button onClick={deleteClub} className={styles.iconButton}>
+            <button onClick={handleDeleteClub} className={styles.iconButton}>
               <img src={images.clubDeleteImage} alt="delete" />
             </button>
           )}
