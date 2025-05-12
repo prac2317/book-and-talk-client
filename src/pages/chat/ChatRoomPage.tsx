@@ -33,7 +33,7 @@ const ChatRoomPage = () => {
 
   const stomp = useRef(
     new Client({
-      brokerURL: `wss://${import.meta.env.VITE_BASE_URL}/portfolio`,
+      brokerURL: `${import.meta.env.VITE_WS_URL}/portfolio`,
       reconnectDelay: 5000,
       onConnect: () => {
         console.log('WebSocket connected');
