@@ -11,19 +11,8 @@ import {
 } from '@api/club.ts';
 import { fetchClubFavorite, deleteClubFavorite, postClubFavorite } from '@api/favorite.ts';
 import { cancelApplication } from '@api/application.ts';
+import { GetClubDetailResponse } from '@type/club.ts';
 
-interface getClubDetailResponse {
-  clubId: number;
-  name: string;
-  bookTitle: string;
-  currentParticipant: number;
-  maxParticipants: number;
-  startDate: string;
-  duration: number;
-  clubDescription: string;
-  isbn13: string;
-  createdAt: string;
-}
 //
 // interface getClubVisitorResponse {
 //   data: memberInformation[];
@@ -44,7 +33,7 @@ interface memberInformation {
 const ClubDetailPage = () => {
   const navigate = useNavigate();
   const { clubId } = useParams();
-  const [clubDetail, setClubDetail] = useState<getClubDetailResponse>({
+  const [clubDetail, setClubDetail] = useState<GetClubDetailResponse>({
     clubId: 0,
     name: '',
     bookTitle: '',
@@ -55,6 +44,7 @@ const ClubDetailPage = () => {
     clubDescription: '',
     isbn13: '',
     createdAt: '',
+    clubImage: '',
   });
   const [clubMember, setClubMember] = useState<memberInformation[]>([]);
   const titleLocation = 160;
@@ -81,6 +71,7 @@ const ClubDetailPage = () => {
       '관심 있으신 분들은 편하게 신청해주세요 :)',
     isbn13: '9791162540640',
     createdAt: '2019-09-09T00:00:00.000Z',
+    clubImage: images.clubBackgroundImage,
   };
 
   const clubMemberMockData = [
@@ -277,7 +268,8 @@ const ClubDetailPage = () => {
         </div>
       </div>
 
-      <img className={styles.pictureBox} src={images.clubBackgroundImage} alt="background" />
+      {/*<img className={styles.pictureBox} src={images.clubBackgroundImage} alt="background" />*/}
+      <img className={styles.pictureBox} src={clubDetail.clubImage} alt="background" />
 
       <div className={styles.titleSection}>
         <div>{clubDetail.name}</div>

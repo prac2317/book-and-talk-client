@@ -7,6 +7,7 @@ import ClubCard from '@features/club/components/ClubCard';
 import images from '@assets/icons/images';
 import { deleteBookFavorite, fetchBookFavorite, postBookFavorite } from '@api/favorite.ts';
 import { fetchClubList } from '@api/club.ts';
+import { ClubOverview } from '@type/club.ts';
 
 interface bookDetail {
   thumbnail: string;
@@ -18,21 +19,11 @@ interface bookDetail {
   description: string;
 }
 
-interface clubOverview {
-  clubId: number;
-  bookTitle: string;
-  name: string;
-  currentParticipants: number;
-  maxParticipants: number;
-  status: string;
-  startDate: string;
-}
-
 const BookDetailPage = () => {
   const navigate = useNavigate();
   const { isbn13 } = useParams();
   const [clubCount, setClubCount] = useState(0);
-  const [clubList, setClubList] = useState<clubOverview[]>([]);
+  const [clubList, setClubList] = useState<ClubOverview[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [bookDetail, setBookDetail] = useState<bookDetail>({
     thumbnail: '',
@@ -177,6 +168,7 @@ const BookDetailPage = () => {
               maxParticipants={club.maxParticipants}
               status={club.status}
               startDate={club.startDate}
+              clubImage={club.clubImage}
             />
           ))}
         </div>

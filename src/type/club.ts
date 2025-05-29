@@ -18,6 +18,42 @@ export interface FormInput {
   clubDescription: string;
 }
 
+export interface GetClubDetailResponse {
+  clubId: number;
+  name: string;
+  bookTitle: string;
+  currentParticipant: number;
+  maxParticipants: number;
+  startDate: string;
+  duration: number;
+  clubDescription: string;
+  isbn13: string;
+  createdAt: string;
+  clubImage: string;
+}
+
+export interface ClubOverview {
+  clubId: number;
+  bookTitle: string;
+  name: string;
+  currentParticipants: number;
+  maxParticipants: number;
+  status: string;
+  startDate: string;
+  clubImage: string;
+}
+
+export interface ClubCardProps {
+  clubId: number;
+  bookTitle: string;
+  name: string;
+  currentParticipants: number;
+  maxParticipants: number;
+  status: string;
+  startDate: string;
+  clubImage: string;
+}
+
 export interface BaseStepProps {
   goToNextStep: () => void;
   // goToPrevStep?: () => void;

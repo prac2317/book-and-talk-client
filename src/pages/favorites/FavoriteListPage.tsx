@@ -3,36 +3,13 @@ import * as styles from './FavoriteListPage.css';
 import ClubCard from '@features/club/components/ClubCard';
 import BookCard from '@features/book/components/BookCard';
 import { fetchbookFavoriteList, fetchClubFavoriteList } from '@api/favorite.ts';
+import { ClubOverview } from '@type/club.ts';
 type TabType = 'book' | 'club';
-
-interface Club {
-  clubId: number;
-  bookTitle: string;
-  name: string;
-  currentParticipants: number;
-  maxParticipants: number;
-  status: string;
-  startDate: string;
-}
-//
-// interface ClubResponse {
-//   totalCount: number;
-//   data: Club[];
-// }
-//
-// interface Book {
-//   isbn13: string;
-// }
-//
-// interface BookResponse {
-//   totalCount: number;
-//   data: Book[];
-// }
 
 const FavoriteListPage = () => {
   const [activeTab, setActiveTab] = useState<TabType>('book');
   const [bookList, setBookList] = useState<string[]>([]);
-  const [clubList, setClubList] = useState<Club[]>([]);
+  const [clubList, setClubList] = useState<ClubOverview[]>([]);
 
   useEffect(() => {
     loadClubFavoriteList();
@@ -97,6 +74,7 @@ const FavoriteListPage = () => {
                 maxParticipants={club.maxParticipants}
                 status={club.status}
                 startDate={club.startDate}
+                clubImage={club.clubImage}
               />
             ))}
           </div>

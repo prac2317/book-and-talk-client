@@ -1,16 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import * as styles from './ClubCard.css';
-import groupImageExampple from '@assets/icons/img.png';
-
-interface ClubCardProps {
-  clubId: number;
-  bookTitle: string;
-  name: string;
-  currentParticipants: number;
-  maxParticipants: number;
-  status: string;
-  startDate: string;
-}
+import { ClubCardProps } from '@type/club.ts';
 
 const ClubCard = ({
   clubId,
@@ -20,6 +10,7 @@ const ClubCard = ({
   maxParticipants,
   status,
   startDate,
+  clubImage,
 }: ClubCardProps) => {
   const navigate = useNavigate();
 
@@ -28,12 +19,10 @@ const ClubCard = ({
   };
 
   return (
-    <div
-      className={styles.clubCard}
-      onClick={() => navigateToClubDetail(clubId)}
-    >
+    <div className={styles.clubCard} onClick={() => navigateToClubDetail(clubId)}>
       <div>
-        <img className={styles.clubThumbnail} src={groupImageExampple} alt="thumbnail" />
+        <img className={styles.clubThumbnail} src={clubImage} alt="thumbnail" />
+        {/*<img className={styles.clubThumbnail} src={groupImageExampple} alt="thumbnail" />*/}
       </div>
       <div className={styles.clubOverview}>
         <div>{bookTitle}</div>
@@ -48,4 +37,4 @@ const ClubCard = ({
   );
 };
 
-export default ClubCard; 
+export default ClubCard;
