@@ -9,6 +9,7 @@ const SignupPage = () => {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,13 +17,28 @@ const SignupPage = () => {
   };
 
   const submitSignUp = async () => {
+    const formData = createFormData();
+
     try {
-      const res = await signUp(nickname, email, password);
+      const res = await signUp(formData);
       console.log('회원가입 성공', res);
       navigate('/login');
     } catch (error) {
       console.log('회원가입 실패', error);
     }
+  };
+
+  const createFormData = () => {
+    const formData = new FormData();
+    const request = new Blob([JSON.stringify({ email, nickname, password })], {
+      type: 'application/json',
+    });
+    formData.append('request', request);
+    if (profileImage) {
+      formData.append('image', profileImage);
+    }
+
+    return formData;
   };
 
   return (
@@ -31,6 +47,10 @@ const SignupPage = () => {
         <img className={styles.logoImage} src={logo} alt="logo" />
       </div>
       <form className={styles.signupForm} onSubmit={handleSubmit}>
+        <input
+          type="file"
+          onChange={(e) => setProfileImage(e.target.files ? e.target.files[0] : null)}
+        />
         <input
           className={styles.input}
           placeholder={'닉네임'}

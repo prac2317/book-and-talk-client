@@ -10,17 +10,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [memberId, setMemberId] = useState('');
   // const [isValidEmail, setIsValidEmail] = useState(false);
-
-  const loadMemberId = async () => {
-    try {
-      const res = await fetchMemberId();
-      console.log(res);
-      setMemberId(res);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     loadMemberId();
   }, []);
@@ -31,6 +20,16 @@ const LoginPage = () => {
     }
     setIsAuthenticated(true);
   }, [memberId]);
+
+  const loadMemberId = async () => {
+    try {
+      const res = await fetchMemberId();
+      console.log(res);
+      setMemberId(res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -10,12 +10,8 @@ export const logout = async () => {
   return res.data;
 };
 
-export const signUp = async (nickname: string, email: string, password: string) => {
-  const res = await api.post('/v1/auth/signup', {
-    nickname,
-    email,
-    password,
-  });
+export const signUp = async (formData: FormData) => {
+  const res = await api.post('/v1/auth/signup', formData);
   return res.data;
 };
 
