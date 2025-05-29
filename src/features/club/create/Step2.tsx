@@ -1,34 +1,41 @@
 import * as styles from './Step2.css';
 import images from '@assets/icons/images';
-import { StepProps } from '@type/club';
+import { Step2Props } from '@type/club';
 
-const Step2 = ({ goToNextStep, formData, setFormData }: StepProps) => {
+const Step2 = ({ goToNextStep, formInput, setFormInput, setClubImage }: Step2Props) => {
   return (
     <form className={styles.container}>
       <div className={styles.overviewWrapper}>
         <h1 className={styles.title}>모임을 소개해주세요</h1>
+        <div>
+          <div>커버사진을 추가해주세요.</div>
+          <input
+            type="file"
+            onChange={(e) => setClubImage(e.target.files ? e.target.files[0] : null)}
+          />
+        </div>
         <div className={styles.nameInputSection}>
           <h2 className={styles.nameInputTitle}>북클럽명</h2>
           <input
             className={styles.nameInput}
             type="text"
             placeholder="북클럽명을 정해주세요."
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={formInput.name}
+            onChange={(e) => setFormInput({ ...formInput, name: e.target.value })}
             required
           />
-          <div className={styles.nameCount}>{formData.name.length} / 15</div>
+          <div className={styles.nameCount}>{formInput.name.length} / 15</div>
         </div>
         <div className={styles.descriptionInputSection}>
           <h2 className={styles.descriptionTitle}>모임 소개</h2>
           <textarea
             className={styles.descriptionInput}
             placeholder="모임을 소개해주세요."
-            value={formData.clubDescription}
-            onChange={(e) => setFormData({ ...formData, clubDescription: e.target.value })}
+            value={formInput.clubDescription}
+            onChange={(e) => setFormInput({ ...formInput, clubDescription: e.target.value })}
             required
           />
-          <div className={styles.descriptionCount}>{formData.clubDescription.length} / 500</div>
+          <div className={styles.descriptionCount}>{formInput.clubDescription.length} / 500</div>
         </div>
         <div className={styles.noticeSection}>
           <div className={styles.noticeTitle}>

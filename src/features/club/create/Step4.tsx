@@ -2,7 +2,7 @@ import * as styles from './Step4.css';
 import { vars } from '../../../styles/global.css.ts';
 import { StepProps } from '@type/club.ts';
 
-const Step4 = ({ goToNextStep, formData, setFormData }: StepProps) => {
+const Step4 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
   const durations = [1, 2, 3, 4, 5, 6, 7];
 
   return (
@@ -14,8 +14,8 @@ const Step4 = ({ goToNextStep, formData, setFormData }: StepProps) => {
           <input
             type="date"
             placeholder="시작일"
-            value={formData.startDate}
-            onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+            value={formInput.startDate}
+            onChange={(e) => setFormInput({ ...formInput, startDate: e.target.value })}
             required
           />
         </div>
@@ -27,10 +27,10 @@ const Step4 = ({ goToNextStep, formData, setFormData }: StepProps) => {
                 className={styles.durationButton}
                 key={index}
                 onClick={() => {
-                  setFormData({ ...formData, duration });
+                  setFormInput({ ...formInput, duration });
                 }}
                 style={
-                  formData.duration == duration
+                  formInput.duration == duration
                     ? { backgroundColor: vars.colors.border, outline: `1px solid #cccbcb` }
                     : { backgroundColor: vars.colors.surface }
                 }

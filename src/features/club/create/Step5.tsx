@@ -4,7 +4,7 @@ import { vars } from '../../../styles/global.css.ts';
 import { useState } from 'react';
 import { Step5Props } from '@type/club.ts';
 
-const Step5 = ({ formData, setFormData, handleSubmit }: Step5Props) => {
+const Step5 = ({ formInput, setFormInput, handleSubmit }: Step5Props) => {
   const count = [3, 5, 10];
   const [isClicked, setIsClicked] = useState(false);
 
@@ -21,10 +21,10 @@ const Step5 = ({ formData, setFormData, handleSubmit }: Step5Props) => {
                 key={index}
                 onClick={() => {
                   setIsClicked(false);
-                  setFormData({ ...formData, maxParticipants: Number(count) });
+                  setFormInput({ ...formInput, maxParticipants: Number(count) });
                 }}
                 style={
-                  formData.maxParticipants == count && !isClicked
+                  formInput.maxParticipants == count && !isClicked
                     ? { backgroundColor: vars.colors.border, outline: `1px solid #cccbcb` }
                     : { backgroundColor: vars.colors.surface }
                 }
@@ -51,9 +51,9 @@ const Step5 = ({ formData, setFormData, handleSubmit }: Step5Props) => {
               className={styles.countInput}
               type="number"
               placeholder="최대 참가자 수"
-              value={String(formData.maxParticipants)}
+              value={String(formInput.maxParticipants)}
               onChange={(e) =>
-                setFormData({ ...formData, maxParticipants: Number(e.target.value) })
+                setFormInput({ ...formInput, maxParticipants: Number(e.target.value) })
               }
               required
             />

@@ -8,7 +8,7 @@ export interface BookDetail {
   description: string;
 }
 
-interface CreateClubRequest {
+export interface FormInput {
   name: string;
   bookTitle: string;
   isbn13: string;
@@ -27,9 +27,15 @@ export interface Step1Props extends BaseStepProps {
   bookDetail: BookDetail;
 }
 
+export interface Step2Props extends BaseStepProps {
+  formInput: FormInput;
+  setFormInput: React.Dispatch<React.SetStateAction<FormInput>>;
+  setClubImage: React.Dispatch<React.SetStateAction<File | null>>;
+}
+
 export interface StepProps extends BaseStepProps {
-  formData: CreateClubRequest;
-  setFormData: React.Dispatch<React.SetStateAction<CreateClubRequest>>;
+  formInput: FormInput;
+  setFormInput: React.Dispatch<React.SetStateAction<FormInput>>;
 }
 
 export interface Step5Props extends StepProps {
