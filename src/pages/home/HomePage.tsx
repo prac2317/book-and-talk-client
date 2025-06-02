@@ -42,19 +42,28 @@ const HomePage = () => {
     loadItemNewAll();
   }, []);
 
+  const goToNotifications = () => {
+    navigate('/notifications');
+  };
+
   const goToBookDetail = (isbn13: string) => {
     navigate(`/books/${isbn13}`);
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.header}>
-        <div>
+        <div className={styles.logoBox}>
           <img className={styles.logoImage} src={logoImage} alt="logo" />
           <img className={styles.logoText} src={logoText} alt="book-and-talk" />
         </div>
         <div>
-          <img className={styles.notification} src={notification} alt="notification" />
+          <img
+            className={styles.notification}
+            src={notification}
+            alt="notification"
+            onClick={goToNotifications}
+          />
         </div>
       </div>
       <div className={styles.searchSection}>

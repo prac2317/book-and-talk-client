@@ -1,6 +1,13 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../styles/global.css.ts';
 
+export const container = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
 export const header = style({
   display: 'flex',
   flexDirection: 'row',
@@ -13,6 +20,14 @@ export const header = style({
   // backgroundColor: 'yellow',
 });
 
+export const logoBox = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  // gap: '10px',
+  // height: 'inherit',
+});
+
 export const logoImage = style({
   width: '80px',
 });
@@ -23,6 +38,17 @@ export const logoText = style({
 
 export const notification = style({
   width: '70px',
+  transform: 'translateY(5px)',
+
+  selectors: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
+    '&:active': {
+      transform: 'scale(0.95)',
+      transition: 'transform 0.3s',
+    },
+  },
 });
 
 export const searchSection = style({
