@@ -3,6 +3,7 @@ import { vars } from '../../styles/global.css';
 
 export const container = style({
   width: 'inherit',
+  height: '100vh',
 });
 
 export const header = style({
@@ -25,18 +26,15 @@ export const title = style({
 export const notificationList = style({
   display: 'flex',
   flexDirection: 'column',
-  // gap: '12px',
 });
 
 export const notificationItem = style({
   display: 'flex',
   padding: '16px',
   backgroundColor: vars.colors.surface,
-  // border: `0.2px solid ${vars.colors.border}`,
   cursor: 'pointer',
-  transition: 'all 0.2s ease',
-  ':hover': {
-    backgroundColor: vars.colors.background,
-    borderColor: vars.colors.border,
-  },
+});
+
+export const notificationItemUnread = style({
+  backgroundColor: vars.colors.background,
 });

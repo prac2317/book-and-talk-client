@@ -5,7 +5,7 @@ import Navigation from '../components/Navigation';
 const AppLayout = () => {
   const location = useLocation();
 
-  const noNavRoutes = ['/clubs/applications', '/clubs/create'];
+  const noNavRoutes = ['/clubs/applications', '/clubs/create', '/notifications'];
 
   const showNavigation =
     !noNavRoutes.includes(location.pathname) && !location.pathname.startsWith('/chat/');
