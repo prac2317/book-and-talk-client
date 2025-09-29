@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getBookList } from '@api/book.ts';
 import logoImage from '@assets/icons/small3.png';
 import logoText from '@assets/icons/Logo-text.jpg';
-import notification from '@assets/icons/Logo-Notification.jpg';
+import images from '@assets/icons/images.ts';
 import searchBar from '@assets/icons/Logo-search-bar.jpg';
 
 // Bestseller, BlogBest, ItemNewAll
@@ -60,8 +60,8 @@ const HomePage = () => {
         <div>
           <img
             className={styles.notification}
-            src={notification}
-            alt="notification"
+            src={images.logoNotification}
+            alt="logoNotification"
             onClick={goToNotifications}
           />
         </div>
