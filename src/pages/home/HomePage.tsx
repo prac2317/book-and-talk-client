@@ -6,6 +6,7 @@ import logoImage from '@assets/icons/small3.png';
 import logoText from '@assets/icons/Logo-text.jpg';
 import images from '@assets/icons/images.ts';
 import searchBar from '@assets/icons/Logo-search-bar.jpg';
+import { useNotificationStore } from '@store/notificationStore.ts';
 
 // Bestseller, BlogBest, ItemNewAll
 
@@ -19,8 +20,15 @@ const HomePage = () => {
   const [bestseller, setBestseller] = useState<Book[]>([]);
   const [blogBest, setBlogBest] = useState<Book[]>([]);
   const [itemNewAll, setItemNewAll] = useState<Book[]>([]);
+  const [isNewNotification, setIsNewNotification] = useState(false);
+
+  const { unreadCount } = useNotificationStore();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsNewNotification(unreadCount > 0);
+  }, [unreadCount]);
 
   useEffect(() => {
     const loadBestseller = async () => {
@@ -60,8 +68,8 @@ const HomePage = () => {
         <div>
           <img
             className={styles.notification}
-            src={images.logoNotification}
-            alt="logoNotification"
+            src={isNewNotification ? images.logoNotificationNew : images.logoNotification}
+            alt={'logoNotificationNew'}
             onClick={goToNotifications}
           />
         </div>

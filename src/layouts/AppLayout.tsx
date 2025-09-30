@@ -3,12 +3,18 @@ import { container, view } from './AppLayout.css.ts';
 import Navigation from '../components/Navigation';
 import { useEffect, useState } from 'react';
 import { fetchMemberId } from '@api/auth.ts';
+import { useNotificationStore } from '@store/notificationStore.ts';
 
 const AppLayout = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
   const [connected, setConnected] = useState(false);
   const [memberId, setMemberId] = useState('');
+
+  const { unreadCount, setUnreadCount, increaseUnreadCount } = useNotificationStore();
+
+  useEffect(() => {
+    console.log('unreadCount 변경됨:', unreadCount);
+  }, [unreadCount]);
 
   useEffect(() => {
     loadMemberId();
@@ -40,7 +46,6 @@ const AppLayout = () => {
 
     eventSource.addEventListener('message', (e) => {
       console.log('message', e);
-      setUnreadCount(Number(e.data));
     });
 
     eventSource.addEventListener('open', (e) => {
@@ -51,6 +56,8 @@ const AppLayout = () => {
     eventSource.addEventListener('notification', (e) => {
       const notification = JSON.parse(e.data);
       console.log('notification', notification);
+
+      increaseUnreadCount();
     });
 
     console.log('이벤트 계속');

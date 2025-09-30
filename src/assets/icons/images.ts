@@ -9,6 +9,7 @@ import clubMemberImage from '@assets/icons/Club-Member.jpg';
 import clubFavoriteFull from '@assets/icons/Club-Heart-Full.png';
 import clubFavoriteEmpty from '@assets/icons/Club-Heart-Empty.png';
 import logoNotification from '@assets/icons/Logo-Notification.png';
+import logoNotificationNew from '@assets/icons/Logo-Notification-New.png';
 import mapExampleImage from '@assets/icons/Map-example.png';
 
 // import bookFavoriteFull from '@assets/icons/Book-Favorite-Full.jpg';
@@ -49,6 +50,7 @@ const images = {
   clubFavoriteFull,
   clubFavoriteEmpty,
   logoNotification,
+  logoNotificationNew,
   mapExampleImage,
   BookFavoriteFull,
   BookFavoriteEmpty,
