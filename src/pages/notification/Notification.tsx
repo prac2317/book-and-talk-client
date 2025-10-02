@@ -3,57 +3,39 @@ import { useState, useEffect } from 'react';
 import ClubApplicantModal from '@features/club/application/ApplicantManagement/ClubApplicantModal.tsx';
 import JoinApprovedNotificationModal from '@features/notification/JoinApprovedNotificationModal.tsx';
 import NewClubNotificationModal from '@features/notification/NewClubNotificationModal.tsx';
+import { fetchNotificationList } from '@api/notification.ts';
 
-interface NotificationOverview {
-  notificationId: string;
+interface Notification {
+  id: string;
+  content: string;
+  toName: string;
+  url: string;
   notificationType: NotificationType;
-  image: string;
-  contents: string;
   isRead: boolean;
-  memberId: string;
-  clubId?: string;
-  isbn13?: string;
   createdAt: string;
 }
 
 enum NotificationType {
-  newClub,
-  approve,
-  application,
+  NEW_CLUB_CREATED = 'NEW_CLUB_CREATED',
+  CLUB_APPLICATION = 'CLUB_APPLICATION',
+  CLUB_APPROVED = 'CLUB_APPROVED',
 }
 
-const mockNotifications: NotificationOverview[] = [
-  {
-    notificationId: '1',
-    notificationType: NotificationType.application,
-    image: '이미지',
-    contents: '회원님의 모임에 신규 참가 신청이 있습니다!',
-    isRead: false,
-    memberId: '1',
-    clubId: '1',
-    isbn13: '1234123412341',
-    createdAt: '2021-09-01 12:00:00',
-  },
-  {
-    notificationId: '2',
-    notificationType: NotificationType.approve,
-    image: '이미지',
-    contents: '회원님의 참가신청이 승인되었습니다!',
-    isRead: true,
-    memberId: '1',
-    isbn13: '1234123412341',
-    createdAt: '2021-09-01 12:00:00',
-  },
-];
-
 const Notification = () => {
-  const [notifications, setNotifications] = useState<NotificationOverview[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [clickedNotification, setClickedNotification] = useState<NotificationOverview | null>(null);
+  const [clickedNotification, setClickedNotification] = useState<Notification | null>(null);
+  const [notificationList, setNotificationList] = useState<Notification[]>([]);
+  const [clubId, setClubId] = useState('');
 
   useEffect(() => {
-    setNotifications(mockNotifications);
+    getNotificationList();
   }, []);
+
+  const getNotificationList = async () => {
+    const response = await fetchNotificationList('1'); //memberId 하드코딩 TODO: memberId 전역변수로 관리하기
+    console.log(response);
+    setNotificationList(response);
+  };
 
   return (
     <div className={styles.container}>
@@ -61,44 +43,51 @@ const Notification = () => {
         <h2 className={styles.title}>알림</h2>
       </div>
       <div className={styles.notificationList}>
-        {notifications.map((notification) => (
+        {notificationList.map((notification) => (
           <div
             className={`${styles.notificationItem} ${notification.isRead ? '' : styles.notificationItemUnread}`}
-            key={notification.notificationId}
+            key={notification.id}
             onClick={() => {
               setClickedNotification(notification);
               setIsModalOpen(true);
+              console.log(notification);
+              console.log(notification.notificationType);
+              const match = notification.url.match(/\/clubs\/(\d+)\//);
+              if (match) {
+                setClubId(match[1]);
+              }
             }}
           >
-            <div>{notification.image}</div>
             <div>
-              <div>{notification.contents}</div>
+              <div>{notification.content}</div>
               <div>{notification.createdAt}</div>
             </div>
           </div>
         ))}
       </div>
-      {isModalOpen && clickedNotification?.notificationType === NotificationType.application && (
-        <ClubApplicantModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          clubId={clickedNotification.clubId}
-        />
-      )}
-      {isModalOpen && clickedNotification?.notificationType === NotificationType.approve && (
+      {isModalOpen &&
+        clickedNotification?.notificationType === NotificationType.CLUB_APPLICATION && (
+          <ClubApplicantModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            clubId={clubId}
+          />
+        )}
+      {isModalOpen && clickedNotification?.notificationType === NotificationType.CLUB_APPROVED && (
         <JoinApprovedNotificationModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          clubId={clickedNotification.clubId}
+          clubId={clubId}
         />
       )}
-      {isModalOpen && clickedNotification?.notificationType === NotificationType.newClub && (
-        <NewClubNotificationModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          isbn13={clickedNotification.isbn13}
-        />
-      )}
+      {isModalOpen &&
+        clickedNotification?.notificationType === NotificationType.NEW_CLUB_CREATED && (
+          <NewClubNotificationModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            clubId={clubId}
+          />
+        )}
     </div>
   );
 };

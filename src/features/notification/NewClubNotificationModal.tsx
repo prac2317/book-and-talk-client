@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router-dom';
 const NewClubNotificationModal = ({
   isModalOpen,
   setIsModalOpen,
-  isbn13,
+  clubId,
 }: {
   isModalOpen: boolean;
   setIsModalOpen: (isModalOpen: boolean) => void;
-  isbn13: string | undefined;
+  clubId: string | undefined;
 }) => {
   const navigate = useNavigate();
   const goToClub = () => {
-    navigate(`/book/${isbn13}`);
+    navigate(`/clubs/${clubId}}`);
   };
 
   return (
@@ -22,7 +22,6 @@ const NewClubNotificationModal = ({
       <div>
         <div>회원님이 즐겨찾기 한 책의 모임이 개설되었어요!</div>
         <div>개설된 모임을 확인해보세요!</div>
-        <div>{isbn13}</div>
       </div>
       <button onClick={goToClub}>모임 확인하기</button>
     </div>
