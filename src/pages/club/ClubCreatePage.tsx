@@ -42,6 +42,9 @@ const ClubCreatePage = () => {
     duration: 0,
     maxParticipants: 0,
     clubDescription: '',
+    address: '',
+    latitude: '',
+    longitude: '',
   });
 
   const [clubImage, setClubImage] = useState<File | null>(null);

@@ -16,6 +16,9 @@ export interface FormInput {
   duration: number;
   maxParticipants: number;
   clubDescription: string;
+  address: string;
+  latitude: string;
+  longitude: string;
 }
 
 export interface GetClubDetailResponse {
@@ -29,6 +32,9 @@ export interface GetClubDetailResponse {
   clubDescription: string;
   isbn13: string;
   createdAt: string;
+  address: string;
+  latitude: string;
+  longitude: string;
   clubImage: string;
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as styles from './ClubDetailPage.css';
 import images from '@assets/icons/images';
@@ -44,6 +44,9 @@ const ClubDetailPage = () => {
     clubDescription: '',
     isbn13: '',
     createdAt: '',
+    address: '',
+    latitude: '',
+    longitude: '',
     clubImage: '',
   });
   const [clubMember, setClubMember] = useState<memberInformation[]>([]);
@@ -71,6 +74,9 @@ const ClubDetailPage = () => {
       '관심 있으신 분들은 편하게 신청해주세요 :)',
     isbn13: '9791162540640',
     createdAt: '2019-09-09T00:00:00.000Z',
+    address: '서대문구 북가좌동',
+    latitude: '37.566535',
+    longitude: '126.977969',
     clubImage: images.clubBackgroundImage,
   };
 
@@ -98,6 +104,19 @@ const ClubDetailPage = () => {
     return () => {
       window.removeEventListener('scroll', handleScrollY);
     };
+  }, []);
+
+  const mapRef = useRef(null);
+
+  const mapInsanceRef = useRef(null);
+  const infoWindowInstanceRef = useRef(null);
+
+  useEffect(() => {
+    const map = new window.naver.maps.Map(mapRef.current);
+    const infoWindow = new window.naver.maps.InfoWindow();
+
+    mapInsanceRef.current = map;
+    infoWindowInstanceRef.current = infoWindow;
   }, []);
 
   useEffect(() => {
@@ -210,6 +229,47 @@ const ClubDetailPage = () => {
     } catch (error) {
       console.error('클럽 즐겨찾기 여부 불러오기 실패', error);
     }
+  };
+
+  const markLocation = () => {
+    if (!clubDetail.latitude || !clubDetail.longitude) return;
+
+    console.log('markLocation');
+
+    var htmlAddresses = [];
+    let point = new window.naver.maps.Point(clubDetail.latitude, clubDetail.longitude);
+
+    const location = new window.naver.maps.LatLng(
+      parseFloat(clubDetail.latitude),
+      parseFloat(clubDetail.longitude),
+    );
+
+    const map = mapInsanceRef.current;
+    const infoWindow = infoWindowInstanceRef.current;
+    if (map === null || infoWindow === null) {
+      return;
+    }
+
+    if (infoWindow) {
+      console.log(clubDetail);
+      infoWindow.setContent(
+        [
+          '<div style="padding:10px;min-width:200px;line-height:150%;">',
+          '<h4 style="margin-top:5px;">검색 주소 : ' + clubDetail.address + '</h4><br />',
+          htmlAddresses.join('<br />'),
+          '</div>',
+        ].join('\n'),
+      );
+      console.log(infoWindow);
+    }
+
+    if (map) {
+      console.log('map 표시 및 infoWindow open');
+      map.setCenter(location);
+      infoWindow.open(map, location);
+    }
+
+    console.log('location' + location);
   };
 
   const toggleClubFavorite = async () => {
@@ -330,7 +390,18 @@ const ClubDetailPage = () => {
         <div className={styles.locationSection}>
           <div className={styles.locationTitle}>지역</div>
           <img className={styles.locationImage} src={images.mapExampleImage} alt="map"></img>
+          <div>
+            {clubDetail.address}
+            <br />
+            {clubDetail.latitude}
+            <br />
+            {clubDetail.longitude}
+          </div>
+          <div ref={mapRef} id="map" style={{ width: '100%', height: '400px' }} />
         </div>
+        <button className={styles.button} onClick={markLocation}>
+          테스트
+        </button>
 
         <div className={styles.buttonSection}>
           {visitorStatus === 'HOST' && (
