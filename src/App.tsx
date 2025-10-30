@@ -12,6 +12,7 @@ import ChatListPage from './pages/chat/ChatListPage.tsx';
 import ProfilePage from './pages/member/Profile.tsx';
 import ChatRoomPage from './pages/chat/ChatRoomPage.tsx';
 import Notification from './pages/notification/Notification.tsx';
+import MapSearchPage from './pages/map/MapSearchPage.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <ProfilePage />,
+      },
+      {
+        path: 'maps',
+        element: <MapSearchPage />,
       },
       {
         path: '*',

@@ -20,6 +20,23 @@ export const fetchClubList = async (isbn13: string) => {
   return res.data;
 };
 
+export const fetchNearbyClubList = async (
+  latitude: number,
+  longitude: number,
+  page: number = 0,
+  size: number = 10,
+) => {
+  const res = await api.get('/v1/clubs/nearby', {
+    params: {
+      latitude,
+      longitude,
+      page,
+      size,
+    },
+  });
+  return res.data;
+};
+
 export const deleteClub = async (clubId: string) => {
   await api.delete(`/v1/clubs/${clubId}`);
 };

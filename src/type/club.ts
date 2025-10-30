@@ -46,6 +46,8 @@ export interface ClubOverview {
   maxParticipants: number;
   status: string;
   startDate: string;
+  latitude?: number;
+  longitude?: number;
   clubImage: string;
 }
 
