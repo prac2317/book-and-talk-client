@@ -93,16 +93,14 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
     <form className={styles.container}>
       <div className={styles.locationWrapper}>
         <h1 className={styles.title}>모임활동 장소를 정해주세요</h1>
-        <div ref={mapContainerRef} id="map" style={{ width: '100%', height: '400px' }} />
         <input className={styles.locationSearchBar} placeholder="지역을 검색해주세요." />
+        <div ref={mapContainerRef} id="map" style={{ width: '100%', height: '400px' }} />
         <div>
           <input onChange={(e) => setAddress(e.target.value)} />
           <button onClick={searchAddress} type="button">
             입력
           </button>
         </div>
-      </div>
-      <div>
         <button
           onClick={() => {
             setFormInput({
@@ -119,6 +117,8 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
         >
           주소 입력
         </button>
+      </div>
+      <div>
         <button className={styles.primaryButton} onClick={goToNextStep}>
           다음
         </button>
