@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createInfoWindowContent } from '@features/map/createInfoWindowContent.ts'
 
 interface Address {
     id: string;
@@ -47,13 +48,15 @@ export function useMap() {
         const infoWindow = new window.naver.maps.InfoWindow({
             position: map.getCenter(),
             content: '',
+            // InfoWindow를 마커 왼쪽에 표시 (x: 음수 = 왼쪽, y: 음수 = 위)
+            pixelOffset: new window.naver.maps.Point(-100, -50),
         });
 
         mapInstanceRef.current = map;
         infoWindowInstanceRef.current = infoWindow;
     }, []);
 
-    const markAddress = (x: string, y: string) => {
+    const markAddress = (x: string, y: string, addressName: string) => {
         // todo: 좌표 등록 로직 분리하기
         setLatitude(address.y);
         setLongitude(address.x);
@@ -67,14 +70,7 @@ export function useMap() {
         const map = mapInstanceRef.current;
         const infoWindow = infoWindowInstanceRef.current;
 
-        // todo: 마커 html 및 css 수정
-        infoWindow.setContent(
-            [
-                '<div style="padding:10px;min-width:200px;line-height:150%;">',
-                '<h4 style="margin-top:5px;">검색 주소 : ' + address.address_name + '</h4><br />',
-                '</div>',
-            ].join('\n'),
-        );
+        infoWindow.setContent(createInfoWindowContent(addressName));
 
         map.setCenter(point);
         infoWindow.open(map, point);

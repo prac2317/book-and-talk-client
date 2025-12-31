@@ -19,7 +19,7 @@ interface Address {
 interface LocationSearchProps {
   setIsOpen: (isOpen: boolean) => void;
   setAddress: (address: Address) => void;
-  markAddress: (x: string, y: string) => void;
+  markAddress: (x: string, y: string, addressName: string) => void;
 }
 
 const LocationSearch = ({ setIsOpen, setAddress, markAddress }: LocationSearchProps) => {
@@ -50,7 +50,7 @@ const LocationSearch = ({ setIsOpen, setAddress, markAddress }: LocationSearchPr
     console.log(address);
     setAddress(address);
     setIsOpen(false);
-    markAddress(address.x, address.y);
+    markAddress(address.x, address.y, address.address_name);
   };
 
   return (
