@@ -19,7 +19,7 @@ interface Address {
 interface LocationSearchProps {
   setIsOpen: (isOpen: boolean) => void;
   setAddress: (address: Address) => void;
-  markAddress: () => void;
+  markAddress: (x: string, y: string) => void;
 }
 
 const LocationSearch = ({ setIsOpen, setAddress, markAddress }: LocationSearchProps) => {
@@ -50,7 +50,7 @@ const LocationSearch = ({ setIsOpen, setAddress, markAddress }: LocationSearchPr
     console.log(address);
     setAddress(address);
     setIsOpen(false);
-    markAddress();
+    markAddress(address.x, address.y);
   };
 
   return (
@@ -63,6 +63,7 @@ const LocationSearch = ({ setIsOpen, setAddress, markAddress }: LocationSearchPr
           <div
             key={address.id}
             onClick={() => handleSelectAddress(address)}
+            // todo: css 분리
             style={{ cursor: 'pointer', padding: '10px', border: '1px solid #ddd', margin: '5px 0' }}
           >
             <span>{address.address_name}</span>
