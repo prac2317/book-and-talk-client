@@ -22,7 +22,7 @@ export const title = style({
 
 export const locationSearchBar = style({
   height: '45px',
-  width: 'inherit',
+  width: '380px',
   padding: '5px 15px',
   backgroundColor: vars.colors.surface,
   border: `1px solid ${vars.colors.border}`,
