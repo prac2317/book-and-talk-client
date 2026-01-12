@@ -28,14 +28,13 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
               setFormInput={setFormInput}
             />
           </div>
-
-          {isOpen && (
+          <div style={{ display: isOpen ? 'block' : 'none' }}>
             <LocationSearch
               setIsOpen={setIsOpen}
               setAddress={setAddress}
               markAddress={markAddress}
             />
-          )}
+          </div>
         </div>
         <div>
           <button className={styles.primaryButton} onClick={goToNextStep}>
