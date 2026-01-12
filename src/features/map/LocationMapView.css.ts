@@ -9,3 +9,8 @@ export const locationSearchBar = style({
     border: `1px solid ${vars.colors.border}`,
     borderRadius: '10px',
 });
+
+export const map = style({
+    width: '100%',
+    height: '400px'
+})

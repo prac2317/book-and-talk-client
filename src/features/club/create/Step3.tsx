@@ -7,7 +7,7 @@ import LocationMapView from '@features/map/LocationMapView';
 
 const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
 
-  const { address, setAddress, latitude, longitude, mapContainerRef, markAddress } = useMap();
+  const { setAddress, mapContainerRef, markAddress } = useMap();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,12 +20,7 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
             {/* todo: props 너무 많이 전달하는지 다시 생각해보기*/}
             <LocationMapView
               mapContainerRef={mapContainerRef}
-              address={address}
-              latitude={latitude}
-              longitude={longitude}
               setIsOpen={setIsOpen}
-              formInput={formInput}
-              setFormInput={setFormInput}
             />
           </div>
           <div style={{ display: isOpen ? 'block' : 'none' }}>
@@ -33,6 +28,8 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
               setIsOpen={setIsOpen}
               setAddress={setAddress}
               markAddress={markAddress}
+              formInput={formInput}
+              setFormInput={setFormInput}
             />
           </div>
         </div>

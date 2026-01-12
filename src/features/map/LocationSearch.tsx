@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { FormInput } from '@type/club.ts';
 
 interface Address {
   id: string;
@@ -20,9 +21,11 @@ interface LocationSearchProps {
   setIsOpen: (isOpen: boolean) => void;
   setAddress: (address: Address) => void;
   markAddress: (x: string, y: string, addressName: string) => void;
+  formInput: FormInput;
+  setFormInput: React.Dispatch<React.SetStateAction<FormInput>>;
 }
 
-const LocationSearch = ({ setIsOpen, setAddress, markAddress }: LocationSearchProps) => {
+const LocationSearch = ({ setIsOpen, setAddress, markAddress, formInput, setFormInput }: LocationSearchProps) => {
   const [addressList, setAddressList] = useState<Address[]>([]);
 
   const [searchWord, setSearchWord] = useState('');
@@ -51,6 +54,12 @@ const LocationSearch = ({ setIsOpen, setAddress, markAddress }: LocationSearchPr
     setAddress(address);
     setIsOpen(false);
     markAddress(address.x, address.y, address.address_name);
+    setFormInput({
+      ...formInput,
+      address: address.address_name,
+      latitude: address.y,
+      longitude: address.x,
+    });
   };
 
   return (

@@ -32,9 +32,6 @@ export function useMap() {
         distance: '',
     });
 
-    const [latitude, setLatitude] = useState('');
-    const [longitude, setLongitude] = useState('');
-
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<naver.maps.Map | null>(null);
     const infoWindowInstanceRef = useRef<naver.maps.InfoWindow | null>(null);
@@ -57,9 +54,6 @@ export function useMap() {
     }, []);
 
     const markAddress = (x: string, y: string, addressName: string) => {
-        // todo: 좌표 등록 로직 분리하기
-        setLatitude(address.y);
-        setLongitude(address.x);
 
         const point = new window.naver.maps.Point(Number(x), Number(y));
 
@@ -79,8 +73,6 @@ export function useMap() {
     return {
         address,
         setAddress,
-        latitude,
-        longitude,
 
         mapContainerRef,
 
