@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { createInfoWindowContent } from '@features/map/createInfoWindowContent.ts'
 
+import "ol/ol.css";
+import Map from 'ol/Map.js';
+import OSM from 'ol/source/OSM.js';
+import TileLayer from 'ol/layer/Tile.js';
+import View from 'ol/View.js';
+import { fromLonLat } from 'ol/proj';
+
 interface Address {
     id: string;
     place_name: string;
@@ -36,6 +43,10 @@ export function useMap() {
     const mapInstanceRef = useRef<naver.maps.Map | null>(null);
     const infoWindowInstanceRef = useRef<naver.maps.InfoWindow | null>(null);
 
+    const mapContainerOpenlayersRef = useRef<HTMLDivElement>(null);
+    const mapInstanceOpenlayersRef = useRef<Map>(null);
+    // const infoWindowInstanceOpenlayersRef = useRef(null);
+
     useEffect(() => {
         if (mapContainerRef.current === null) {
             return;
@@ -51,6 +62,28 @@ export function useMap() {
 
         mapInstanceRef.current = map;
         infoWindowInstanceRef.current = infoWindow;
+
+        if (mapContainerOpenlayersRef.current === null) {
+            return;
+        }
+        const mapOpenlayers = new Map({
+            target: mapContainerOpenlayersRef.current,
+
+            layers: [
+                new TileLayer({
+                    source: new OSM()
+                })
+            ],
+
+            view: new View({
+                projection: 'EPSG:3857',
+                center: fromLonLat([126.97, 37.56]), // 서울 좌표
+                zoom: 12
+            })
+        });
+
+        mapInstanceOpenlayersRef.current = mapOpenlayers;
+
     }, []);
 
     const markAddress = (x: string, y: string, addressName: string) => {
@@ -77,5 +110,8 @@ export function useMap() {
         mapContainerRef,
 
         markAddress,
+
+        mapContainerOpenlayersRef,
+        mapInstanceOpenlayersRef
     };
 }
