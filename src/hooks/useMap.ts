@@ -92,7 +92,6 @@ export function useMap() {
         mapInstanceOpenlayersRef.current = mapOpenlayers;
 
         const newDiv = document.createElement('div');
-        newDiv.innerHTML = `<div>테스트</div>`;
 
         const overlay = new Overlay({
             element: newDiv,

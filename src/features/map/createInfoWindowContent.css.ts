@@ -7,9 +7,19 @@ export const container = style({
     padding: '16px',
     minWidth: '200px',
     maxWidth: '300px',
+    marginLeft: '10px'
 });
 
 export const title = style({
     margin: 0,
     fontSize: '14px',
+});
+
+export const tail = style({
+    width: "20px",
+    height: "20px",
+    border: "1px solid #088",
+    borderRadius: "10px",
+    backgroundColor: "#0FF",
+    opacity: "0.5",
 });
