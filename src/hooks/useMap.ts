@@ -4,9 +4,11 @@ import { createInfoWindowContent } from '@features/map/createInfoWindowContent.t
 import "ol/ol.css";
 import Map from 'ol/Map.js';
 import OSM from 'ol/source/OSM.js';
+import { XYZ } from 'ol/source';
 import TileLayer from 'ol/layer/Tile.js';
 import View from 'ol/View.js';
 import { fromLonLat } from 'ol/proj';
+import Overlay from 'ol/Overlay.js';
 
 interface Address {
     id: string;
@@ -45,7 +47,8 @@ export function useMap() {
 
     const mapContainerOpenlayersRef = useRef<HTMLDivElement>(null);
     const mapInstanceOpenlayersRef = useRef<Map>(null);
-    // const infoWindowInstanceOpenlayersRef = useRef(null);
+    const infoWindowInstanceOpenlayersRef = useRef<HTMLDivElement>(null);
+    const overlayRef = useRef<Overlay>(null);
 
     useEffect(() => {
         if (mapContainerRef.current === null) {
@@ -71,7 +74,11 @@ export function useMap() {
 
             layers: [
                 new TileLayer({
-                    source: new OSM()
+                    // source: new OSM()
+                    source: new XYZ({
+                        url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+                        attributions: '© OpenStreetMap contributors, © CARTO'
+                    })
                 })
             ],
 
@@ -83,6 +90,20 @@ export function useMap() {
         });
 
         mapInstanceOpenlayersRef.current = mapOpenlayers;
+
+        const newDiv = document.createElement('div');
+        newDiv.innerHTML = `<div>테스트</div>`;
+
+        const overlay = new Overlay({
+            element: newDiv,
+            autoPan: {
+                animation: {
+                    duration: 250,
+                },
+            },
+        });
+
+        overlayRef.current = overlay;
 
     }, []);
 
@@ -103,6 +124,36 @@ export function useMap() {
         infoWindow.open(map, point);
     };
 
+    const markAddressOpenLayers = (x: string, y: string, addressName: string) => {
+
+        if (mapInstanceOpenlayersRef.current == null) {
+            console.log("map 없음");
+            return;
+        }
+        const map = mapInstanceOpenlayersRef.current;
+
+        const content = createInfoWindowContent(addressName);
+
+        const newDiv = document.createElement('div');
+        newDiv.innerHTML = content;
+
+        if (overlayRef.current == null) {
+            console.log("overlay 없음");
+            return;
+        }
+        const overlay = overlayRef.current;
+        overlay.setElement(newDiv);
+        overlay.setPositioning('top-center');
+        overlay.setPosition(fromLonLat([Number(x), Number(y)]));
+
+        map.addOverlay(overlay);
+
+        const view = map.getView();
+        view.setZoom(15);
+        view.setCenter(fromLonLat([Number(x), Number(y)]));
+        map.setView(view);
+    }
+
     return {
         address,
         setAddress,
@@ -112,6 +163,6 @@ export function useMap() {
         markAddress,
 
         mapContainerOpenlayersRef,
-        mapInstanceOpenlayersRef
+        markAddressOpenLayers
     };
 }

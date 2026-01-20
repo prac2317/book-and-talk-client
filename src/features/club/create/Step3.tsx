@@ -7,7 +7,7 @@ import LocationMapView from '@features/map/LocationMapView';
 
 const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
 
-  const { setAddress, mapContainerRef, markAddress, mapContainerOpenlayersRef } = useMap();
+  const { setAddress, mapContainerRef, markAddress, mapContainerOpenlayersRef, markAddressOpenLayers } = useMap();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,6 +32,7 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
               setIsOpen={setIsOpen}
               setAddress={setAddress}
               markAddress={markAddress}
+              markAddressOpenLayers={markAddressOpenLayers}
               formInput={formInput}
               setFormInput={setFormInput}
             />
