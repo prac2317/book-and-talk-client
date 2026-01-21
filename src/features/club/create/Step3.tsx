@@ -7,7 +7,7 @@ import LocationMapView from '@features/map/LocationMapView';
 
 const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
 
-  const { setAddress, mapContainerRef, markAddress, mapContainerOpenLayersRef, markAddressOpenLayers } = useMap();
+  const { setAddress, mapContainerRef, markAddress } = useMap();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -16,10 +16,6 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
       <div className={styles.container}>
         <div className={styles.locationWrapper}>
           <h1 className={styles.title}>모임활동 장소를 정해주세요</h1>
-          <div
-            ref={mapContainerOpenLayersRef}
-            style={{ width: '100%', height: "400px" }}
-          />
           <div style={{ display: isOpen ? 'none' : 'block' }}>
             {/* todo: props 너무 많이 전달하는지 다시 생각해보기*/}
             <LocationMapView
@@ -32,7 +28,6 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
               setIsOpen={setIsOpen}
               setAddress={setAddress}
               markAddress={markAddress}
-              markAddressOpenLayers={markAddressOpenLayers}
               formInput={formInput}
               setFormInput={setFormInput}
             />

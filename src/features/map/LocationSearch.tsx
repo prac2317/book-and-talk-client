@@ -21,12 +21,11 @@ interface LocationSearchProps {
   setIsOpen: (isOpen: boolean) => void;
   setAddress: (address: Address) => void;
   markAddress: (x: string, y: string, addressName: string) => void;
-  markAddressOpenLayers: (x: string, y: string, addressName: string) => void;
   formInput: FormInput;
   setFormInput: React.Dispatch<React.SetStateAction<FormInput>>;
 }
 
-const LocationSearch = ({ setIsOpen, setAddress, markAddress, markAddressOpenLayers, formInput, setFormInput }: LocationSearchProps) => {
+const LocationSearch = ({ setIsOpen, setAddress, markAddress, formInput, setFormInput }: LocationSearchProps) => {
   const [addressList, setAddressList] = useState<Address[]>([]);
 
   const [searchWord, setSearchWord] = useState('');
@@ -54,8 +53,7 @@ const LocationSearch = ({ setIsOpen, setAddress, markAddress, markAddressOpenLay
     console.log(address);
     setAddress(address);
     setIsOpen(false);
-    // markAddress(address.x, address.y, address.address_name);
-    markAddressOpenLayers(address.x, address.y, address.address_name);
+    markAddress(address.x, address.y, address.address_name);
     setFormInput({
       ...formInput,
       address: address.address_name,

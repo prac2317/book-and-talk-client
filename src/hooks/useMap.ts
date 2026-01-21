@@ -42,41 +42,21 @@ export function useMap() {
     });
 
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    const mapInstanceRef = useRef<naver.maps.Map | null>(null);
-    const infoWindowInstanceRef = useRef<naver.maps.InfoWindow | null>(null);
-
-    const mapContainerOpenLayersRef = useRef<HTMLDivElement>(null);
-    const mapInstanceOpenLayersRef = useRef<Map>(null);
+    const mapInstanceRef = useRef<Map>(null);
     const overlayRef = useRef<Overlay>(null);
 
     useEffect(() => {
-        if (mapContainerRef.current === null) {
-            return;
-        }
-
-        const map = new window.naver.maps.Map(mapContainerRef.current);
-        const infoWindow = new window.naver.maps.InfoWindow({
-            position: map.getCenter(),
-            content: '',
-            // InfoWindow를 마커 왼쪽에 표시 (x: 음수 = 왼쪽, y: 음수 = 위)
-            pixelOffset: new window.naver.maps.Point(-100, -50),
-        });
-
-        mapInstanceRef.current = map;
-        infoWindowInstanceRef.current = infoWindow;
-
         initMapOpenLayers();
-
     }, []);
 
     const initMapOpenLayers = () => {
 
-        // Map 인스턴스 생성
-        if (mapContainerOpenLayersRef.current === null) {
+        // Map 인스턴스 생성 및 mapContainerRef에 연결
+        if (mapContainerRef.current === null) {
             return;
         }
         const mapOpenLayers = new Map({
-            target: mapContainerOpenLayersRef.current,
+            target: mapContainerRef.current,
             layers: [
                 new TileLayer({
                     // source: new OSM()
@@ -92,40 +72,21 @@ export function useMap() {
                 zoom: 12
             })
         });
+        mapInstanceRef.current = mapOpenLayers;
 
-        mapInstanceOpenLayersRef.current = mapOpenLayers;
-
-        // InfoWindow(Overlay) 생성
+        // InfoWindow(Overlay) 생성 및 overlayRef에 연결
         const overlay = new Overlay({});
-
         overlayRef.current = overlay;
     }
 
     const markAddress = (x: string, y: string, addressName: string) => {
 
-        const point = new window.naver.maps.Point(Number(x), Number(y));
-
-        if (mapInstanceRef.current === null || infoWindowInstanceRef.current === null) {
-            return;
-        }
-
-        const map = mapInstanceRef.current;
-        const infoWindow = infoWindowInstanceRef.current;
-
-        infoWindow.setContent(createInfoWindowContent(addressName));
-
-        map.setCenter(point);
-        infoWindow.open(map, point);
-    };
-
-    const markAddressOpenLayers = (x: string, y: string, addressName: string) => {
-
         // Map 인스턴스, infoWindow(Overlay) 가져오기
-        if (mapInstanceOpenLayersRef.current == null) {
+        if (mapInstanceRef.current == null) {
             console.log("map 인스턴스 없음");
             return;
         }
-        const map = mapInstanceOpenLayersRef.current;
+        const map = mapInstanceRef.current;
 
         if (overlayRef.current == null) {
             console.log("overlay 없음");
@@ -157,12 +118,7 @@ export function useMap() {
     return {
         address,
         setAddress,
-
         mapContainerRef,
-
-        markAddress,
-
-        mapContainerOpenLayersRef,
-        markAddressOpenLayers
+        markAddress
     };
 }
