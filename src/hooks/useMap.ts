@@ -45,9 +45,8 @@ export function useMap() {
     const mapInstanceRef = useRef<naver.maps.Map | null>(null);
     const infoWindowInstanceRef = useRef<naver.maps.InfoWindow | null>(null);
 
-    const mapContainerOpenlayersRef = useRef<HTMLDivElement>(null);
-    const mapInstanceOpenlayersRef = useRef<Map>(null);
-    const infoWindowInstanceOpenlayersRef = useRef<HTMLDivElement>(null);
+    const mapContainerOpenLayersRef = useRef<HTMLDivElement>(null);
+    const mapInstanceOpenLayersRef = useRef<Map>(null);
     const overlayRef = useRef<Overlay>(null);
 
     useEffect(() => {
@@ -66,12 +65,18 @@ export function useMap() {
         mapInstanceRef.current = map;
         infoWindowInstanceRef.current = infoWindow;
 
-        if (mapContainerOpenlayersRef.current === null) {
+        initMapOpenLayers();
+
+    }, []);
+
+    const initMapOpenLayers = () => {
+
+        // Map 인스턴스 생성
+        if (mapContainerOpenLayersRef.current === null) {
             return;
         }
-        const mapOpenlayers = new Map({
-            target: mapContainerOpenlayersRef.current,
-
+        const mapOpenLayers = new Map({
+            target: mapContainerOpenLayersRef.current,
             layers: [
                 new TileLayer({
                     // source: new OSM()
@@ -81,7 +86,6 @@ export function useMap() {
                     })
                 })
             ],
-
             view: new View({
                 projection: 'EPSG:3857',
                 center: fromLonLat([126.97, 37.56]), // 서울 좌표
@@ -89,22 +93,13 @@ export function useMap() {
             })
         });
 
-        mapInstanceOpenlayersRef.current = mapOpenlayers;
+        mapInstanceOpenLayersRef.current = mapOpenLayers;
 
-        const newDiv = document.createElement('div');
-
-        const overlay = new Overlay({
-            element: newDiv,
-            autoPan: {
-                animation: {
-                    duration: 250,
-                },
-            },
-        });
+        // InfoWindow(Overlay) 생성
+        const overlay = new Overlay({});
 
         overlayRef.current = overlay;
-
-    }, []);
+    }
 
     const markAddress = (x: string, y: string, addressName: string) => {
 
@@ -125,31 +120,37 @@ export function useMap() {
 
     const markAddressOpenLayers = (x: string, y: string, addressName: string) => {
 
-        if (mapInstanceOpenlayersRef.current == null) {
-            console.log("map 없음");
+        // Map 인스턴스, infoWindow(Overlay) 가져오기
+        if (mapInstanceOpenLayersRef.current == null) {
+            console.log("map 인스턴스 없음");
             return;
         }
-        const map = mapInstanceOpenlayersRef.current;
-
-        const content = createInfoWindowContent(addressName);
-
-        const newDiv = document.createElement('div');
-        newDiv.innerHTML = content;
+        const map = mapInstanceOpenLayersRef.current;
 
         if (overlayRef.current == null) {
             console.log("overlay 없음");
             return;
         }
         const overlay = overlayRef.current;
-        overlay.setElement(newDiv);
-        overlay.setPositioning('top-center');
-        overlay.setPosition(fromLonLat([Number(x), Number(y)]));
 
+        // 위치 좌표
+        const position = fromLonLat([Number(x), Number(y)])
+
+        // infoWindow에 들어갈 내용(html 요소) 생성
+        const infoWindowContent = createInfoWindowContent(addressName);
+        const infoWindowElement = document.createElement('div');
+        infoWindowElement.innerHTML = infoWindowContent;
+
+        // infowWindow 지도에 그리기
+        overlay.setElement(infoWindowElement);
+        overlay.setPositioning('top-center');
+        overlay.setPosition(position);
         map.addOverlay(overlay);
 
+        // 지도 포커스 이동
         const view = map.getView();
         view.setZoom(15);
-        view.setCenter(fromLonLat([Number(x), Number(y)]));
+        view.setCenter(position);
         map.setView(view);
     }
 
@@ -161,7 +162,7 @@ export function useMap() {
 
         markAddress,
 
-        mapContainerOpenlayersRef,
+        mapContainerOpenLayersRef,
         markAddressOpenLayers
     };
 }

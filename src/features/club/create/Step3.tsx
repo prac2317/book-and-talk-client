@@ -7,7 +7,7 @@ import LocationMapView from '@features/map/LocationMapView';
 
 const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
 
-  const { setAddress, mapContainerRef, markAddress, mapContainerOpenlayersRef, markAddressOpenLayers } = useMap();
+  const { setAddress, mapContainerRef, markAddress, mapContainerOpenLayersRef, markAddressOpenLayers } = useMap();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -17,7 +17,7 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
         <div className={styles.locationWrapper}>
           <h1 className={styles.title}>모임활동 장소를 정해주세요</h1>
           <div
-            ref={mapContainerOpenlayersRef}
+            ref={mapContainerOpenLayersRef}
             style={{ width: '100%', height: "400px" }}
           />
           <div style={{ display: isOpen ? 'none' : 'block' }}>
