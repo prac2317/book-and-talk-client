@@ -9,12 +9,12 @@ interface LocationMapViewProps {
 const LocationMapView = ({ mapContainerRef, setIsOpen }: LocationMapViewProps) => {
 
     return (
-        <>
+        <div className={styles.container}>
             <input className={styles.locationSearchBar} placeholder="지역을 검색해주세요." onClick={() => { setIsOpen(true) }} />
             <div
                 className={styles.map}
                 ref={mapContainerRef} />
-        </>
+        </div>
 
     )
 

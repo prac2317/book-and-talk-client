@@ -23,7 +23,7 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
               setIsOpen={setIsOpen}
             />
           </div>
-          <div style={{ display: isOpen ? 'block' : 'none' }}>
+          {isOpen ? <div style={{ display: isOpen ? 'block' : 'none' }}>
             <LocationSearch
               setIsOpen={setIsOpen}
               setAddress={setAddress}
@@ -31,7 +31,8 @@ const Step3 = ({ goToNextStep, formInput, setFormInput }: StepProps) => {
               formInput={formInput}
               setFormInput={setFormInput}
             />
-          </div>
+          </div> : ''}
+
         </div>
         <div>
           <button className={styles.primaryButton} onClick={goToNextStep}>

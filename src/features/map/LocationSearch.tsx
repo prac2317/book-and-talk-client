@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { FormInput } from '@type/club.ts';
+import * as styles from './LocationSearch.css'
 
 interface Address {
   id: string;
@@ -63,11 +64,13 @@ const LocationSearch = ({ setIsOpen, setAddress, markAddress, formInput, setForm
   };
 
   return (
-    <div className="container">
-      <button onClick={() => setIsOpen(false)}> ← </button>
-      <input type="text" value={searchWord} onChange={onChangeSearch} />
-      <button onClick={searchAddress}>검색</button>
-      <div>
+    <div className={styles.container}>
+      <div className={styles.searchBarSection}>
+        <button className={styles.backButton} onClick={() => setIsOpen(false)}> ← </button>
+        <input className={styles.locationSearchBar} type="text" value={searchWord} onChange={onChangeSearch} />
+        <button className={styles.searchButton} onClick={searchAddress}>검색</button>
+      </div>
+      <div className={styles.searchResultSection}>
         {addressList.map((address: Address) => (
           <div
             key={address.id}
