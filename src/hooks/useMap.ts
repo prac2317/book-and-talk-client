@@ -3,7 +3,6 @@ import { createInfoWindowContent } from '@features/map/createInfoWindowContent.t
 
 import "ol/ol.css";
 import Map from 'ol/Map.js';
-import OSM from 'ol/source/OSM.js';
 import { XYZ } from 'ol/source';
 import TileLayer from 'ol/layer/Tile.js';
 import View from 'ol/View.js';

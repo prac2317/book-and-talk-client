@@ -6,11 +6,10 @@ import { fetchMemberId } from '@api/auth.ts';
 import { useNotificationStore } from '@store/notificationStore.ts';
 
 const AppLayout = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [connected, setConnected] = useState(false);
   const [memberId, setMemberId] = useState('');
 
-  const { unreadCount, setUnreadCount, increaseUnreadCount } = useNotificationStore();
+  const { unreadCount, increaseUnreadCount } = useNotificationStore();
 
   useEffect(() => {
     console.log('unreadCount 변경됨:', unreadCount);
@@ -50,6 +49,7 @@ const AppLayout = () => {
 
     eventSource.addEventListener('open', (e) => {
       console.log('open', e);
+      console.log(connected);
       setConnected(true);
     });
 
