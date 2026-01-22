@@ -210,13 +210,11 @@ export const locationTitle = style({
   fontWeight: vars.font.weight.medium,
 });
 
-export const locationImage = style({
-  // height: '200px',
-  width: `calc(${vars.layout.width} - ${vars.space.sectionPadding} - ${vars.space.sectionPadding})`,
+export const map = style({
   marginTop: '10px',
-  backgroundColor: 'antiquewhite',
-  borderRadius: '10px',
-});
+  width: '100%',
+  height: '300px'
+})
 
 export const buttonSection = style({
   display: 'flex',

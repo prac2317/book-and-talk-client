@@ -1,0 +1,91 @@
+import axios from 'axios';
+import { useState } from 'react';
+import { FormInput } from '@type/club.ts';
+import * as styles from './LocationSearch.css'
+
+interface Address {
+  id: string;
+  place_name: string;
+  category_name: string;
+  category_group_code: string;
+  category_group_name: string;
+  phone: string;
+  address_name: string;
+  road_address_name: string;
+  x: string;
+  y: string;
+  place_url: string;
+  distance: string;
+}
+
+interface LocationSearchProps {
+  setIsOpen: (isOpen: boolean) => void;
+  setAddress: (address: Address) => void;
+  markAddress: (x: string, y: string, addressName: string) => void;
+  formInput: FormInput;
+  setFormInput: React.Dispatch<React.SetStateAction<FormInput>>;
+}
+
+const LocationSearch = ({ setIsOpen, setAddress, markAddress, formInput, setFormInput }: LocationSearchProps) => {
+  const [addressList, setAddressList] = useState<Address[]>([]);
+
+  const [searchWord, setSearchWord] = useState('');
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(e.target.value);
+  };
+
+  const searchAddress = async () => {
+    const response = await axios.get('https://dapi.kakao.com/v2/local/search/keyword.json', {
+      params: {
+        query: searchWord,
+      },
+      headers: {
+        Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_REST_API_KEY}`,
+      },
+    });
+
+    console.log(response.data.documents);
+
+    setAddressList(response.data.documents);
+  };
+
+  const handleSelectAddress = (address: Address) => {
+    console.log(address);
+    setAddress(address);
+    setIsOpen(false);
+    markAddress(address.x, address.y, address.address_name);
+    setFormInput({
+      ...formInput,
+      address: address.address_name,
+      latitude: address.y,
+      longitude: address.x,
+    });
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.searchBarSection}>
+        <button className={styles.backButton} onClick={() => setIsOpen(false)}> ← </button>
+        <input className={styles.locationSearchBar} type="text" value={searchWord} onChange={onChangeSearch} />
+        <button className={styles.searchButton} onClick={searchAddress}>검색</button>
+      </div>
+      <div className={styles.searchResultSection}>
+        {addressList.map((address: Address) => (
+          <div
+            key={address.id}
+            onClick={() => handleSelectAddress(address)}
+            // todo: css 분리
+            style={{ cursor: 'pointer', padding: '10px', border: '1px solid #ddd', margin: '5px 0' }}
+          >
+            <span>{address.address_name}</span>
+            <br />
+            <span>{address.place_name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default LocationSearch;
